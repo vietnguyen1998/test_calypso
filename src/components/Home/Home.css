@@ -1,0 +1,147 @@
+.banner-title {
+  font-size: 68px;
+  font-weight: 700;
+}
+
+.banner-bio {
+  font-size: 25px;
+}
+
+.tab button {
+  display: block !important;
+  background-color: #0F1F38 !important;
+  width: 100% !important;
+  border: none !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  transition: 0.3s !important;
+  padding: 15px 20px !important;
+  color: #8f9aac !important;
+}
+
+.tab button:hover {
+  background-color: #112340 !important;
+  color: white !important;
+}
+
+.tab button.active {
+  background-color: #ffbc26 !important;
+  color: #021025 !important;
+}
+
+.pool-section {
+  background-image: url(/images/bg-1.png);
+  position: relative;
+  margin-top: -230px;
+  z-index: 1;
+}
+
+.select-input {
+  padding: 5px 12px;
+  border: none;
+}
+
+.title:hover {
+  color: #ffbc26 !important;
+}
+
+.title:focus {
+  color: #ffbc26 !important;
+}
+
+.fees-box {
+  background-image: url(/images/yellow-bg.jpg);
+  padding: 20px 90px;
+  margin-bottom: 12px;
+}
+
+.parallax-window {
+  min-height: 400px;
+  background: transparent;
+}
+
+.text-wrap {
+  word-wrap: break-word;
+}
+
+.card {
+  border: none !important;
+}
+
+.card-header {
+  background-color: #021025 !important;
+  border: none !important;
+  padding: 0px !important;
+}
+
+.card-body {
+  background-color: #021025 !important;
+  color: #8f9aac !important;
+  padding: 0px !important;
+}
+
+.btn {
+  padding: 0px !important;
+  border: none !important;
+  font-size: 20px !important;
+}
+
+.btn-link {
+  text-decoration: none !important;
+}
+
+.float-btn {
+  padding: 6px 25px;
+  border-radius: 50px;
+  font-weight: 300;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.float {
+  bottom: 25px;
+  right: 40px;
+  position: fixed;
+  z-index: 50;
+}
+
+.affiliate-symtem {
+  font-size: 26px;
+  text-transform: uppercase;
+  margin-top: 100px;
+}
+
+/*Mobile Responsive*/
+
+@media only screen and (max-width: 600px) {
+
+  .float-btn {
+    padding: 6px 10px;
+    margin: 3px;
+  }
+
+  .float {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .banner-title {
+    font-size: 48px;
+    text-align: center;
+  }
+
+  .banner-bio {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .pool-section {
+    background-image: url(/images/bg-1-mobile.png);
+    background-size: cover;
+  }
+
+  .banner-btn {
+    display: flex;
+    justify-content: center;
+  }
+}

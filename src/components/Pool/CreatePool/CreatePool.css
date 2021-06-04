@@ -1,0 +1,22 @@
+.description-box {
+  height: 115px !important;
+  margin-top: 7px;
+  padding: 12px 15px !important;
+}
+
+.description-box:hover {
+  background-color: #fcfcfc;
+}
+
+.create-pool .add-btn {
+  margin-top: 7px;
+  border: none;
+  height: 45px;
+  width: 15%;
+  background-color: #ffbc26 !important;
+  color: #021025 !important;
+}
+
+.create-pool .add-btn:hover {
+  background-color: #eda400 !important;
+}

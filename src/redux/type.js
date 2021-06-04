@@ -1,0 +1,15 @@
+export default {
+  calBalance: "calBalance",
+  ethBalance: "ethBalance",
+  usdtBalance: "usdtBalance",
+  currentAddress: "currentAddress",
+  chainId: "chainId",
+  getPools: "getPools",
+  getPool: "getPool",
+  updatePool: "updatePool",
+  getOwnPool: "getOwnPool",
+  getBets: "getBets",
+  getMatches: "getMatches",
+  resetPool: "resetPool",
+  getAffiliateStatus: "getAffiliateStatus",
+};

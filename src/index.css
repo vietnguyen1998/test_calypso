@@ -1,0 +1,473 @@
+.h1 {
+  font-size: 24px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  margin-bottom: 0px !important;
+}
+
+h2 {
+  font-size: 26px !important;
+  text-transform: uppercase !important;
+}
+
+h3 {
+  font-size: 22px !important;
+}
+
+p {
+  letter-spacing: 0.3px !important;
+}
+
+span {
+  letter-spacing: 0.3px !important;
+  line-height: 25px;
+}
+
+.small-text {
+  font-size: 14px !important;
+}
+
+.extra-small-text {
+  font-size: 12px !important;
+}
+
+.bold {
+  font-weight: 600 !important;
+}
+
+.black {
+  color: #021025 !important;
+}
+
+.white {
+  color: #fff !important;
+}
+
+.yellow {
+  color: #ffbc26 !important;
+}
+
+.grey {
+  color: #707e95 !important;
+}
+
+.green {
+  color: greenyellow !important;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+
+.navbar-box {
+  background-color: #ffbc26 !important;
+  color: #021025 !important;
+}
+
+.navbar {
+  padding: 0px !important;
+}
+
+.nav-link {
+  font-weight: 500 !important;
+  color: #021025 !important;
+  padding: 0px 8px !important;
+}
+
+.nav-link-box {
+  padding: 8px;
+}
+
+.nav-link-box:hover {
+  background-color: #f5a900 !important;
+}
+
+.nav-link-box:focus {
+  background-color: #f5a900 !important;
+}
+
+.address-head {
+  padding: 5px 30px;
+  border: 2px solid #ffbc26;
+  border-radius: 50px;
+  background-color: transparent;
+  color: #ffbc26;
+}
+
+.bg-img {
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+.yellow-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffbc26 !important;
+  color: #021025 !important;
+}
+
+.yellow-btn:hover {
+  background-color: #f5a900 !important;
+  border: none;
+}
+
+.border-btn {
+  border: 1px solid #ffbc26 !important;
+  background-color: transparent !important;
+  color: #ffbc26 !important;
+}
+
+.border-btn:hover {
+  background-color: #ffbc26 !important;
+  color: #021025 !important;
+}
+
+.rounded-yellow-btn {
+  background-color: #ffbc26;
+  border: none;
+  border-radius: 80px;
+  padding: 6px 30px !important;
+}
+
+.rounded-yellow-btn:hover {
+  background-color: #f5a900;
+}
+
+.grey-btn {
+  padding: 10px 20px;
+  background-color: #707e95 !important;
+  color: white !important;
+  border: none;
+}
+
+.grey-btn:hover {
+  background-color: #64748d !important;
+}
+
+.team-circle {
+  background-color: white;
+  width: 63px;
+  height: 63px;
+  border-radius: 90px;
+  align-items: center;
+  padding: 8px;
+}
+
+.team-img {
+  height: 100%;
+}
+
+.border-box {
+  border: 2px solid #ffbc26;
+  border-radius: 7px;
+  background-color: #0f1f38;
+  padding: 25px 17px;
+  transition: 0.3s;
+}
+
+.border-box:hover {
+  transform: scale(1.02);
+}
+
+.sort-by {
+  border: none;
+  padding: 4px 7px;
+}
+
+.team-name {
+  color: white;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.yellow-link:hover {
+  color: #f5a900;
+}
+
+.whatsapp {
+  transition: 0.3s;
+}
+
+.whatsapp:hover {
+  transform: scale(1.03);
+}
+
+.balance-box {
+  background-color: #2a3e5c;
+  color: white;
+  padding: 5px 20px;
+  font-size: 13px;
+}
+
+.pool-list {
+  background-color: #0f1f38;
+  margin: 9px 0px;
+  padding-top: 20px;
+  border-radius: 8px;
+}
+
+.pool-list:hover {
+  background-color: #0a1b34;
+}
+
+.small-border-btn {
+  padding: 0px;
+  padding: 0px 18px;
+  border-radius: 20px;
+}
+
+.small-border-btn:hover {
+  color: #021025;
+  background-color: #ffbc26;
+}
+
+.search-input {
+  width: 85%;
+  padding: 12px 20px;
+  height: 47px;
+  border: none;
+  float: left;
+}
+
+.search-btn {
+  width: 15%;
+  height: 47px;
+  float: right;
+}
+
+.select-input {
+  background-color: #f4f4f5;
+  color: #021025;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  width: 100%;
+  height: 45px;
+}
+
+.text-input {
+  background-color: #f4f4f5;
+  margin-top: 7px;
+  margin-bottom: 15px;
+  padding: 0px 15px;
+  width: 100%;
+  height: 45px;
+  border: none;
+}
+
+.float-input {
+  float: left;
+  width: 85%;
+}
+
+.add-btn {
+  /* float: right; */
+  margin-top: 7px;
+  border: none;
+  height: 45px;
+  width: 15%;
+  background-color: #ffbc26 !important;
+  color: #021025 !important;
+}
+
+.add-btn:hover {
+  background-color: #eda400 !important;
+}
+
+.text-input:hover {
+  background-color: #f0f0f2;
+}
+
+.select-input:hover {
+  background-color: #f0f0f2;
+}
+
+.form-check-input {
+  margin-top: 6px !important;
+  margin-right: 20px !important;
+}
+
+::placeholder {
+  color: #8f9aac;
+  opacity: 0.9;
+}
+
+.add-whitelist-btn {
+  background-color: #e8e9ea;
+  border: none;
+  text-align: center;
+  font-size: 25px;
+  width: 100%;
+}
+
+.add-whitelist-btn:hover {
+  background-color: #dddfe2;
+}
+
+.whitelist-add {
+  background-color: #f9f9f9;
+  padding: 8px 20px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.delete {
+  color: #bac1cc;
+  transition: 0.2s;
+  font-size: 18px;
+}
+
+.delete:hover {
+  transform: scale(1.2);
+  color: red;
+}
+
+.my-pool-tab-active {
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-bottom: 1px solid #ffbc26;
+  width: 200px;
+  text-align: center;
+  display: inline;
+  text-decoration: none;
+}
+
+.my-pool-tab {
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 210px;
+  text-align: center;
+  color: #707e95;
+  display: inline;
+}
+
+.tab-hr {
+  background-color: #2a3e5c;
+  margin-top: 7px;
+}
+
+/* Ribbon part */
+
+.parent {
+  overflow: hidden; /* required */
+  position: relative; /* required  for demo*/
+  background-color: #0f1f38;
+}
+
+.ribbon {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  background: #ffbc26;
+  color: #021025;
+  padding: 1px 8px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(30%) translateY(0%) rotate(45deg);
+  transform-origin: top left;
+}
+
+.ribbon-lose {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  background: #8f9aac;
+  color: #021025;
+  padding: 1px 8px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(30%) translateY(0%) rotate(45deg);
+  transform-origin: top left;
+}
+
+.ribbon:before,
+.ribbon:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  margin: 0 -1px; /* tweak */
+  width: 100%;
+  height: 100%;
+  background: #ffbc26;
+}
+
+.ribbon:before {
+  right: 100%;
+}
+
+.ribbon:after {
+  left: 100%;
+}
+
+.ribbon-lose:before,
+.ribbon-lose:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  margin: 0 -1px; /* tweak */
+  width: 100%;
+  height: 100%;
+  background: #8f9aac;
+}
+.ribbon-lose:before {
+  right: 100%;
+}
+
+.ribbon-lose:after {
+  left: 100%;
+}
+
+*:focus:not(:focus-visible) {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.body-section {
+  padding-top: 150px;
+}
+
+.my-bet-table {
+  background-color: #f7f7f8;
+  padding: 10px 0px;
+}
+
+.my-bet-team-logo {
+  height: 25px;
+  width: auto;
+}
+
+.win-team-box {
+  border: 2px solid #dfe2e5;
+  padding: 10px 30px;
+  display: inline-block;
+}
+
+@media only screen and (max-width: 600px) {
+  .metamask-btn {
+    text-align: left !important;
+    padding-top: 7px;
+    padding-bottom: 12px;
+  }
+
+  .logo {
+    text-align: left !important;
+  }
+
+  .body-section {
+    padding-top: 300px;
+  }
+
+  .banner-section {
+    padding-top: 150px;
+  }
+}
