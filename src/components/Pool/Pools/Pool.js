@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { etherscan } from "../../../config";
 import { SupportedCoins } from "../../../const/Const";
 import { roundNumber, timestampToLocalDate } from "../../../utils/Utils";
+import TutorialPopup from "../../Common/TutorialPopup";
 
 const Pool = (props) => {
   const { pool, delay } = props;
@@ -40,6 +41,15 @@ const Pool = (props) => {
             <p className="team-name mt-2">{game.team2}</p>
           </div>
         </div>
+        {pool.result.side != undefined && (
+          <>
+            <div>
+              <h3 className="white text" style={{ marginLeft: "75px" }}>
+                {pool.result.g1} - {pool.result.g2}
+              </h3>
+            </div>
+          </>
+        )}
       </div>
       <div className="col-md-8">
         <div className="row">
@@ -65,24 +75,37 @@ const Pool = (props) => {
             <p className="grey small-text mb-0">
               {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
             </p>
+            <TutorialPopup content="[date] - Date of match">
+              <p className="green small-text mb-0">(?)</p>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {timestampToLocalDate(game.date - 3600, "H:mm Z")}
             </p>
           </div>
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">Max cap</p>
+
+            <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
+              <p className="green small-text mb-0">(?)</p>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {roundNumber(pool.maxCap)} {currency.label}
             </p>
           </div>
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">Play size</p>
+            <TutorialPopup content="Play size - the total bets currently placed by all players">
+              <p className="green small-text mb-0">(?)</p>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {roundNumber(pool.total || 0)} {currency.label}
             </p>
           </div>
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">Pool fee</p>
+            <TutorialPopup content="Pool fee - the percentage of winningswhich will goto the Pool Creator">
+              <p className="green small-text mb-0">(?)</p>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {roundNumber(pool.poolFee)}%
             </p>

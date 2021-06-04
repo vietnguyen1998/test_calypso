@@ -122,76 +122,94 @@ const Swap = () => {
   };
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
-      <div className="container body-section">
-        <h3 className="black bold">Buy CAL tokens</h3>
-        <p className="grey">
-          Earn Rewards allows you to Stake CAL in Calypso DeFi and be rewarded
-          with CAL
-        </p>
-        <div className="row">
-          <div className="col-md-6 col-12">
-            <div className="grey mt-3">
-              <span>Swap</span>
-              <br />
-              <input
-                style={{ width: "77%" }}
-                className="text-input mr-2"
-                placeholder="Enter number"
-                type="number"
-                value={coinAmount}
-                onChange={(e) => setCoinAmount(e.target.value)}
-              ></input>
-              <select
-                style={{ width: "20%" }}
-                class="select-input"
-                name="Game"
-                {...bindCoin}
-              >
-                <option value="ETH">ETH</option>
-                <option value="USDT">USDT</option>
-              </select>
-              <br />
-              <p className="black">
-                1 {coin} = {price} CAL
-              </p>
-              <span>To</span>
-              <br />
-              <input
-                style={{ width: "77%" }}
-                className="text-input mr-2"
-                placeholder="Enter number"
-                type="number"
-                value={calAmount}
-                onChange={(e) => setCalAmount(e.target.value)}
-              ></input>
-              <span className="black">CAL</span>
-              <br />
-              {coin === "ETH" && (
-                <button
-                  className={`${
-                    swapEthEnabled ? "yellow" : "grey"
-                  }-btn mt-3 mr-3`}
-                  disabled={!swapEthEnabled}
-                  onClick={swapEth}
-                >
-                  Confirm Swap
-                </button>
-              )}
-              {coin === "USDT" && (
-                <div>
-                  <button
-                    className={`${
-                      approveTokenEnabled || swapTokenEnabled
-                        ? "yellow"
-                        : "grey"
-                    }-btn mt-3 mr-3`}
-                    onClick={approveTokenEnabled ? approveUsdt : swap}
+      <div style={{ display: "table", marginLeft: "20px" }}>
+        <div style={{ display: "table-row" }}>
+          <div
+            className="container body-section"
+            style={{ display: "table-cell", width: "75%" }}
+          >
+            <h3 className="black bold">Buy CAL tokens</h3>
+            <p className="grey">
+              Earn Rewards allows you to Stake CAL in Calypso DeFi and be
+              rewarded with CAL
+            </p>
+            <div className="row">
+              <div className="col-md-6 col-12">
+                <div className="grey mt-3">
+                  <span>Swap</span>
+                  <br />
+                  <input
+                    style={{ width: "77%" }}
+                    className="text-input mr-2"
+                    placeholder="Enter number"
+                    type="number"
+                    value={coinAmount}
+                    onChange={(e) => setCoinAmount(e.target.value)}
+                  ></input>
+                  <select
+                    style={{ width: "20%", minWidth: "87px" }}
+                    class="select-input"
+                    name="Game"
+                    {...bindCoin}
                   >
-                    {!swapTokenEnabled ? "Approve USDT" : "Confirm Swap"}
-                  </button>
+                    <option value="ETH">ETH</option>
+                    <option value="USDT">USDT</option>
+                  </select>
+                  <br />
+                  <p className="black">
+                    1 {coin} = {price} CAL
+                  </p>
+                  <span>To</span>
+                  <br />
+                  <input
+                    style={{ width: "77%" }}
+                    className="text-input mr-2"
+                    placeholder="Enter number"
+                    type="number"
+                    value={calAmount}
+                    onChange={(e) => setCalAmount(e.target.value)}
+                  ></input>
+                  <span className="black">CAL</span>
+                  <br />
+                  {coin === "ETH" && (
+                    <button
+                      className={`${
+                        swapEthEnabled ? "yellow" : "grey"
+                      }-btn mt-3 mr-3`}
+                      disabled={!swapEthEnabled}
+                      onClick={swapEth}
+                    >
+                      Confirm Swap
+                    </button>
+                  )}
+                  {coin === "USDT" && (
+                    <div>
+                      <button
+                        className={`${
+                          approveTokenEnabled || swapTokenEnabled
+                            ? "yellow"
+                            : "grey"
+                        }-btn mt-3 mr-3`}
+                        onClick={approveTokenEnabled ? approveUsdt : swap}
+                      >
+                        {!swapTokenEnabled ? "Approve USDT" : "Confirm Swap"}
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
+          </div>
+          <div style={{ display: "table-cell" }}>
+            <p>Maximum Total Supply: 1 Billion CAL tokens</p>
+            <p>
+              CAL Token Contract:{" "}
+              <a href="https://kovan.etherscan.io/token/0xc1ea3959b49b903fb47ebbd30b236c09a7e02ade?a=0xf448ff5248bf9c10602ff5ac30052c7a7011966a">
+                Link
+              </a>
+            </p>
+            <p>Launch Price of CAL: 1 USDT per CAL token</p>
+            <a href="#">[Download Whitepaper]</a>
           </div>
         </div>
       </div>

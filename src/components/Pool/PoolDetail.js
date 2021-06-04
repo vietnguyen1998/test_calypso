@@ -70,6 +70,10 @@ const PoolDetail = (props) => {
     address && getPool(poolAddress, address);
   };
 
+  const canClaim = winBets.some(
+    (x) => x.bettor.toLowerCase() == address.toLowerCase()
+  );
+
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
@@ -216,7 +220,7 @@ const PoolDetail = (props) => {
               />
             )}
             {/* Bet Result */}
-            {hasResult && (
+            {hasResult && canClaim && (
               <>
                 <h3 className="bold mb-3">Result</h3>
                 <p className="mb-1">
@@ -231,6 +235,7 @@ const PoolDetail = (props) => {
             )}
             {(hasResult || expiredTimeWithoutResult) &&
               validAddress &&
+              canClaim &&
               winBets.length > 0 && (
                 <ClaimReward
                   PoolSc={poolSigner}

@@ -37,6 +37,9 @@ const BetList = (props) => {
                 {item.amount} {coin}
               </span>
             </div>
+            <div className="col-md-2 col-2">
+              <a href={"https://kovan.etherscan.io/tx/" + item.bettor}>LINK!</a>
+            </div>
           </div>
         </div>
       );

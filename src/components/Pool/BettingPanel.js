@@ -38,6 +38,11 @@ const BettingPanel = (props) => {
     if (amount <= 0) {
       return toast.error("Amount is too small.");
     }
+    if (amount < /*Pool.minBet*/ 0.02) {
+      return toast.error(
+        "The Bet amount should be bigger than the minimum Bet."
+      );
+    }
     setLoading(true);
     Pool &&
       Pool.betWithEth(selectedSide, { value: getWei(amount) })
@@ -130,7 +135,11 @@ const BettingPanel = (props) => {
         Odds: <span style={{ fontWeight: "bold", marginLeft: 20 }}>{odds}</span>
       </div>
       <form className="grey mt-3">
-        <span> Input {currency && currency.label} number</span>
+        <span>
+          {" "}
+          Input {currency && currency.label} number. Minimum bet is
+          %Pool.minBet%{" "}
+        </span>
         <br />
         <input className="text-input" type="number" {...bindAmount} />
       </form>

@@ -183,11 +183,12 @@ const Affiliate = (props) => {
       <div className="container body-section">
         <h3 className="black bold">Affiliates</h3>
         <p className="grey mt-4">
-          Affiliates are simply addresses which are whitelisted by the Pool
-          Creator. A Pool Creator can create a Pool which only whitelisted
-          addresses can participate in. The list of whitelisted addresses will
-          be tagged to the Metamask Wallet address used to add the wallet
-          addresses
+          Affiliates are players whom you referred to Calypso. Referrers will
+          earn 1.25% commission for every winning earned by the referee (your
+          affiliate). You may add up to 100 Affiliates. It costs 1 CAL token for
+          each Affiliate added. At this moment, Calypso allows a referrer to
+          configure the maximum Affiliates whom you can add ONLY ONCE. So, it
+          may be worthwhile to consider adding the maximum of 100 Affiliates.
         </p>
         {(maxNumber == 0 || !maxNumber) && (
           <div className="row mt-5">
@@ -249,7 +250,8 @@ const Affiliate = (props) => {
                 <br />
                 <hr />
                 <p className="black bold mt-4">
-                  Your current whitelisted addresses
+                  Your current affiliates. Please check the box on the right and
+                  click Save Changes to delete Affiliates.
                 </p>
                 <div className="col">{oldItems}</div>
                 <br />

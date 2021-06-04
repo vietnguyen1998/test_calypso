@@ -17,7 +17,7 @@ const Pools = (props) => {
 
   const filterPools = pools
     .filter((el) => {
-      if (!address || !el.isPrivate) return true;
+      if (!address || !el.isPrivate || address == el.owner) return true;
       const whitelist =
         el.whitelist && el.whitelist.map((it) => it.toLowerCase());
       if (!whitelist) return true;
@@ -40,6 +40,7 @@ const Pools = (props) => {
   const poolItems = filterPools.map((el, id) => {
     return <Pool key={id} pool={el} />;
   });
+
   return (
     <Main>
       <div style={{ backgroundColor: "#021025" }}>

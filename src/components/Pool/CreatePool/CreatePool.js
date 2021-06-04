@@ -36,6 +36,7 @@ const CreatePool = (props) => {
   const [description, bindDescription] = useInput("Starting your Gaming Pool");
   const [calAmount, bindCalAmount] = useInput("50");
   const [fee, bindFee] = useInput("10");
+  const minBet = useInput("0");
   const [approved, setApproved] = useState(false);
   const history = useHistory();
 
@@ -103,6 +104,7 @@ const CreatePool = (props) => {
   };
 
   const clickCreatePool = async () => {
+    console.log(whitelist);
     try {
       setLoading(true);
       const selectMatch = filterMatches[Number(match)];
@@ -172,6 +174,8 @@ const CreatePool = (props) => {
       </option>
     );
   });
+
+  const canApproveCreate = !isPrivate || (isPrivate && whitelist.length > 0);
 
   return (
     <Main loading={loading} setLoading={setLoading}>
@@ -247,6 +251,12 @@ const CreatePool = (props) => {
               <br />
               <input className="text-input" type="number" {...bindFee} />
               <br />
+
+              <span>Minimum Bet Size per player</span>
+              <br />
+              <input className="text-input" type="number" {...minBet} />
+              <br />
+
               <div className="form-check">
                 <input
                   className="form-check-input"
@@ -273,7 +283,8 @@ const CreatePool = (props) => {
         </div>
         <div align="right">
           <button
-            className="yellow-btn mt-3 mr-3"
+            disabled={canApproveCreate ? false : true}
+            className={`${canApproveCreate ? "yellow" : "grey"}-btn mt-3 mr-3`}
             onClick={approved ? clickCreatePool : approveCal}
           >
             {approved ? "Create Pool" : "Approve CAL"}
