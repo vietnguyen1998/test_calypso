@@ -18,6 +18,7 @@ import About from './components/About/About';
 import MyPool from './components/Pool/MyPool/MyPool';
 
 function App() {
+  console.log('From web calypso');
   return (
     <Provider store={store}>
       <Router>
