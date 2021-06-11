@@ -74,11 +74,28 @@ const PoolDetail = (props) => {
     (x) => x.bettor.toLowerCase() == address.toLowerCase()
   );
 
+  const betUsersList =
+    pool.betUsers &&
+    pool.betUsers.map((el, id) => {
+      return (
+        <>
+          <div
+            className="px-3 py-3 mt-3"
+            style={{ backgroundColor: "#F7F7F8", maxWidth: "445px" }}
+          >
+            <a href={`${etherscan}${el}`} target="_blank" key={id}>
+              <span className="black">{el}</span>
+            </a>
+          </div>
+        </>
+      );
+    });
+
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-7">
             {/* Pool Details */}
 
             <h3 className="bold">Pool details</h3>
@@ -204,11 +221,18 @@ const PoolDetail = (props) => {
                 depositedCal={(pool && pool.depositedCal) || 0}
               />
             )}
+
+            <br />
+            {pool.betUsers && pool.betUsers.length > 0 && (
+              <h3 className="bold">Addresses of players in the pool:</h3>
+            )}
+            {betUsersList}
+            <br />
           </div>
 
           {/* Betting section */}
 
-          <div className="col-md-6">
+          <div className="col-md-5">
             {!isEnded && validAddress && (
               <BettingPanel
                 pool={pool}

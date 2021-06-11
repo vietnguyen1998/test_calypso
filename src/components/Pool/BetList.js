@@ -20,7 +20,7 @@ const BetList = (props) => {
       return (
         <div className="col" key={index}>
           <div className="row mt-1 my-bet-table">
-            <div className="col-md-5 col-5">
+            <div className="col-md-4 col-4">
               <span className="black small-text">
                 {timestampToLocalDate(item.createdDate)}
               </span>
@@ -32,13 +32,18 @@ const BetList = (props) => {
               />
               <span className="black small-text">{side.name}</span>
             </div>
-            <div className="col-md-3 col-3">
+            <div className="col-md-2 col-2">
               <span className="black small-text">
                 {item.amount} {coin}
               </span>
             </div>
             <div className="col-md-2 col-2">
-              <a href={"https://kovan.etherscan.io/tx/" + item.bettor}>LINK!</a>
+              <a
+                href={"https://kovan.etherscan.io/tx/" + item.txId}
+                target="_blank"
+              >
+                <img src="/images/link.png" style={{ width: "15px" }} />
+              </a>
             </div>
           </div>
         </div>
@@ -53,11 +58,14 @@ const BetList = (props) => {
           <div className="col-md-5 col-5">
             <span className="bold grey">Time:</span>
           </div>
-          <div className="col-md-4 col-4">
+          <div className="col-md-3 col-3">
             <span className="bold grey">Team:</span>
           </div>
-          <div className="col-md-3 col-3">
+          <div className="col-md-2 col-2">
             <span className="bold grey">Amount:</span>
+          </div>
+          <div className="col-md-2 col-2">
+            <span className="bold grey">Link:</span>
           </div>
         </div>
       </div>

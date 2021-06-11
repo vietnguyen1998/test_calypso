@@ -42,22 +42,24 @@ const Pool = (props) => {
           </div>
         </div>
         {pool.result.side != undefined && (
-          <>
-            <div>
-              <h3 className="white text" style={{ marginLeft: "75px" }}>
+          <div className="row px-2">
+            <div className="col-md-12 col-12" align="center">
+              <h3 className="white text">
                 {pool.result.g1} - {pool.result.g2}
               </h3>
             </div>
-          </>
+          </div>
         )}
       </div>
       <div className="col-md-8">
         <div className="row">
           <div className="col-md-9">
-            <a href={`${etherscan}${pool._id}`} target="_blank">
-              <p className="grey small-text text-wrap mb-0">{pool._id}</p>
-            </a>
-            <p className="white small-text text-wrap">{pool.title}</p>
+            <p className="white small-text text-wrap">
+              {pool.title}{" "}
+              <a href={`${etherscan}${pool._id}`} target="_blank">
+                <img src="/images/link.png" style={{ width: "15px" }} />
+              </a>
+            </p>
             <p className="grey small-text text-wrap">{pool.description}</p>
           </div>
           <div className="col-md-3">
@@ -73,39 +75,44 @@ const Pool = (props) => {
         <div className="row">
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
+              <TutorialPopup content="[date] - Date of match">
+                <span className="green small-text mb-0">(?) </span>
+              </TutorialPopup>
               {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
             </p>
-            <TutorialPopup content="[date] - Date of match">
-              <p className="green small-text mb-0">(?)</p>
-            </TutorialPopup>
             <p className="bold small-text yellow">
               {timestampToLocalDate(game.date - 3600, "H:mm Z")}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Max cap</p>
-
-            <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
-              <p className="green small-text mb-0">(?)</p>
-            </TutorialPopup>
+            <p className="grey small-text mb-0">
+              <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
+                <span className="green small-text mb-0">(?)</span>
+              </TutorialPopup>{" "}
+              Max cap
+            </p>
             <p className="bold small-text yellow">
               {roundNumber(pool.maxCap)} {currency.label}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Play size</p>
-            <TutorialPopup content="Play size - the total bets currently placed by all players">
-              <p className="green small-text mb-0">(?)</p>
-            </TutorialPopup>
+            <p className="grey small-text mb-0">
+              <TutorialPopup content="Play size - the total bets currently placed by all players">
+                <span className="green small-text mb-0">(?)</span>
+              </TutorialPopup>{" "}
+              Play size
+            </p>
             <p className="bold small-text yellow">
               {roundNumber(pool.total || 0)} {currency.label}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Pool fee</p>
-            <TutorialPopup content="Pool fee - the percentage of winningswhich will goto the Pool Creator">
-              <p className="green small-text mb-0">(?)</p>
-            </TutorialPopup>
+            <p className="grey small-text mb-0">
+              <TutorialPopup content="Pool fee - the percentage of winningswhich will goto the Pool Creator">
+                <span className="green small-text mb-0">(?)</span>
+              </TutorialPopup>{" "}
+              Pool fee
+            </p>
             <p className="bold small-text yellow">
               {roundNumber(pool.poolFee)}%
             </p>

@@ -55,6 +55,11 @@ export default [
         type: "uint256",
       },
       {
+        internalType: "uint256",
+        name: "_minBet",
+        type: "uint256",
+      },
+      {
         internalType: "address[]",
         name: "_whitelist",
         type: "address[]",

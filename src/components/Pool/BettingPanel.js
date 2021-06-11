@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import { getBettingPool, getErc20, getSigner } from "../../utils/Contracts";
-import { byte32ToString, getWei } from "../../utils/Web3Utils";
+import { byte32ToString, stringToBytes32, getWei } from "../../utils/Web3Utils";
 import { RadioGroup, Radio } from "react-radio-group";
 import { BetSides, SupportedCoins, ZeroAddress } from "../../const/Const";
 import { toast } from "react-toastify";
 import useInput from "../hook/useInput";
 import { roundNumber } from "../../utils/Utils";
+import { createBetTxId } from "../../redux/actions";
 
 const BettingPanel = (props) => {
   const { pool, poolAddress, onReload, setLoading, game } = props;
@@ -34,6 +35,12 @@ const BettingPanel = (props) => {
     odds = transformAmount.join(" : ");
   }
 
+  const makeid = () => {
+    return [...Array(24)]
+      .map((i) => (~~(Math.random() * 36)).toString(36))
+      .join("");
+  };
+
   const betWithEth = () => {
     if (amount <= 0) {
       return toast.error("Amount is too small.");
@@ -43,9 +50,14 @@ const BettingPanel = (props) => {
         "The Bet amount should be bigger than the minimum Bet."
       );
     }
+    if (amount < pool.minBet) {
+      return toast.error(
+        "Betting amount should be equal or higher than minimum bet"
+      );
+    }
     setLoading(true);
     Pool &&
-      Pool.betWithEth(selectedSide, { value: getWei(amount) })
+      Pool.betWithEth(selectedSide, makeid, { value: getWei(amount) })
         .then((tx) => {
           tx.wait().then(() => {
             onReload();
@@ -85,11 +97,21 @@ const BettingPanel = (props) => {
     if (amount <= 0) {
       return toast.error("Amount is too small.");
     }
+    if (amount < pool.minBet) {
+      return toast.error(
+        "Betting amount should be equal or higher than minimum bet"
+      );
+    }
     setLoading(true);
+    let id = makeid();
     Pool &&
-      Pool.betWithToken(selectedSide, getWei(amount))
+      Pool.betWithToken(selectedSide, getWei(amount), id)
         .then((tx) => {
-          tx.wait().then(() => {
+          tx.wait().then(async () => {
+            await createBetTxId({
+              _id: id,
+              txId: tx.hash,
+            });
             onReload();
             setLoading(false);
             setApproved(false);
@@ -137,8 +159,8 @@ const BettingPanel = (props) => {
       <form className="grey mt-3">
         <span>
           {" "}
-          Input {currency && currency.label} number. Minimum bet is
-          %Pool.minBet%{" "}
+          Input {currency && currency.label} number. Minimum bet is{" "}
+          {pool.minBet}{" "}
         </span>
         <br />
         <input className="text-input" type="number" {...bindAmount} />

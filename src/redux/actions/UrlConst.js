@@ -7,4 +7,5 @@ export default {
   getPoolUrl: host + "pool",
   getPoolsUrl: host + "pools",
   getBetsUrl: host + "bets",
+  createBetTxId: host + "bettxid",
 };

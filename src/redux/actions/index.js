@@ -149,6 +149,19 @@ export const createPool = (pool) => (dispatch) => {
   });
 };
 
+export const createBetTxId = (bet) => {
+  return new Promise((resolve, reject) => {
+    network
+      .post(UrlConst.createBetTxId, bet)
+      .then((res) => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(String(err));
+      });
+  });
+};
+
 export const getAffiliateStatus = (address) => (dispatch) => {
   const affiliateSc = Contracts.getAffiliate();
   affiliateSc

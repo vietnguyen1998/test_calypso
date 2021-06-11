@@ -36,7 +36,7 @@ const CreatePool = (props) => {
   const [description, bindDescription] = useInput("Starting your Gaming Pool");
   const [calAmount, bindCalAmount] = useInput("50");
   const [fee, bindFee] = useInput("10");
-  const minBet = useInput("0");
+  const [minBet, bindMinBet] = useInput("0");
   const [approved, setApproved] = useState(false);
   const history = useHistory();
 
@@ -119,6 +119,7 @@ const CreatePool = (props) => {
         coin,
         Math.round(fee * 100),
         getWei(calAmount),
+        getWei(minBet),
         isPrivate ? whitelist : []
       );
       await tx.wait();
@@ -141,6 +142,7 @@ const CreatePool = (props) => {
         game: {
           ...selectMatch,
         },
+        minBet,
       });
       setLoading(false);
       toast.success("Pool was created!");
@@ -254,7 +256,7 @@ const CreatePool = (props) => {
 
               <span>Minimum Bet Size per player</span>
               <br />
-              <input className="text-input" type="number" {...minBet} />
+              <input className="text-input" type="number" {...bindMinBet} />
               <br />
 
               <div className="form-check">

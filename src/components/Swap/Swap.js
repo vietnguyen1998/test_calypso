@@ -12,6 +12,7 @@ import { connect, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getWei } from "../../utils/Web3Utils";
 import useInput from "../hook/useInput";
+import DownloadLink from "react-download-link";
 
 const Swap = () => {
   const [coin, bindCoin] = useInput("ETH");
@@ -209,7 +210,9 @@ const Swap = () => {
               </a>
             </p>
             <p>Launch Price of CAL: 1 USDT per CAL token</p>
-            <a href="#">[Download Whitepaper]</a>
+            <a href="/Whitepaper.txt" download>
+              [Download Whitepaper]
+            </a>
           </div>
         </div>
       </div>
