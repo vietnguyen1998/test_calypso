@@ -12,9 +12,14 @@ const ClaimReward = (props) => {
     winBets,
     currencyName,
     claimed,
+    hasResult,
   } = props;
   const betAmount = winBets.reduce((acc, cur) => acc + Number(cur.amount), 0);
-  const winAmount = winTotal == 0 ? 0 : (betAmount * winOutcome) / winTotal;
+  const winAmount = hasResult
+    ? winTotal == 0
+      ? 0
+      : (betAmount * winOutcome) / winTotal
+    : winOutcome;
   const claimReward = () => {
     setLoading(true);
     PoolSc &&
@@ -31,6 +36,8 @@ const ClaimReward = (props) => {
           toast.error(err.message);
         });
   };
+
+  const claimLabel = hasResult ? "You win: " : "Claim back: ";
   return (
     <>
       <div>
@@ -42,7 +49,7 @@ const ClaimReward = (props) => {
           }}
         >
           <span className="mb-1 bold">
-            <span className="black mr-2">You win: </span>{" "}
+            <span className="black mr-2">{claimLabel}</span>{" "}
             {roundNumber(winAmount)} {currencyName}
           </span>
           <br />

@@ -53,8 +53,7 @@ const PoolDetail = (props) => {
     pool.claimedUsers && pool.claimedUsers.find((el) => el.address == address);
   const bets = pool.bets || [];
   const winBets = (result && bets.filter((el) => el.side == result.side)) || [];
-  const expiredTimeWithoutResult =
-    hasResult && timestamp - pool.endDate > 5 * 60 * 60; // after 5 hours users can withdraw all their funds
+  const expiredTimeWithoutResult = timestamp - pool.endDate > 5 * 60 * 60; // after 5 hours users can withdraw all their funds
   const side = hasResult && result.side;
   const winner =
     side == BetSides.team1
@@ -74,6 +73,20 @@ const PoolDetail = (props) => {
     (x) => x.bettor.toLowerCase() == address.toLowerCase()
   );
 
+  const canClaimNoResult = bets.some(
+    (x) => x.bettor.toLowerCase() == address.toLowerCase()
+  );
+
+  const totalBetNoResult = () => {
+    let total = 0;
+    bets.forEach((el) => {
+      if (el.bettor.toLowerCase() == address.toLowerCase()) {
+        total += el.amount;
+      }
+    });
+    return total;
+  };
+
   const betUsersList =
     pool.betUsers &&
     pool.betUsers.map((el, id) => {
@@ -90,7 +103,6 @@ const PoolDetail = (props) => {
         </>
       );
     });
-
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
@@ -257,30 +269,52 @@ const PoolDetail = (props) => {
                 </p>
               </>
             )}
-            {(hasResult || expiredTimeWithoutResult) &&
+            {/*If we get the result of the match*/}
+            {hasResult && validAddress && canClaim && winBets.length > 0 && (
+              <ClaimReward
+                PoolSc={poolSigner}
+                onReload={() => setReload(!reload)}
+                setLoading={setLoading}
+                currencyName={currencyName}
+                winOutcome={winOutcome}
+                winTotal={winTotal}
+                winBets={winBets}
+                claimed={claimUser}
+                hasResult={hasResult}
+              />
+            )}
+
+            {/*If we do not get the result of the match and 5 hours passed*/}
+            {!hasResult &&
+              expiredTimeWithoutResult &&
               validAddress &&
-              canClaim &&
-              winBets.length > 0 && (
+              canClaimNoResult &&
+              bets.length > 0 &&
+              !claimUser && (
                 <ClaimReward
                   PoolSc={poolSigner}
                   onReload={() => setReload(!reload)}
                   setLoading={setLoading}
                   currencyName={currencyName}
-                  winOutcome={winOutcome}
+                  winOutcome={totalBetNoResult()}
                   winTotal={winTotal}
                   winBets={winBets}
                   claimed={claimUser}
+                  hasResult={hasResult}
                 />
               )}
-            {(hasResult || expiredTimeWithoutResult) && isOwner && (
-              <WithdrawDeposit
-                pool={pool}
-                coin={currencyName}
-                PoolSc={poolSigner}
-                onReload={() => setReload(!reload)}
-                setLoading={setLoading}
-              />
-            )}
+
+            {(hasResult || expiredTimeWithoutResult) &&
+              isOwner &&
+              !pool.result.claimedDepositAndFee && (
+                <WithdrawDeposit
+                  pool={pool}
+                  coin={currencyName}
+                  PoolSc={poolSigner}
+                  onReload={() => setReload(!reload)}
+                  setLoading={setLoading}
+                />
+              )}
             {/* My bets */}
             {validAddress && (
               <BetList

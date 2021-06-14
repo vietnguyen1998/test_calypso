@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import useInput from "../hook/useInput";
 import { roundNumber } from "../../utils/Utils";
 import { createBetTxId } from "../../redux/actions";
+import { v4 as uuidv4 } from "uuid";
 
 const BettingPanel = (props) => {
   const { pool, poolAddress, onReload, setLoading, game } = props;
@@ -35,12 +36,6 @@ const BettingPanel = (props) => {
     odds = transformAmount.join(" : ");
   }
 
-  const makeid = () => {
-    return [...Array(24)]
-      .map((i) => (~~(Math.random() * 36)).toString(36))
-      .join("");
-  };
-
   const betWithEth = () => {
     if (amount <= 0) {
       return toast.error("Amount is too small.");
@@ -56,10 +51,15 @@ const BettingPanel = (props) => {
       );
     }
     setLoading(true);
+    let id = uuidv4();
     Pool &&
-      Pool.betWithEth(selectedSide, makeid, { value: getWei(amount) })
+      Pool.betWithEth(selectedSide, id, { value: getWei(amount) })
         .then((tx) => {
-          tx.wait().then(() => {
+          tx.wait().then(async () => {
+            await createBetTxId({
+              _id: id,
+              txId: tx.hash,
+            });
             onReload();
             setLoading(false);
             resetAmount();
@@ -103,7 +103,7 @@ const BettingPanel = (props) => {
       );
     }
     setLoading(true);
-    let id = makeid();
+    let id = uuidv4();
     Pool &&
       Pool.betWithToken(selectedSide, getWei(amount), id)
         .then((tx) => {

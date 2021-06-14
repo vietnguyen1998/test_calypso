@@ -12,7 +12,6 @@ import { connect, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getWei } from "../../utils/Web3Utils";
 import useInput from "../hook/useInput";
-import DownloadLink from "react-download-link";
 
 const Swap = () => {
   const [coin, bindCoin] = useInput("ETH");
