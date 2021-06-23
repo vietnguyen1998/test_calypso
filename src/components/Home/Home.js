@@ -33,7 +33,7 @@ const Home = (props) => {
   }, []);
 
   const poolItems = filterPools.slice(0, 6).map((el, id) => {
-    return <Pool key={id} pool={el} delay={(id + 1) * 0.1} />;
+    return <Pool key={id} pool={el} delay={(id + 1) * 0.1} address={address} />;
   });
 
   const featurePoolItems = filterPools.slice(0, 3).map((el, id) => {
