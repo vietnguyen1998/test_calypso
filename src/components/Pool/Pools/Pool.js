@@ -6,11 +6,10 @@ import { roundNumber, timestampToLocalDate } from "../../../utils/Utils";
 import TutorialPopup from "../../Common/TutorialPopup";
 
 const Pool = (props) => {
-  const { pool, delay } = props;
+  const { pool, delay, address } = props;
   const game = pool.game || {};
   const history = useHistory();
   const currency = SupportedCoins.find((el) => el.value == pool.currency) || {};
-
   return (
     <div
       className="row pool-list wow fadeInUp"
@@ -21,7 +20,11 @@ const Pool = (props) => {
         <div className="row px-2">
           <div className="col-md-5 col-5" align="center">
             <div className="team-circle" align="center">
-              <img className="team-img" src={game.logo1} />
+              <img
+                className="team-img"
+                src={game.logo1}
+                style={{ maxWidth: "47px" }}
+              />
             </div>
             <p className="team-name mt-2">{game.team1}</p>
           </div>
@@ -36,7 +39,11 @@ const Pool = (props) => {
           </div>
           <div className="col-md-5 col-5" align="center">
             <div className="team-circle" align="center">
-              <img className="team-img" src={game.logo2} />
+              <img
+                className="team-img"
+                src={game.logo2}
+                style={{ maxWidth: "47px" }}
+              />
             </div>
             <p className="team-name mt-2">{game.team2}</p>
           </div>
@@ -61,13 +68,26 @@ const Pool = (props) => {
               </a>
             </p>
             <p className="grey small-text text-wrap">{pool.description}</p>
+            {pool.bets.length > 0 &&
+              pool.bets.some(
+                (el) => el.bettor.toLowerCase() == address.toLowerCase()
+              ) && (
+                <p className="yellow small-text text-wrap">
+                  You have made a bet in this Pool!
+                </p>
+              )}
           </div>
           <div className="col-md-3">
             <button
               className="border-btn extra-small-text small-border-btn mb-3"
               onClick={() => history.push("/pools/" + pool._id)}
             >
-              <span> {pool.result.side > 0 ? "View" : "Join Pool"}</span>
+              <span>
+                {" "}
+                {Math.floor(Date.now() / 1000) - pool.endDate > 0
+                  ? "View"
+                  : "Join Pool"}
+              </span>
             </button>
           </div>
         </div>
@@ -75,10 +95,10 @@ const Pool = (props) => {
         <div className="row">
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
+              {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}{" "}
               <TutorialPopup content="[date] - Date of match">
                 <span className="green small-text mb-0">(?) </span>
               </TutorialPopup>
-              {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
             </p>
             <p className="bold small-text yellow">
               {timestampToLocalDate(game.date - 3600, "H:mm Z")}
@@ -86,10 +106,10 @@ const Pool = (props) => {
           </div>
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
+              Max cap{" "}
               <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
                 <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>{" "}
-              Max cap
+              </TutorialPopup>
             </p>
             <p className="bold small-text yellow">
               {roundNumber(pool.maxCap)} {currency.label}
@@ -97,10 +117,10 @@ const Pool = (props) => {
           </div>
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
+              Play size{" "}
               <TutorialPopup content="Play size - the total bets currently placed by all players">
                 <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>{" "}
-              Play size
+              </TutorialPopup>
             </p>
             <p className="bold small-text yellow">
               {roundNumber(pool.total || 0)} {currency.label}
@@ -108,10 +128,10 @@ const Pool = (props) => {
           </div>
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
+              Pool fee{" "}
               <TutorialPopup content="Pool fee - the percentage of winningswhich will goto the Pool Creator">
                 <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>{" "}
-              Pool fee
+              </TutorialPopup>
             </p>
             <p className="bold small-text yellow">
               {roundNumber(pool.poolFee)}%

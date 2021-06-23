@@ -162,6 +162,19 @@ export const createBetTxId = (bet) => {
   });
 };
 
+export const affiliateAddrCheck = (addresses) => {
+  return new Promise((resolve, reject) => {
+    network
+      .post(UrlConst.affiliateAddrCheck, addresses)
+      .then((res) => {
+        resolve(res.data.validAddrs);
+      })
+      .catch((err) => {
+        reject(String(err));
+      });
+  });
+};
+
 export const getAffiliateStatus = (address) => (dispatch) => {
   const affiliateSc = Contracts.getAffiliate();
   affiliateSc

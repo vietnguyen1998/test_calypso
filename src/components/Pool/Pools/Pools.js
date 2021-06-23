@@ -38,7 +38,7 @@ const Pools = (props) => {
   }, []);
 
   const poolItems = filterPools.map((el, id) => {
-    return <Pool key={id} pool={el} />;
+    return <Pool key={id} pool={el} address={address} />;
   });
 
   return (

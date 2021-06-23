@@ -3,11 +3,15 @@ import { connect, useSelector } from "react-redux";
 import Main from "../Common/Main";
 import WhitelistAddress from "./WhitelistAddress";
 import useInput from "../hook/useInput";
-import { getAffiliateStatus } from "../../redux/actions";
+import { getAffiliateStatus, affiliateAddrCheck } from "../../redux/actions";
 import { toast } from "react-toastify";
 import { getWei, getEther } from "../../utils/Web3Utils";
-import { getSigner } from "../../utils/Contracts";
-import { getAffiliate, getCal } from "../../utils/Contracts";
+import {
+  getAffiliate,
+  getCal,
+  getStaking,
+  getSigner,
+} from "../../utils/Contracts";
 import { addresses } from "../../config";
 import { isAddress } from "../../utils/Utils";
 import { SupportedCoins } from "../../const/Const";
@@ -30,12 +34,12 @@ const Affiliate = (props) => {
   const address = useSelector((state) => state.address);
   const signer = getSigner();
   const affiliateSc = getAffiliate() && getAffiliate().connect(signer);
+  const stakingSC = getStaking() && getStaking().connect(signer);
   const calSc = getCal() && getCal().connect(signer);
   const affiliate = useSelector((state) => state.affiliate);
   const maxNumber = affiliate && affiliate._maxNumber;
   const referrals = affiliate && affiliate._referrals;
   const awards = affiliate && affiliate._awards;
-  console.log("temp", tempAddrList, tempRemoveList);
   useEffect(() => {
     updateAffiliate();
   }, [address]);
@@ -111,7 +115,19 @@ const Affiliate = (props) => {
   const saveList = async () => {
     setLoading(true);
     try {
-      const tx = await affiliateSc.saveMultiAddrs(tempAddrList, tempRemoveList);
+      //Check if an address ever created any Pool or made any Bet
+      let validAddrs = await affiliateAddrCheck({ addresses: tempAddrList });
+
+      //Check if an address has ever staked
+      let tmp = [];
+      for (const adr of validAddrs) {
+        const index = (await stakingSC.getAccountIndex(adr)).toNumber();
+        if (index == 0) {
+          tmp.push(adr);
+        }
+      }
+
+      const tx = await affiliateSc.saveMultiAddrs(validAddrs, tempRemoveList);
       await tx.wait();
       setLoading(false);
       setTempRemoveList([]);
@@ -250,8 +266,8 @@ const Affiliate = (props) => {
                 <br />
                 <hr />
                 <p className="black bold mt-4">
-                  Your current affiliates. Please check the box on the right and
-                  click Save Changes to delete Affiliates.
+                  Your current affiliates. To delete affiliate please check the
+                  box on the right and click save changes.
                 </p>
                 <div className="col">{oldItems}</div>
                 <br />

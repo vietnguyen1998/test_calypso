@@ -21,6 +21,7 @@ import {
 import { getWei } from "../../../utils/Web3Utils";
 import { toast } from "react-toastify";
 import Addresses from "../../../const/Address";
+import TutorialPopup from "../../Common/TutorialPopup";
 
 const CreatePool = (props) => {
   const { getMatches, createPool } = props;
@@ -104,7 +105,6 @@ const CreatePool = (props) => {
   };
 
   const clickCreatePool = async () => {
-    console.log(whitelist);
     try {
       setLoading(true);
       const selectMatch = filterMatches[Number(match)];
@@ -178,17 +178,28 @@ const CreatePool = (props) => {
   });
 
   const canApproveCreate = !isPrivate || (isPrivate && whitelist.length > 0);
-
   return (
     <Main loading={loading} setLoading={setLoading}>
       <div className="container body-section create-pool">
         <h3 className="bold">Starting your Gaming Pool</h3>
-        <div className="mt-4" style={{ height: "60px" }}>
-          <img className="team-img mr-3" src={game.logo1} />
-          {game.team1} - {game.team2}
-          <img className="team-img ml-3" src={game.logo2} />
-        </div>
-        <div style={{ paddingLeft: 85 }}>{timestampToLocalDate(game.date)}</div>
+        {(game.date != undefined && (
+          <>
+            <div className="mt-4" style={{ height: "60px" }}>
+              <img className="team-img mr-3" src={game.logo1} />
+              {game.team1} - {game.team2}
+              <img className="team-img ml-3" src={game.logo2} />
+            </div>
+
+            <div style={{ paddingLeft: 85 }}>
+              {timestampToLocalDate(game.date - 3600)}
+            </div>
+          </>
+        )) || (
+          <div style={{ paddingLeft: 85 }}>
+            Please begin by selecting the type of games from the drop down box
+            below
+          </div>
+        )}
 
         <br />
         <div className="row">
@@ -205,9 +216,18 @@ const CreatePool = (props) => {
               </select>
               <br />
               <span>Please select which game to create Pool for</span>
-              <select className="select-input" name="Game" {...bindMatch}>
-                {matchOptions}
-              </select>
+              {(matchOptions.length > 0 && (
+                <select className="select-input" name="Game" {...bindMatch}>
+                  {matchOptions}
+                </select>
+              )) || (
+                <>
+                  <br />
+                  <h6 style={{ color: "red" }}>
+                    No matches found at the moment.
+                  </h6>
+                </>
+              )}
               <br />
               <span>Title</span>
               <br />
@@ -229,17 +249,32 @@ const CreatePool = (props) => {
           </div>
           <div className="col-md-6 col-12">
             <form className="grey">
-              <span>Please select the currency for the Pool</span>
+              <span>
+                Please select the currency for the Pool{" "}
+                <TutorialPopup content="This is the cryptocurrency which players can play with.">
+                  <span className="yellow small-text mb-0">(?) </span>
+                </TutorialPopup>
+              </span>
               <br />
               <select className="select-input" name="Crypto" {...bindCoin}>
                 {supportedCoinOptions}
               </select>
               <br />
-              <span>Amount of CAL to stake</span>
+              <span>
+                Amount of CAL to stake{" "}
+                <TutorialPopup content="The amount of CAL staked will determine the Max Pool Size. You will get back your CAL after the match has ended successfully.">
+                  <span className="yellow small-text mb-0">(?) </span>
+                </TutorialPopup>
+              </span>
               <br />
               <input className="text-input" type="number" {...bindCalAmount} />
               <br />
-              <span>Max Pool Size in {selectedCoin.label} </span>
+              <span>
+                Max Pool Size in {selectedCoin.label}{" "}
+                <TutorialPopup content="This is the maximum amount of cryptocurrency from all players which the Pool can accept. You cannot change this value.">
+                  <span className="yellow small-text mb-0">(?) </span>
+                </TutorialPopup>
+              </span>
               <br />
               <input
                 className="text-input"
@@ -249,12 +284,22 @@ const CreatePool = (props) => {
               />
               <br />
 
-              <span>Pool Fee (%)</span>
+              <span>
+                Pool Fee (%){" "}
+                <TutorialPopup content="This is the percentage of the Winning bets given to you as a reward for starting the pool. Please note that it is NOT based on total bets played in the pool.">
+                  <span className="yellow small-text mb-0">(?) </span>
+                </TutorialPopup>
+              </span>
               <br />
               <input className="text-input" type="number" {...bindFee} />
               <br />
 
-              <span>Minimum Bet Size per player</span>
+              <span>
+                Minimum Bet Size per player{" "}
+                <TutorialPopup content="The minimum amount of cryptocurrencies a player can play with.">
+                  <span className="yellow small-text mb-0">(?) </span>
+                </TutorialPopup>
+              </span>
               <br />
               <input className="text-input" type="number" {...bindMinBet} />
               <br />
@@ -271,7 +316,10 @@ const CreatePool = (props) => {
                   className="form-check-label black"
                   htmlFor="flexCheckDefault"
                 >
-                  Private Pool
+                  Private Pool{" "}
+                  <TutorialPopup content=" If enabled, this pool can only be played by addresses which you have whitelisted. Only whitelisted addresses can view and join this private pool.">
+                    <span className="yellow small-text mb-0">(?) </span>
+                  </TutorialPopup>
                 </label>
               </div>
               {isPrivate && (

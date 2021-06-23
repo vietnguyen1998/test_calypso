@@ -8,4 +8,5 @@ export default {
   getPoolsUrl: host + "pools",
   getBetsUrl: host + "bets",
   createBetTxId: host + "bettxid",
+  affiliateAddrCheck: host + "affiliate-addr",
 };
