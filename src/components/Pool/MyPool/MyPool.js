@@ -42,7 +42,7 @@ const MyPool = (props) => {
   }, []);
 
   const openPoolItems = openPools.map((el, id) => {
-    return <Pool key={id} pool={el} />;
+    return <Pool key={id} pool={el} address={address} />;
   });
   const closePoolItems = closePools.map((el, id) => {
     return <EndPool key={id} pool={el} address={address} />;
