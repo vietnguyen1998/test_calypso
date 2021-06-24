@@ -40,11 +40,6 @@ const BettingPanel = (props) => {
     if (amount <= 0) {
       return toast.error("Amount is too small.");
     }
-    if (amount < /*Pool.minBet*/ 0.02) {
-      return toast.error(
-        "The Bet amount should be bigger than the minimum Bet."
-      );
-    }
     if (amount < pool.minBet) {
       return toast.error(
         "Betting amount should be equal or higher than minimum bet"
@@ -75,6 +70,11 @@ const BettingPanel = (props) => {
   const approveToken = () => {
     if (amount <= 0) {
       return toast.error("Amount is too small.");
+    }
+    if (amount < pool.minBet) {
+      return toast.error(
+        "Betting amount should be equal or higher than minimum bet"
+      );
     }
     setLoading(true);
     const Erc20 = getErc20(pool.currency).connect(signer);
@@ -129,14 +129,14 @@ const BettingPanel = (props) => {
     return (
       <React.Fragment key={index}>
         {" "}
-        <Radio value={item} />{" "}
-        <span style={{ marginRight: 20 }}>
+        <p style={{ marginRight: 20 }}>
+          <Radio value={item} />{" "}
           {item === BetSides.team1
             ? game.team1
             : item === BetSides.team2
             ? game.team2
             : "Draw"}
-        </span>
+        </p>
       </React.Fragment>
     );
   });
@@ -144,7 +144,7 @@ const BettingPanel = (props) => {
   return (
     <>
       <h3 className="bold">Betting</h3>
-      <div class="form-check form-check-inline mt-2 mr-5">
+      <div className="form-check form-check-inline mt-2 mr-5">
         {items && (
           <RadioGroup
             selectedValue={selectedSide}
@@ -154,7 +154,8 @@ const BettingPanel = (props) => {
         )}
       </div>
       <div style={{ marginTop: 15 }}>
-        Odds: <span style={{ fontWeight: "bold", marginLeft: 20 }}>{odds}</span>
+        Split:{" "}
+        <span style={{ fontWeight: "bold", marginLeft: 20 }}>{odds}</span>
       </div>
       <form className="grey mt-3">
         <span>

@@ -48,7 +48,7 @@ const Pool = (props) => {
             <p className="team-name mt-2">{game.team2}</p>
           </div>
         </div>
-        {pool.result.side != undefined && (
+        {pool.result.side != 0 && (
           <div className="row px-2">
             <div className="col-md-12 col-12" align="center">
               <h3 className="white text">
@@ -96,7 +96,7 @@ const Pool = (props) => {
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
               {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}{" "}
-              <TutorialPopup content="[date] - Date of match">
+              <TutorialPopup content="Date and time of match in your local time">
                 <span className="green small-text mb-0">(?) </span>
               </TutorialPopup>
             </p>
@@ -129,7 +129,7 @@ const Pool = (props) => {
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
               Pool fee{" "}
-              <TutorialPopup content="Pool fee - the percentage of winningswhich will goto the Pool Creator">
+              <TutorialPopup content="Pool fee - the percentage of winnings which will go to the Pool Creator">
                 <span className="green small-text mb-0">(?)</span>
               </TutorialPopup>
             </p>

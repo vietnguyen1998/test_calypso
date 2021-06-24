@@ -92,17 +92,17 @@ const NavBar = (props) => {
             </div>
             <div className="col-md-2 my-auto">
               <div className="balance-box">
-                <span>{address ? usdtBalance.toFixed(1) : "0.00"} USDT</span>
+                <span>{address ? usdtBalance.toFixed(8) : "0.00"} USDT</span>
               </div>
             </div>
             <div className="col-md-2 my-auto">
               <div className="balance-box">
-                <span>{address ? calBalance.toFixed(1) : "0.00"} CAL</span>
+                <span>{address ? calBalance.toFixed(8) : "0.00"} CAL</span>
               </div>
             </div>
             <div className="col-md-2 my-auto">
               <div className="balance-box">
-                <span>{address ? ethBalance.toFixed(4) : "0.00"} ETH</span>
+                <span>{address ? ethBalance.toFixed(8) : "0.00"} ETH</span>
               </div>
             </div>
             {address ? (

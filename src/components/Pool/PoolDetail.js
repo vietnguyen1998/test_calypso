@@ -135,7 +135,7 @@ const PoolDetail = (props) => {
                       {winner.name}
                     </span>
                     <img
-                      style={{ height: "25px" }}
+                      style={{ height: "22px" }}
                       className="team-img ml-2"
                       src={winner.image}
                     />
@@ -145,24 +145,24 @@ const PoolDetail = (props) => {
               {
                 /* Win team result */
                 isEnded && !hasResult && (
-                  <>
-                    <div className="win-team-box mt-3">
-                      <span className="bold black">
-                        <span className="grey mr-3">Waiting for result</span>
-                      </span>
-                    </div>
-                    <div className="win-team-box mt-3">
-                      <span className="bold black">
-                        <span className="grey mr-3">
-                          <a href={game.link} target="_blank">
-                            Watch Game
-                          </a>
-                        </span>
-                      </span>
-                    </div>
-                  </>
+                  <div className="win-team-box mt-3">
+                    <span className="bold black">
+                      <span className="grey mr-3">Waiting for result</span>
+                    </span>
+                  </div>
                 )
               }
+              {isEnded && (
+                <div className="win-team-box mt-3">
+                  <span className="bold black">
+                    <span className="grey mr-3">
+                      <a href={game.link} target="_blank">
+                        {!hasResult ? "Watch Game" : "Watch Replay"}
+                      </a>
+                    </span>
+                  </span>
+                </div>
+              )}
 
               <br />
               <br />

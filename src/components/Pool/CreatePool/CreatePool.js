@@ -295,7 +295,7 @@ const CreatePool = (props) => {
               <br />
 
               <span>
-                Minimum Bet Size per player{" "}
+                Minimum Bet Size in {selectedCoin.label} per player{" "}
                 <TutorialPopup content="The minimum amount of cryptocurrencies a player can play with.">
                   <span className="yellow small-text mb-0">(?) </span>
                 </TutorialPopup>

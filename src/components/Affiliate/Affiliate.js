@@ -133,6 +133,11 @@ const Affiliate = (props) => {
       setTempRemoveList([]);
       setTempAddrList([]);
       updateAffiliate();
+      if (validAddrs.length != tempAddrList.length) {
+        toast.error(
+          "Some of your addresses were not added to the list, because they have already played or staked in Calypso!"
+        );
+      }
     } catch (err) {
       setLoading(false);
       toast.error(err.message);
@@ -234,7 +239,7 @@ const Affiliate = (props) => {
             <div className="row mt-3">
               <div className="col-md-7">
                 <p className="black bold">
-                  Please input ERC20 addresses to be whitelisted (
+                  Enter whitelist address (
                   {maxNumber - ((referrals && referrals.length) || 0)} left)
                 </p>
                 <form className="grey">
