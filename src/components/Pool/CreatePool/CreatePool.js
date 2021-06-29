@@ -33,7 +33,7 @@ const CreatePool = (props) => {
   const [loading, setLoading] = useState(false);
   const [coin, bindCoin] = useInput(ZeroAddress);
   const [price, setPrice] = useState(1);
-  const [title, bindTitle] = useInput("Premier League");
+  const [title, bindTitle] = useInput("");
   const [description, bindDescription] = useInput("Starting your Gaming Pool");
   const [calAmount, bindCalAmount] = useInput("50");
   const [fee, bindFee] = useInput("10");
@@ -95,7 +95,9 @@ const CreatePool = (props) => {
           tx.wait().then(() => {
             setLoading(false);
             setApproved(true);
-            toast.info("Approved successfully!");
+            toast.success(
+              "Approved Successfully! Please click the Create Pool button"
+            );
           });
         })
         .catch((err) => {

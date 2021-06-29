@@ -39,7 +39,7 @@ const NavBar = (props) => {
 
   useEffect(() => {
     if (chainId && Number(chainId) != CHAIN_ID) {
-      toast.error("We currently only support Kovan Network");
+      toast.error("We currently only support Rinkeby Network");
     } else if (ethereum) {
       updateCalBalance(address);
       updateUsdtBalance(address);

@@ -117,13 +117,21 @@ const PoolDetail = (props) => {
               style={{ backgroundColor: "#F7F7F8" }}
             >
               <div className="mt-3 mb-2" style={{ height: "60px" }}>
-                <img className="team-img mr-3" src={game.logo1} />
+                <img
+                  className="team-img mr-3"
+                  src={game.logo1}
+                  style={{ maxWidth: "110px" }}
+                />
                 {game.team1}{" "}
                 <span variant="success" className="mx-3 font-weight-bold">
                   {result && result.g1} - {result && result.g2}
                 </span>{" "}
                 {game.team2}
-                <img className="team-img ml-3" src={game.logo2} />
+                <img
+                  className="team-img ml-3"
+                  src={game.logo2}
+                  style={{ maxWidth: "110px" }}
+                />
               </div>
 
               {

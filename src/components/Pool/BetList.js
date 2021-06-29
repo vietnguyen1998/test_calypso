@@ -39,7 +39,7 @@ const BetList = (props) => {
             </div>
             <div className="col-md-2 col-2">
               <a
-                href={"https://kovan.etherscan.io/tx/" + item.txId}
+                href={"https://rinkeby.etherscan.io/tx/" + item.txId}
                 target="_blank"
               >
                 <img src="/images/link.png" style={{ width: "15px" }} />

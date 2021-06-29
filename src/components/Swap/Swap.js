@@ -204,7 +204,7 @@ const Swap = () => {
             <p>Maximum Total Supply: 1 Billion CAL tokens</p>
             <p>
               CAL Token Contract:{" "}
-              <a href="https://kovan.etherscan.io/token/0xc1ea3959b49b903fb47ebbd30b236c09a7e02ade?a=0xf448ff5248bf9c10602ff5ac30052c7a7011966a">
+              <a href="https://rinkeby.etherscan.io/token/0xc1ea3959b49b903fb47ebbd30b236c09a7e02ade?a=0xf448ff5248bf9c10602ff5ac30052c7a7011966a">
                 Link
               </a>
             </p>

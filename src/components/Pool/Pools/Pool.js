@@ -68,6 +68,14 @@ const Pool = (props) => {
               </a>
             </p>
             <p className="grey small-text text-wrap">{pool.description}</p>
+            {pool.isPrivate &&
+              pool.whitelist.some(
+                (el) => el.toLowerCase() == address.toLowerCase()
+              ) && (
+                <p className="green small-text text-wrap">
+                  You have access to this Private Pool.
+                </p>
+              )}
             {pool.bets.length > 0 &&
               pool.bets.some(
                 (el) => el.bettor.toLowerCase() == address.toLowerCase()

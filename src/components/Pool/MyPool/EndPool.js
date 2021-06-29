@@ -3,6 +3,8 @@ import { roundNumber, timestampToLocalDate } from "../../../utils/Utils";
 import { BetSides } from "../../../const/Const";
 import { Link } from "react-router-dom";
 import { etherscan } from "../../../config";
+import TutorialPopup from "../../Common/TutorialPopup";
+
 const EndPool = (props) => {
   const { pool, address } = props;
   const game = pool.game || {};
@@ -33,7 +35,11 @@ const EndPool = (props) => {
         <div className="row">
           <div className="col-md-5 col-5" align="center">
             <div className="team-circle" align="center">
-              <img className="team-img" src={game.logo1} />
+              <img
+                className="team-img"
+                src={game.logo1}
+                style={{ maxWidth: "47px" }}
+              />
             </div>
             <p className="team-name mt-2">{game.team1}</p>
           </div>
@@ -48,7 +54,11 @@ const EndPool = (props) => {
           </div>
           <div className="col-md-5 col-5" align="center">
             <div className="team-circle" align="center">
-              <img className="team-img" src={game.logo2} />
+              <img
+                className="team-img"
+                src={game.logo2}
+                style={{ maxWidth: "47px" }}
+              />
             </div>
             <p className="team-name mt-2">{game.team2}</p>
           </div>
@@ -86,26 +96,44 @@ const EndPool = (props) => {
         <div className="row">
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
-              {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
+              {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}{" "}
+              <TutorialPopup content="Date and time of match in your local time">
+                <span className="green small-text mb-0">(?) </span>
+              </TutorialPopup>
             </p>
             <p className="bold small-text grey">
               {timestampToLocalDate(game.date - 3600, "H:mm Z")}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Max cap</p>
+            <p className="grey small-text mb-0">
+              Max cap{" "}
+              <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
+                <span className="green small-text mb-0">(?)</span>
+              </TutorialPopup>
+            </p>
             <p className="bold small-text grey">
               {roundNumber(pool.maxCap || 0)} CAL
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Play size</p>
+            <p className="grey small-text mb-0">
+              Play size{" "}
+              <TutorialPopup content="Play size - the total bets currently placed by all players">
+                <span className="green small-text mb-0">(?)</span>
+              </TutorialPopup>
+            </p>
             <p className="bold small-text grey">
               {roundNumber(pool.total || 0)} CAL
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Pool fee</p>
+            <p className="grey small-text mb-0">
+              Pool fee{" "}
+              <TutorialPopup content="Pool fee - the percentage of winnings which will go to the Pool Creator">
+                <span className="green small-text mb-0">(?)</span>
+              </TutorialPopup>
+            </p>
             <p className="bold small-text grey">{pool.poolFee}%</p>
           </div>
         </div>
