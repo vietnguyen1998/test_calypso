@@ -127,7 +127,7 @@ const Affiliate = (props) => {
         }
       }
 
-      const tx = await affiliateSc.saveMultiAddrs(validAddrs, tempRemoveList);
+      const tx = await affiliateSc.saveMultiAddrs(tmp, tempRemoveList);
       await tx.wait();
       setLoading(false);
       setTempRemoveList([]);
