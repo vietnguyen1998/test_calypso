@@ -47,7 +47,9 @@ const PoolDetail = (props) => {
   const isPrivate = pool && pool.isPrivate;
   const _whitelist = pool && pool.whitelist;
   const validAddress = isPrivate
-    ? _whitelist.map((el) => el.toLowerCase()).includes(address.toLowerCase())
+    ? _whitelist
+        .map((el) => el.toLowerCase())
+        .includes(address.toLowerCase()) || pool.owner == address
     : true;
   const claimUser =
     pool.claimedUsers && pool.claimedUsers.find((el) => el.address == address);
