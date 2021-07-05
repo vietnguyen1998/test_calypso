@@ -89,7 +89,9 @@ const BettingPanel = (props) => {
         })
         .catch((err) => {
           setLoading(false);
-          toast.error(err.message);
+          if (err.code == "UNPREDICTABLE_GAS_LIMIT") {
+            toast.error("Insufficient amount of tokens to approve");
+          } else toast.error(err.message);
         });
   };
 

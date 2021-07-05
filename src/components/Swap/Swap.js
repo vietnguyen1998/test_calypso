@@ -129,10 +129,6 @@ const Swap = () => {
             style={{ display: "table-cell", width: "75%" }}
           >
             <h3 className="black bold">Buy CAL tokens</h3>
-            <p className="grey">
-              Earn Rewards allows you to Stake CAL in Calypso DeFi and be
-              rewarded with CAL
-            </p>
             <div className="row">
               <div className="col-md-6 col-12">
                 <div className="grey mt-3">

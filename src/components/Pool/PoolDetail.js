@@ -105,11 +105,20 @@ const PoolDetail = (props) => {
         </>
       );
     });
+  console.log(claimUser);
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
+        <div className="row mb-3">
+          <a
+            className="yellow-btn btn-sm mr-3"
+            href={document.location.origin + "/pools"}
+          >
+            Go Back
+          </a>
+        </div>
         <div className="row">
-          <div className="col-md-7">
+          <div className="col-md-7" style={{ maxWidth: "600px" }}>
             {/* Pool Details */}
 
             <h3 className="bold">Pool details</h3>
@@ -118,24 +127,36 @@ const PoolDetail = (props) => {
               className="px-3 py-3 mt-4"
               style={{ backgroundColor: "#F7F7F8" }}
             >
-              <div className="mt-3 mb-2" style={{ height: "60px" }}>
-                <img
-                  className="team-img mr-3"
-                  src={game.logo1}
-                  style={{ maxWidth: "110px" }}
-                />
-                {game.team1}{" "}
-                <span variant="success" className="mx-3 font-weight-bold">
-                  {result && result.g1} - {result && result.g2}
-                </span>{" "}
-                {game.team2}
-                <img
-                  className="team-img ml-3"
-                  src={game.logo2}
-                  style={{ maxWidth: "110px" }}
-                />
+              <div className="row text-center ">
+                <div className="col">
+                  <img
+                    className="team-img"
+                    src={game.logo1}
+                    style={{ maxWidth: "100px", maxHeight: "60px" }}
+                  />
+                </div>
+                <div className="col-md-auto d-flex align-items-center">
+                  <span variant="success" className=" font-weight-bold ">
+                    {result && result.g1} - {result && result.g2}
+                  </span>
+                </div>
+                <div className="col">
+                  <img
+                    className="team-img"
+                    src={game.logo2}
+                    style={{ maxWidth: "100px", maxHeight: "60px" }}
+                  />
+                </div>
               </div>
-
+              <div className="row text-center">
+                <div className="col">{game.team1}</div>
+                <div className="col-md-auto">
+                  <span variant="success" className="mx-3 font-weight-bold">
+                    VS
+                  </span>
+                </div>
+                <div className="col">{game.team2}</div>
+              </div>
               {
                 /* Win team result */
                 hasResult && (
@@ -254,7 +275,7 @@ const PoolDetail = (props) => {
 
           {/* Betting section */}
 
-          <div className="col-md-5">
+          <div className="col-md-5" /* style={{ minWidth: "500px" }}*/>
             {!isEnded && validAddress && (
               <BettingPanel
                 pool={pool}
@@ -314,17 +335,15 @@ const PoolDetail = (props) => {
                 />
               )}
 
-            {(hasResult || expiredTimeWithoutResult) &&
-              isOwner &&
-              !pool.result.claimedDepositAndFee && (
-                <WithdrawDeposit
-                  pool={pool}
-                  coin={currencyName}
-                  PoolSc={poolSigner}
-                  onReload={() => setReload(!reload)}
-                  setLoading={setLoading}
-                />
-              )}
+            {(hasResult || expiredTimeWithoutResult) && isOwner && (
+              <WithdrawDeposit
+                pool={pool}
+                coin={currencyName}
+                PoolSc={poolSigner}
+                onReload={() => setReload(!reload)}
+                setLoading={setLoading}
+              />
+            )}
             {/* My bets */}
             {validAddress && (
               <BetList

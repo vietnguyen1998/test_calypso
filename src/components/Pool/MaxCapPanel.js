@@ -46,8 +46,8 @@ const MaxCapPanel = (props) => {
           tx.wait().then(() => {
             setLoading(false);
             setApproved(true);
-            toast.info(
-              "Approved successfully, you can increase the pool MaxCap now."
+            toast.success(
+              "Approved successfully. Please click the Add Max Cap button now."
             );
           });
         })

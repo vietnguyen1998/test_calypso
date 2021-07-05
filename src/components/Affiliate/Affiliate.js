@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { connect, useSelector } from "react-redux";
 import Main from "../Common/Main";
 import WhitelistAddress from "./WhitelistAddress";
@@ -40,6 +40,15 @@ const Affiliate = (props) => {
   const maxNumber = affiliate && affiliate._maxNumber;
   const referrals = affiliate && affiliate._referrals;
   const awards = affiliate && affiliate._awards;
+  const [isAffiliated, setIsAffiliated] = useState(false);
+  useEffect(() => {
+    if (address) {
+      affiliateSc.getAffiliateOf(address).then((res) => {
+        setIsAffiliated(res != "0x0000000000000000000000000000000000000000");
+      });
+    }
+  }, [address]);
+
   useEffect(() => {
     updateAffiliate();
   }, [address]);
@@ -199,10 +208,13 @@ const Affiliate = (props) => {
         </li>
       );
     });
+
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
         <h3 className="black bold">Affiliates</h3>
+        {isAffiliated && <h5>You ve been affiliated!</h5>}
+
         <p className="grey mt-4">
           Affiliates are players whom you referred to Calypso. Referrers will
           earn 1.25% commission for every winning earned by the referee (your

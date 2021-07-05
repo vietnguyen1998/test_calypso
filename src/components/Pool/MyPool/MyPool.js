@@ -13,7 +13,7 @@ const MyPool = (props) => {
   const [tab, setTab] = useState(TabItems.all);
   const [searchText, setSearchText] = useState("");
   const [sort, setSort] = useState(SortItems.date);
-  const [created, setCreated] = useState(true);
+  const [created, setCreated] = useState(false);
   const pools = useSelector((state) => state.pools) || [];
   const address = useSelector((state) => state.address) || "";
   const filterPools = pools
@@ -62,19 +62,19 @@ const MyPool = (props) => {
 
             <div className="col-lg-9">
               <div
-                className={`my-pool-tab${created ? "-active" : ""}`}
-                onClick={() => setCreated(true)}
-              >
-                <span className={`${created ? "yellow" : "grey"} bold`}>
-                  Created Pools
-                </span>
-              </div>
-              <div
                 className={`my-pool-tab${!created ? "-active" : ""}`}
                 onClick={() => setCreated(false)}
               >
                 <span className={`${!created ? "yellow" : "grey"} bold`}>
                   Joined Pools
+                </span>
+              </div>
+              <div
+                className={`my-pool-tab${created ? "-active" : ""}`}
+                onClick={() => setCreated(true)}
+              >
+                <span className={`${created ? "yellow" : "grey"} bold`}>
+                  Created Pools
                 </span>
               </div>
               <hr className="tab-hr" />

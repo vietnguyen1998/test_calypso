@@ -40,6 +40,7 @@ const CreatePool = (props) => {
   const [minBet, bindMinBet] = useInput("0");
   const [approved, setApproved] = useState(false);
   const history = useHistory();
+  const [isGameTypeDisabled, setisGameTypeDisabled] = useState(false);
 
   const PoolManagerSigner =
     getPoolManager() && getPoolManager().connect(getSigner());
@@ -95,6 +96,7 @@ const CreatePool = (props) => {
           tx.wait().then(() => {
             setLoading(false);
             setApproved(true);
+            setisGameTypeDisabled(true);
             toast.success(
               "Approved Successfully! Please click the Create Pool button"
             );
@@ -210,6 +212,7 @@ const CreatePool = (props) => {
               <span>Please select types of games</span>
               <br />
               <select
+                disabled={isGameTypeDisabled}
                 className="select-input"
                 name="Type of games"
                 {...bindGameType}

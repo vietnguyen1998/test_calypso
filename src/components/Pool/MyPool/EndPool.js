@@ -65,14 +65,33 @@ const EndPool = (props) => {
         </div>
       </div>
       <div className="col-md-8">
-        <span className="mr-2 yellow bold">Result:</span>
-        <span className=" mr-4 yellow bold">
+        <p className="white small-text text-wrap">
+          {pool.title}{" "}
+          <a href={`${etherscan}${pool._id}`} target="_blank">
+            <img src="/images/link.png" style={{ width: "15px" }} />
+          </a>
+        </p>
+        <small className="mr-2 yellow bold">Result:</small>
+        <small className=" mr-4 yellow bold">
           {gameResult == BetSides.team1
             ? game.team1
             : gameResult == BetSides.team2
             ? game.team2
             : "Draw"}
-        </span>
+        </small>
+        {pool.bets.length > 0 &&
+          pool.bets.some(
+            (el) => el.bettor.toLowerCase() == address.toLowerCase()
+          ) && (
+            <p className="yellow small-text text-wrap">
+              You have made a bet in this Pool!
+            </p>
+          )}
+        {claimedDepositAndFee && (
+          <p className="green small-text text-wrap">
+            You have claimed Pool Fee.
+          </p>
+        )}
         <Link to={`/pools/${pool._id}`}>
           <button className="border-btn extra-small-text small-border-btn">
             <span className={claimUser && claimedDepositAndFee ? "green" : ""}>
@@ -80,7 +99,7 @@ const EndPool = (props) => {
               {claimUser
                 ? claimedDepositAndFee
                   ? "Claimed"
-                  : "Withdraw Fee"
+                  : "Unstake CAL"
                 : containWin
                 ? "Claim"
                 : "View"}
