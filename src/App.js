@@ -18,7 +18,6 @@ import About from './components/About/About';
 import MyPool from './components/Pool/MyPool/MyPool';
 
 function App() {
-  console.log('First Entry');
   return (
     <Provider store={store}>
       <Router>

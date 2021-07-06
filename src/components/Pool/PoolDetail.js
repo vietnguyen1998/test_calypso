@@ -105,7 +105,6 @@ const PoolDetail = (props) => {
         </>
       );
     });
-  console.log(claimUser);
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
@@ -312,6 +311,7 @@ const PoolDetail = (props) => {
                 winBets={winBets}
                 claimed={claimUser}
                 hasResult={hasResult}
+                userAddress = {address}
               />
             )}
 
@@ -332,6 +332,7 @@ const PoolDetail = (props) => {
                   winBets={winBets}
                   claimed={claimUser}
                   hasResult={hasResult}
+                userAddress = {address}
                 />
               )}
 

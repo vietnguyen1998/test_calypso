@@ -13,8 +13,10 @@ const ClaimReward = (props) => {
     currencyName,
     claimed,
     hasResult,
+    userAddress
   } = props;
-  const betAmount = winBets.reduce((acc, cur) => acc + Number(cur.amount), 0);
+  const betAmount = winBets.reduce((acc, cur) => 
+    cur.bettor.toLowerCase()==userAddress.toLowerCase() ? acc + Number(cur.amount) : acc, 0);
   const winAmount = hasResult
     ? winTotal == 0
       ? 0
@@ -36,7 +38,6 @@ const ClaimReward = (props) => {
           toast.error(err.message);
         });
   };
-
   const claimLabel = hasResult ? "You win: " : "Claim back: ";
   return (
     <>
