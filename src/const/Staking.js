@@ -101,6 +101,16 @@ export default [
         name: "_stakeIncome",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_stakeIncomeUsdt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_stakeIncomeEth",
+        type: "uint256",
+      },
     ],
     stateMutability: "view",
     type: "function",
@@ -141,6 +151,11 @@ export default [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_tokenAddress",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "_amount",
         type: "uint256",
@@ -149,6 +164,13 @@ export default [
     name: "shareIncome",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "shareIncomeEth",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -203,6 +225,44 @@ export default [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "stakeIncomeEth",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "stakeIncomeUsdt",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "total",
     outputs: [
@@ -218,6 +278,20 @@ export default [
   {
     inputs: [],
     name: "withdrawCal",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "withdrawEth",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "withdrawUsdt",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

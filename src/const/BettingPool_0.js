@@ -159,6 +159,19 @@ export default [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_newAddress",
+        type: "address",
+      },
+    ],
+    name: "changeOracle",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "claimReward",
     outputs: [
@@ -563,6 +576,19 @@ export default [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "oracle",
+    outputs: [
+      {
+        internalType: "contract Oracle",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",

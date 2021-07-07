@@ -13,6 +13,8 @@ const Staking = () => {
   const [totalPool, setTotalPool] = useState("0");
   const [stakeAmount, setStakeAmount] = useState("0");
   const [stakeIncome, setStakeIncome] = useState("0");
+  const [stakeIncomeEth, setStakeIncomeEth] = useState("0");
+  const [stakeIncomeUsdt, setStakeIncomeUsdt] = useState("0");
   const [amount, bindAmount, resetAmount] = useInput("0");
   const [approved, setApproved] = useState(false);
 
@@ -39,6 +41,8 @@ const Staking = () => {
         setTotalPool(getEther(res._total));
         setStakeAmount(getEther(res._stakeAmount));
         setStakeIncome(getEther(res._stakeIncome));
+        setStakeIncomeEth(getEther(res._stakeIncomeEth));
+        setStakeIncomeUsdt(getEther(res._stakeIncomeUsdt));
       });
   };
 
@@ -152,6 +156,12 @@ const Staking = () => {
             <br />
             <span className="grey mr-3">Your Earned CAL:</span>
             <span>{stakeIncome} CAL</span>
+            <br />
+            <span className="grey mr-3">Your Earned ETH:</span>
+            <span>{stakeIncomeEth} ETH</span>
+            <br />
+            <span className="grey mr-3">Your Earned USDT:</span>
+            <span>{stakeIncomeUsdt} USDT</span>
             <br />
             <br />
             {stakeAmount > 0 && (
