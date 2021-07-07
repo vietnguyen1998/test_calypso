@@ -1,10 +1,5 @@
 export default [
   {
-    inputs: [],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
     inputs: [
       {
         internalType: "address",
@@ -65,19 +60,6 @@ export default [
       },
     ],
     name: "changeCalAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_newAddress",
-        type: "address",
-      },
-    ],
-    name: "changeEscrowAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -224,19 +206,6 @@ export default [
   },
   {
     inputs: [],
-    name: "getEscrowAddress",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getEthPrice",
     outputs: [
       {
@@ -367,6 +336,13 @@ export default [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "initialize",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

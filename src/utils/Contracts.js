@@ -7,7 +7,6 @@ import TestFaucetAbi from "../const/TestFaucet";
 import BettingPoolAbi_0 from "../const/BettingPool_0";
 import ERC20 from "../const/ERC20";
 import OracleAbi from "../const/Oracle";
-import EscrowAbi from "../const/Escrow";
 import StakingAbi from "../const/Staking";
 import AffiliateAbi from "../const/Affiliate";
 import { ethers } from "ethers";
@@ -91,14 +90,6 @@ export const getOracle = () => {
     window.oracle = new ethers.Contract(Address.oracle, OracleAbi, web3);
   }
   return window.oracle;
-};
-
-export const getEscrow = () => {
-  const web3 = getWeb3();
-  if (!window.escrow && web3) {
-    window.escrow = new ethers.Contract(Address.escrow, EscrowAbi, web3);
-  }
-  return window.escrow;
 };
 
 export const getStaking = () => {
