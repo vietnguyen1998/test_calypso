@@ -2,7 +2,11 @@ import React from "react";
 import { useHistory } from "react-router";
 import { etherscan } from "../../../config";
 import { SupportedCoins } from "../../../const/Const";
-import { roundNumber, timestampToLocalDate } from "../../../utils/Utils";
+import {
+  roundNumber,
+  timestampToLocalDate,
+  getOdds,
+} from "../../../utils/Utils";
 import TutorialPopup from "../../Common/TutorialPopup";
 
 const Pool = (props) => {
@@ -10,6 +14,27 @@ const Pool = (props) => {
   const game = pool.game || {};
   const history = useHistory();
   const currency = SupportedCoins.find((el) => el.value == pool.currency) || {};
+
+  const odds = () => {
+    let betAmounts = [];
+    if (pool && pool.bets.length != 0) {
+      for (let index = 0; index < 3; index++) {
+        betAmounts.push(
+          pool.bets.reduce(
+            (acc, cur) =>
+              cur.side == index + 1 ? acc + Number(cur.amount) : acc,
+            0
+          )
+        );
+      }
+      return (
+        <p className="white small-text text-wrap">{`Split ${getOdds(
+          betAmounts
+        )}`}</p>
+      );
+    }
+  };
+
   return (
     <div
       className="row pool-list wow fadeInUp"
@@ -83,7 +108,8 @@ const Pool = (props) => {
                 <p className="yellow small-text text-wrap">
                   You have made a bet in this Pool!
                 </p>
-              )}
+              )}{" "}
+            {odds()}
           </div>
           <div className="col-md-3">
             <button

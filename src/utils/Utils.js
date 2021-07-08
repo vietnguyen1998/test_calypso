@@ -78,3 +78,17 @@ export const scaleNumber = (num) => {
   const scale = 4 - Math.floor(Math.log10(Math.abs(num)));
   return scale < 1 ? 1 : scale;
 };
+
+export const getOdds = (betAmounts) => {
+  let odds;
+  if (betAmounts.some((el) => el === 0)) {
+    odds = betAmounts.join(" : ");
+  } else {
+    const minAmount = Math.min(...betAmounts);
+    const transformAmount = betAmounts.map((el) =>
+      roundNumber(el / minAmount, 2)
+    );
+    odds = transformAmount.join(" : ");
+  }
+  return odds;
+};

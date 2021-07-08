@@ -6,7 +6,7 @@ import { RadioGroup, Radio } from "react-radio-group";
 import { BetSides, SupportedCoins, ZeroAddress } from "../../const/Const";
 import { toast } from "react-toastify";
 import useInput from "../hook/useInput";
-import { roundNumber } from "../../utils/Utils";
+import { roundNumber, getOdds } from "../../utils/Utils";
 import { createBetTxId } from "../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
 
@@ -25,16 +25,7 @@ const BettingPanel = (props) => {
     );
     return amount;
   });
-  let odds;
-  if (betAmounts.some((el) => el === 0)) {
-    odds = betAmounts.join(" : ");
-  } else {
-    const minAmount = Math.min(...betAmounts);
-    const transformAmount = betAmounts.map((el) =>
-      roundNumber(el / minAmount, 2)
-    );
-    odds = transformAmount.join(" : ");
-  }
+  let odds = getOdds(betAmounts);
 
   const betWithEth = () => {
     if (amount <= 0) {
