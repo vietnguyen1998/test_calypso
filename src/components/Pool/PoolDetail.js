@@ -247,6 +247,13 @@ const PoolDetail = (props) => {
                 </div>
                 <br />
               </div>
+              {pool.handicap && (
+                <div classname="row">
+                  <span className="bold">Handicap: </span>
+                  {pool.handicap.result == 1 ? game.team1 : game.team2} -{" "}
+                  {pool.handicap.value}
+                </div>
+              )}
             </div>
 
             <br />
@@ -311,7 +318,7 @@ const PoolDetail = (props) => {
                 winBets={winBets}
                 claimed={claimUser}
                 hasResult={hasResult}
-                userAddress = {address}
+                userAddress={address}
               />
             )}
 
@@ -332,7 +339,7 @@ const PoolDetail = (props) => {
                   winBets={winBets}
                   claimed={claimUser}
                   hasResult={hasResult}
-                userAddress = {address}
+                  userAddress={address}
                 />
               )}
 

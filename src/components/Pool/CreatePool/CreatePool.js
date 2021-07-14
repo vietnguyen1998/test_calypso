@@ -29,6 +29,7 @@ const CreatePool = (props) => {
   const [gameType, bindGameType] = useInput("epl");
   const [match, bindMatch, resetMatch] = useInput("0");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [hasHandicap, setHasHandicap] = useState(false);
   const [whitelist, setWhitelist] = useState([]);
   const [loading, setLoading] = useState(false);
   const [coin, bindCoin] = useInput(ZeroAddress);
@@ -41,6 +42,8 @@ const CreatePool = (props) => {
   const [approved, setApproved] = useState(false);
   const history = useHistory();
   const [isGameTypeDisabled, setisGameTypeDisabled] = useState(false);
+  const [handicapResult, bindHandicapResult] = useInput("1");
+  const [handicapValue, bindHandicapValue] = useInput("1");
 
   const PoolManagerSigner =
     getPoolManager() && getPoolManager().connect(getSigner());
@@ -98,7 +101,11 @@ const CreatePool = (props) => {
             setApproved(true);
             setisGameTypeDisabled(true);
             toast.success(
-              "Approved Successfully! Please click the Create Pool button"
+              <div>
+                Approved Successfully!
+                <br />
+                Please click the Create Pool button
+              </div>
             );
           });
         })
@@ -112,8 +119,19 @@ const CreatePool = (props) => {
     try {
       setLoading(true);
       const selectMatch = filterMatches[Number(match)];
-
       const endDate = selectMatch.date - 60 * 60;
+      const poolFee = Math.round(fee * 100);
+      if (poolFee > 9500) {
+        setLoading(false);
+        toast.error("Pool Fee should not be bigger then 95%");
+        return;
+      }
+      const handicap = [
+        hasHandicap ? handicapResult : 0,
+        hasHandicap ? handicapValue : 0,
+      ];
+
+      const currencyDetails = [poolFee, getWei(calAmount), getWei(minBet)];
       const tx = await PoolManagerSigner.createBettingPool(
         title,
         description,
@@ -121,10 +139,9 @@ const CreatePool = (props) => {
         selectMatch.game,
         endDate,
         coin,
-        Math.round(fee * 100),
-        getWei(calAmount),
-        getWei(minBet),
-        isPrivate ? whitelist : []
+        currencyDetails,
+        isPrivate ? whitelist : [],
+        handicap
       );
       await tx.wait();
 
@@ -147,6 +164,7 @@ const CreatePool = (props) => {
           ...selectMatch,
         },
         minBet,
+        handicap: { result: handicapResult, value: handicapValue },
       });
       setLoading(false);
       toast.success("Pool was created!");
@@ -181,6 +199,19 @@ const CreatePool = (props) => {
     );
   });
 
+  const handicapOptions = () => {
+    const selectMatch = filterMatches[Number(match)];
+    return (
+      <>
+        <option key="1" value="1">
+          {selectMatch.team1}
+        </option>
+        <option key="2" value="2">
+          {selectMatch.team2}
+        </option>
+      </>
+    );
+  };
   const canApproveCreate = !isPrivate || (isPrivate && whitelist.length > 0);
   return (
     <Main loading={loading} setLoading={setLoading}>
@@ -232,6 +263,39 @@ const CreatePool = (props) => {
                     No matches found at the moment.
                   </h6>
                 </>
+              )}
+              <br />
+              <div className="form-check">
+                <input
+                  disabled={matchOptions.length == 0}
+                  className="form-check-input"
+                  type="checkbox"
+                  value={hasHandicap}
+                  onChange={(e) => setHasHandicap(e.target.checked)}
+                  id="flexCheckDefault"
+                ></input>
+                <label
+                  className="form-check-label black"
+                  htmlFor="flexCheckDefault"
+                >
+                  Enable Handicap
+                </label>
+              </div>
+              {hasHandicap && (
+                <select
+                  className="select-input"
+                  name="Game"
+                  {...bindHandicapResult}
+                >
+                  {handicapOptions()}
+                </select>
+              )}
+              {hasHandicap && (
+                <input
+                  className="text-input"
+                  type="number"
+                  {...bindHandicapValue}
+                />
               )}
               <br />
               <span>Title</span>
@@ -290,13 +354,18 @@ const CreatePool = (props) => {
               <br />
 
               <span>
-                Pool Fee (%){" "}
+                Pool Fee (%), max: 95%{" "}
                 <TutorialPopup content="This is the percentage of the Winning bets given to you as a reward for starting the pool. Please note that it is NOT based on total bets played in the pool.">
                   <span className="yellow small-text mb-0">(?) </span>
                 </TutorialPopup>
               </span>
               <br />
-              <input className="text-input" type="number" {...bindFee} />
+              <input
+                className="text-input"
+                type="number"
+                {...bindFee}
+                max="95"
+              />
               <br />
 
               <span>

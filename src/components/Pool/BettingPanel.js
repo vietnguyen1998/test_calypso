@@ -54,7 +54,12 @@ const BettingPanel = (props) => {
         })
         .catch((err) => {
           setLoading(false);
-          toast.error(err.message);
+          if (
+            err.code == "UNPREDICTABLE_GAS_LIMIT" ||
+            err.code == "INSUFFICIENT_FUNDS"
+          ) {
+            toast.error("Insufficient amount of tokens to approve");
+          } else toast.error(err.message);
         });
   };
 
@@ -80,7 +85,10 @@ const BettingPanel = (props) => {
         })
         .catch((err) => {
           setLoading(false);
-          if (err.code == "UNPREDICTABLE_GAS_LIMIT") {
+          if (
+            err.code == "UNPREDICTABLE_GAS_LIMIT" ||
+            err.code == "INSUFFICIENT_FUNDS"
+          ) {
             toast.error("Insufficient amount of tokens to approve");
           } else toast.error(err.message);
         });
@@ -114,7 +122,12 @@ const BettingPanel = (props) => {
         })
         .catch((err) => {
           setLoading(false);
-          toast.error(err.message);
+          if (
+            err.code == "UNPREDICTABLE_GAS_LIMIT" ||
+            err.code == "INSUFFICIENT_FUNDS"
+          ) {
+            toast.error("Insufficient amount of tokens to approve");
+          } else toast.error(err.message);
         });
   };
 

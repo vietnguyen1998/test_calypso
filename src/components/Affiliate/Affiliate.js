@@ -136,6 +136,9 @@ const Affiliate = (props) => {
         }
       }
 
+      if (tmp.length == 0) {
+        return;
+      }
       const tx = await affiliateSc.saveMultiAddrs(tmp, tempRemoveList);
       await tx.wait();
       setLoading(false);
@@ -149,7 +152,9 @@ const Affiliate = (props) => {
       }
     } catch (err) {
       setLoading(false);
-      toast.error(err.message);
+      if (err.code == "UNPREDICTABLE_GAS_LIMIT") {
+        toast.error("This address has affiliate");
+      } else toast.error(err.message);
     }
   };
 
