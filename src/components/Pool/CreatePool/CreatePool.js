@@ -164,7 +164,7 @@ const CreatePool = (props) => {
           ...selectMatch,
         },
         minBet,
-        handicap: { result: handicapResult, value: handicapValue },
+        handicap: { result: handicap[0], value: handicap[1] },
       });
       setLoading(false);
       toast.success("Pool was created!");
