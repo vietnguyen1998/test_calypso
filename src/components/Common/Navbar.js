@@ -199,6 +199,13 @@ const NavBar = (props) => {
                     </Link>
                   </div>
                 </li>
+                <li className="nav-item">
+                  <div className="nav-link-box">
+                    <Link to="/my-page" className="nav-link">
+                      My Page
+                    </Link>
+                  </div>
+                </li>
               </ul>
             </div>
           </nav>

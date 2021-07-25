@@ -429,6 +429,11 @@ export default [
         name: "_isPrivate",
         type: "bool",
       },
+      {
+        internalType: "uint256",
+        name: "_minPoolSize",
+        type: "uint256",
+      },
     ],
     stateMutability: "view",
     type: "function",
@@ -604,6 +609,19 @@ export default [
   },
   {
     inputs: [],
+    name: "minPoolSize",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "oracle",
     outputs: [
       {
@@ -711,6 +729,11 @@ export default [
       {
         internalType: "uint8",
         name: "_sideWin",
+        type: "uint8",
+      },
+      {
+        internalType: "uint8",
+        name: "_winResult",
         type: "uint8",
       },
     ],

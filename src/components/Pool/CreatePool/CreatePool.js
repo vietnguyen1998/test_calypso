@@ -9,6 +9,7 @@ import {
   getMaxPoolSize,
   roundNumber,
   timestampToLocalDate,
+  getCalAmount,
 } from "../../../utils/Utils";
 import WhiteListPanel from "./WhiteListPanel/WhiteListPanel";
 import { SupportedCoins, ZeroAddress } from "../../../const/Const";
@@ -22,6 +23,7 @@ import { getWei } from "../../../utils/Web3Utils";
 import { toast } from "react-toastify";
 import Addresses from "../../../const/Address";
 import TutorialPopup from "../../Common/TutorialPopup";
+import { LogisticConst } from "../../../const/Const";
 
 const CreatePool = (props) => {
   const { getMatches, createPool } = props;
@@ -36,14 +38,29 @@ const CreatePool = (props) => {
   const [price, setPrice] = useState(1);
   const [title, bindTitle] = useInput("");
   const [description, bindDescription] = useInput("Starting your Gaming Pool");
-  const [calAmount, bindCalAmount] = useInput("50");
   const [fee, bindFee] = useInput("10");
+  const [minPoolSize, bindMinPoolSize] = useInput("0");
   const [minBet, bindMinBet] = useInput("0");
   const [approved, setApproved] = useState(false);
   const history = useHistory();
   const [isGameTypeDisabled, setisGameTypeDisabled] = useState(false);
   const [handicapResult, bindHandicapResult] = useInput("1");
   const [handicapValue, bindHandicapValue] = useInput("1");
+
+  const calcMaxPoolSize = () => {
+    return roundNumber(getMaxPoolSize(calAmount) / price);
+  };
+
+  const calcCalAmount = () => {
+    const maxSize = maxPoolSize * price;
+    console.log(maxPoolSize + "," + price + "," + maxSize);
+
+    console.log(LogisticConst.upperLimit / (maxSize - 1) - 1);
+    return roundNumber(getCalAmount(maxPoolSize * price));
+  };
+
+  const [calAmount, setCalAmount] = useState("50");
+  const [maxPoolSize, setMaxPoolSize] = useState(calcMaxPoolSize());
 
   const PoolManagerSigner =
     getPoolManager() && getPoolManager().connect(getSigner());
@@ -53,6 +70,7 @@ const CreatePool = (props) => {
   const matches = useSelector((state) => state.matches) || [];
   const gameTypes = useSelector((state) => state.gameTypes) || [];
   const address = useSelector((state) => state.address) || "";
+
   const filterMatches = useMemo(
     () => matches.filter((el) => el.game === gameType),
     [matches, gameType]
@@ -78,10 +96,21 @@ const CreatePool = (props) => {
     }
   }, [coin]);
 
-  const ethAmount = useMemo(
-    () => roundNumber(getMaxPoolSize(calAmount) / price),
-    [calAmount, price]
-  );
+  useEffect(() => {
+    if (document.activeElement.id == "calAmountInput") {
+      setMaxPoolSize(calcMaxPoolSize());
+    }
+  }, [calAmount]);
+
+  useEffect(() => {
+    if (document.activeElement.id != "calAmountInput") {
+      setCalAmount(calcCalAmount());
+    }
+  }, [maxPoolSize]);
+
+  useEffect(() => {
+    setMaxPoolSize(calcMaxPoolSize());
+  }, [price]);
 
   useEffect(() => {
     getMatches();
@@ -94,7 +123,7 @@ const CreatePool = (props) => {
   const approveCal = async () => {
     setLoading(true);
     CalSigner &&
-      CalSigner.approve(Addresses.poolManager, getWei(calAmount))
+      CalSigner.approve(Addresses.poolManager, getWei(calAmount.toString()))
         .then((tx) => {
           tx.wait().then(() => {
             setLoading(false);
@@ -126,12 +155,22 @@ const CreatePool = (props) => {
         toast.error("Pool Fee should not be bigger then 95%");
         return;
       }
+      if (minPoolSize > maxPoolSize) {
+        setLoading(false);
+        toast.error("Min pool size cannot be bigger than max pool size");
+        return;
+      }
       const handicap = [
         hasHandicap ? handicapResult : 0,
         hasHandicap ? handicapValue : 0,
       ];
 
-      const currencyDetails = [poolFee, getWei(calAmount), getWei(minBet)];
+      const currencyDetails = [
+        poolFee,
+        getWei(calAmount.toString()),
+        getWei(minBet),
+        getWei(minPoolSize),
+      ];
       const tx = await PoolManagerSigner.createBettingPool(
         title,
         description,
@@ -148,13 +187,14 @@ const CreatePool = (props) => {
       const poolAddress = await getPoolManager().getLastOwnPool(0, {
         from: address,
       });
+
       await createPool({
         _id: poolAddress,
         owner: address,
         title,
         description,
         depositedCal: calAmount,
-        maxCap: ethAmount,
+        maxCap: maxPoolSize,
         poolFee: fee,
         endDate,
         isPrivate,
@@ -165,6 +205,7 @@ const CreatePool = (props) => {
         },
         minBet,
         handicap: { result: handicap[0], value: handicap[1] },
+        minPoolSize,
       });
       setLoading(false);
       toast.success("Pool was created!");
@@ -213,6 +254,7 @@ const CreatePool = (props) => {
     );
   };
   const canApproveCreate = !isPrivate || (isPrivate && whitelist.length > 0);
+
   return (
     <Main loading={loading} setLoading={setLoading}>
       <div className="container body-section create-pool">
@@ -336,7 +378,15 @@ const CreatePool = (props) => {
                 </TutorialPopup>
               </span>
               <br />
-              <input className="text-input" type="number" {...bindCalAmount} />
+              <input
+                className="text-input"
+                type="number"
+                value={calAmount}
+                id="calAmountInput"
+                onChange={(e) => {
+                  setCalAmount(e.target.value);
+                }}
+              />
               <br />
               <span>
                 Max Pool Size in {selectedCoin.label}{" "}
@@ -345,11 +395,41 @@ const CreatePool = (props) => {
                 </TutorialPopup>
               </span>
               <br />
+              <div class="form-inline">
+                <input
+                  className="text-input"
+                  type="number"
+                  value={maxPoolSize}
+                  id="maxPoolSizeInput"
+                  onChange={(e) => {
+                    setMaxPoolSize(e.target.value);
+                  }}
+                  style={{ maxWidth: "300px" }}
+                />
+                <button
+                  class="btn btn-warning"
+                  type="button"
+                  onClick={() =>
+                    setMaxPoolSize(
+                      roundNumber(LogisticConst.upperLimit / price)
+                    )
+                  }
+                  style={{
+                    marginTop: "10px",
+                    minWidth: "70px",
+                    marginLeft: "10px",
+                  }}
+                >
+                  Max
+                </button>
+              </div>
+              <br />
+              <span>Min pool size</span>
+              <br />
               <input
                 className="text-input"
                 type="number"
-                value={ethAmount}
-                disabled
+                {...bindMinPoolSize}
               />
               <br />
 

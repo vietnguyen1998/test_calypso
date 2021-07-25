@@ -12,4 +12,6 @@ export default {
   getMatches: "getMatches",
   resetPool: "resetPool",
   getAffiliateStatus: "getAffiliateStatus",
+  getUserName: "getUserName",
+  getUserAddress: "getUserAddress",
 };

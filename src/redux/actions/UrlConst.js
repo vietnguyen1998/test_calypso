@@ -9,4 +9,7 @@ export default {
   getBetsUrl: host + "bets",
   createBetTxId: host + "bettxid",
   affiliateAddrCheck: host + "affiliate-addr",
+  createUserName: host + "createUserName",
+  getUserName: host + "getUserName",
+  getUserAddress: host + "getUserAddress",
 };

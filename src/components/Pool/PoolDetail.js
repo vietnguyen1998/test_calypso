@@ -17,6 +17,7 @@ const PoolDetail = (props) => {
   const { getPool } = props;
   const { poolAddress } = useParams();
   const pool = useSelector((state) => state.pool) || {};
+  const isActive = pool.total > pool.minPoolSize || pool.minPoolSize == 0;
   const address = useSelector((state) => state.address);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -105,6 +106,7 @@ const PoolDetail = (props) => {
         </>
       );
     });
+
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
@@ -121,6 +123,11 @@ const PoolDetail = (props) => {
             {/* Pool Details */}
 
             <h3 className="bold">Pool details</h3>
+            {!isActive && (
+              <p
+                style={{ color: "red" }}
+              >{`The pool is not active yet. To activate it user must reach the min pool size. (${total}/${pool.minPoolSize})`}</p>
+            )}
 
             <div
               className="px-3 py-3 mt-4"
@@ -247,7 +254,7 @@ const PoolDetail = (props) => {
                 </div>
                 <br />
               </div>
-              {pool.handicap && (
+              {pool.handicap && pool.handicap.result != 0 && (
                 <div classname="row">
                   <span className="bold">Handicap: </span>
                   {pool.handicap.result == 1 ? game.team1 : game.team2} -{" "}
@@ -307,41 +314,48 @@ const PoolDetail = (props) => {
               </>
             )}
             {/*If we get the result of the match*/}
-            {hasResult && validAddress && canClaim && winBets.length > 0 && (
-              <ClaimReward
-                PoolSc={poolSigner}
-                onReload={() => setReload(!reload)}
-                setLoading={setLoading}
-                currencyName={currencyName}
-                winOutcome={winOutcome}
-                winTotal={winTotal}
-                winBets={winBets}
-                claimed={claimUser}
-                hasResult={hasResult}
-                userAddress={address}
-              />
-            )}
-
-            {/*If we do not get the result of the match and 5 hours passed*/}
-            {!hasResult &&
-              expiredTimeWithoutResult &&
+            {hasResult &&
+              isActive &&
               validAddress &&
-              canClaimNoResult &&
-              bets.length > 0 &&
-              !claimUser && (
+              canClaim &&
+              winBets.length > 0 && (
                 <ClaimReward
                   PoolSc={poolSigner}
                   onReload={() => setReload(!reload)}
                   setLoading={setLoading}
                   currencyName={currencyName}
-                  winOutcome={totalBetNoResult()}
+                  winOutcome={winOutcome}
                   winTotal={winTotal}
                   winBets={winBets}
                   claimed={claimUser}
                   hasResult={hasResult}
                   userAddress={address}
+                  isActive={isActive}
                 />
               )}
+
+            {/*If we do not get the result of the match and 5 hours passed or the pool is inactive*/}
+            {((!hasResult &&
+              expiredTimeWithoutResult &&
+              validAddress &&
+              canClaimNoResult &&
+              bets.length > 0 &&
+              !claimUser) ||
+              (!isActive && hasResult)) && (
+              <ClaimReward
+                PoolSc={poolSigner}
+                onReload={() => setReload(!reload)}
+                setLoading={setLoading}
+                currencyName={currencyName}
+                winOutcome={totalBetNoResult()}
+                winTotal={winTotal}
+                winBets={winBets}
+                claimed={claimUser}
+                hasResult={hasResult}
+                userAddress={address}
+                isActive={isActive}
+              />
+            )}
 
             {(hasResult || expiredTimeWithoutResult) && isOwner && (
               <WithdrawDeposit

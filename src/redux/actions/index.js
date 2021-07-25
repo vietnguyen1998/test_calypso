@@ -189,3 +189,34 @@ export const getAffiliateStatus = (address) => (dispatch) => {
       });
     });
 };
+
+export const createUserName = (name, address) => {
+  return new Promise((resolve, reject) => {
+    network
+      .post(UrlConst.createUserName, { _name: name, _address: address })
+      .then((res) => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(String(err));
+      });
+  });
+};
+
+export const getUserName = (address) => (dispatch) => {
+  network.get(UrlConst.getUserName, { address }).then((res) => {
+    dispatch({
+      type: ActionType.getUserName,
+      payload: res.data.userName,
+    });
+  });
+};
+
+export const getUserAddress = (name) => (dispatch) => {
+  network.get(UrlConst.getUserAddress, { name }).then((res) => {
+    dispatch({
+      type: ActionType.getUserAddress,
+      payload: res.data.userAddress,
+    });
+  });
+};

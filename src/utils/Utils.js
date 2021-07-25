@@ -55,6 +55,11 @@ export const getMaxPoolSize = (calNum) => {
   return Math.round(poolSize / 1e3) * 1e3;
 };
 
+export const getCalAmount = (maxSize) => {
+  const result = Math.log(LogisticConst.upperLimit / maxSize - 1) / -0.09 + 50;
+  return result;
+};
+
 export const roundNumber = (num, scale) => {
   var scale = scale || scaleNumber(num);
   if (!("" + num).includes("e")) {

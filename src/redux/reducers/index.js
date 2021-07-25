@@ -13,6 +13,8 @@ const initialState = {
   matches: [],
   whitelist: [],
   affiliate: {},
+  username: "",
+  useraddress: "",
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -56,6 +58,16 @@ export default (state = initialState, { type, payload }) => {
           g2: null,
           ...payload,
         },
+      };
+    case ActionType.getUserName:
+      return {
+        ...state,
+        username: payload,
+      };
+    case ActionType.getUserAddress:
+      return {
+        ...state,
+        useraddress: payload,
       };
     case ActionType.updatePool:
       const pools = [...state.pools];

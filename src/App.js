@@ -1,21 +1,23 @@
-import React from 'react';
-import './App.css';
-import Faucet from './components/Faucet/Faucet';
-import Home from './components/Home/Home';
-import Staking from './components/Staking/Staking';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import "./App.css";
+import Faucet from "./components/Faucet/Faucet";
+import Home from "./components/Home/Home";
+import Staking from "./components/Staking/Staking";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import "react-toastify/dist/ReactToastify.css";
 
-import Swap from './components/Swap/Swap';
-import Pools from './components/Pool/Pools/Pools';
-import PoolDetail from './components/Pool/PoolDetail';
-import CreatePool from './components/Pool/CreatePool/CreatePool';
-import Affiliate from './components/Affiliate/Affiliate';
-import Tutorial from './components/Tutorials/Tutorial';
-import About from './components/About/About';
-import MyPool from './components/Pool/MyPool/MyPool';
+import Swap from "./components/Swap/Swap";
+import Pools from "./components/Pool/Pools/Pools";
+import PoolDetail from "./components/Pool/PoolDetail";
+import CreatePool from "./components/Pool/CreatePool/CreatePool";
+import Affiliate from "./components/Affiliate/Affiliate";
+import Tutorial from "./components/Tutorials/Tutorial";
+import About from "./components/About/About";
+import MyPool from "./components/Pool/MyPool/MyPool";
+import UserPage from "./components/UserPage/UserPage";
+import UserPools from "./components/UserPage/UserPools";
 
 function App() {
   return (
@@ -56,6 +58,12 @@ function App() {
             </Route>
             <Route exact path="/my-pool">
               <MyPool />
+            </Route>
+            <Route exact path="/my-page">
+              <UserPage />
+            </Route>
+            <Route exact path="/my-page/:userName">
+              <UserPools />
             </Route>
           </>
         </Switch>
