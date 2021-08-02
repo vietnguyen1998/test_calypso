@@ -15,6 +15,7 @@ const ClaimReward = (props) => {
     hasResult,
     userAddress,
     isActive,
+    userRefund,
   } = props;
   const betAmount = winBets.reduce(
     (acc, cur) =>
@@ -26,7 +27,7 @@ const ClaimReward = (props) => {
   const winAmount = hasResult
     ? winTotal == 0
       ? 0
-      : (betAmount * winOutcome) / winTotal
+      : (betAmount * winOutcome) / winTotal + userRefund
     : winOutcome;
   const claimReward = () => {
     setLoading(true);

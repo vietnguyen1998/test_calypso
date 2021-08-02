@@ -140,24 +140,24 @@ const Pool = (props) => {
           </div>
           <div className="col-md-3 col-6">
             <p className="grey small-text mb-0">
-              Max cap{" "}
-              <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
-                <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>
-            </p>
-            <p className="bold small-text yellow">
-              {roundNumber(pool.maxCap)} {currency.label}
-            </p>
-          </div>
-          <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Play size{" "}
+              Pool size{" "}
               <TutorialPopup content="Play size - the total bets currently placed by all players">
                 <span className="green small-text mb-0">(?)</span>
               </TutorialPopup>
             </p>
             <p className="bold small-text yellow">
               {roundNumber(pool.total || 0)} {currency.label}
+            </p>
+          </div>
+          <div className="col-md-3 col-6">
+            <p className="grey small-text mb-0">
+              Max pool size{" "}
+              <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
+                <span className="green small-text mb-0">(?)</span>
+              </TutorialPopup>
+            </p>
+            <p className="bold small-text yellow">
+              {roundNumber(pool.maxCap)} {currency.label}
             </p>
           </div>
           <div className="col-md-3 col-6">

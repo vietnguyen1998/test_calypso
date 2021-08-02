@@ -40,6 +40,7 @@ const PoolDetail = (props) => {
   const total = (pool && pool.total) || 0;
   const winOutcome = result.winOutcome || 0;
   const winTotal = result.winTotal || 0;
+  const refund = result.refund || 0;
   const selectedCurrency = pool && pool.currency;
   const currency = SupportedCoins.find(
     (item) => item.value == selectedCurrency
@@ -55,7 +56,21 @@ const PoolDetail = (props) => {
   const claimUser =
     pool.claimedUsers && pool.claimedUsers.find((el) => el.address == address);
   const bets = pool.bets || [];
+  // result for cases with Half Win/Loose
+  const halfResult = result.side > 3 ? (result.side == 4 ? 1 : 2) : result.side;
+  const halfBets =
+    (result.side > 3 && result && bets.filter((el) => el.side == halfResult)) ||
+    [];
   const winBets = (result && bets.filter((el) => el.side == result.side)) || [];
+  const hasRefund =
+    result.side > 3 &&
+    result.refund &&
+    result.refund > 0 &&
+    bets.some(
+      (el) =>
+        el.bettor.toLowerCase() == address.toLowerCase() &&
+        el.side == (result.side == 4 ? 2 : 1)
+    );
   const expiredTimeWithoutResult = timestamp - pool.endDate > 5 * 60 * 60; // after 5 hours users can withdraw all their funds
   const side = hasResult && result.side;
   const winner =
@@ -63,7 +78,15 @@ const PoolDetail = (props) => {
       ? { image: game.logo1, name: game.team1 }
       : side === BetSides.team2
       ? { image: game.logo2, name: game.team2 }
-      : { image: "", name: "Draw" };
+      : {
+          image: "",
+          name:
+            result.side > 3
+              ? result.side == 4
+                ? "Half Win"
+                : "Half Loose"
+              : "Draw",
+        };
   useEffect(() => {
     updatePool();
   }, [address, reload]);
@@ -72,9 +95,9 @@ const PoolDetail = (props) => {
     address && getPool(poolAddress, address);
   };
 
-  const canClaim = winBets.some(
-    (x) => x.bettor.toLowerCase() == address.toLowerCase()
-  );
+  const canClaim =
+    winBets.some((x) => x.bettor.toLowerCase() == address.toLowerCase()) ||
+    halfBets.some((x) => x.bettor.toLowerCase() == address.toLowerCase());
 
   const canClaimNoResult = bets.some(
     (x) => x.bettor.toLowerCase() == address.toLowerCase()
@@ -88,6 +111,22 @@ const PoolDetail = (props) => {
       }
     });
     return total;
+  };
+
+  const userRefund = () => {
+    let total = 0;
+    if (!hasRefund) {
+      return total;
+    }
+    bets.forEach((el) => {
+      if (
+        el.bettor.toLowerCase() == address.toLowerCase() &&
+        el.side == (result.side == 4 ? 2 : 1)
+      ) {
+        total += el.amount;
+      }
+    });
+    return total / 2;
   };
 
   const betUsersList =
@@ -106,6 +145,9 @@ const PoolDetail = (props) => {
         </>
       );
     });
+
+  console.log(winBets);
+  console.log(halfBets);
 
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
@@ -254,11 +296,10 @@ const PoolDetail = (props) => {
                 </div>
                 <br />
               </div>
-              {pool.handicap && pool.handicap.result != 0 && (
+              {pool.hasHandicap && (
                 <div classname="row">
                   <span className="bold">Handicap: </span>
-                  {pool.handicap.result == 1 ? game.team1 : game.team2} -{" "}
-                  {pool.handicap.value}
+                  {game.team1}: {pool.handicap}
                 </div>
               )}
             </div>
@@ -317,8 +358,8 @@ const PoolDetail = (props) => {
             {hasResult &&
               isActive &&
               validAddress &&
-              canClaim &&
-              winBets.length > 0 && (
+              (canClaim || hasRefund) &&
+              (winBets.length > 0 || halfBets.length > 0) && (
                 <ClaimReward
                   PoolSc={poolSigner}
                   onReload={() => setReload(!reload)}
@@ -326,11 +367,12 @@ const PoolDetail = (props) => {
                   currencyName={currencyName}
                   winOutcome={winOutcome}
                   winTotal={winTotal}
-                  winBets={winBets}
+                  winBets={winBets.concat(halfBets)}
                   claimed={claimUser}
                   hasResult={hasResult}
                   userAddress={address}
                   isActive={isActive}
+                  userRefund={userRefund()}
                 />
               )}
 

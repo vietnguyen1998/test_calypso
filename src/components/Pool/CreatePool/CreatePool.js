@@ -44,8 +44,11 @@ const CreatePool = (props) => {
   const [approved, setApproved] = useState(false);
   const history = useHistory();
   const [isGameTypeDisabled, setisGameTypeDisabled] = useState(false);
-  const [handicapResult, bindHandicapResult] = useInput("1");
-  const [handicapValue, bindHandicapValue] = useInput("1");
+  const [handicapSide, bindHandicapSide] = useInput("-1");
+  const [handicapWholeValue, setHandicapWholeValue] = useState(0);
+  const [handicapFractionalValue, setHandicapFractionalValue] = useState(0);
+  const [isZeroHandicap, setIsZeroHandicap] = useState(false);
+  const [handicapType, bindHandicapType] = useInput("0");
 
   const calcMaxPoolSize = () => {
     return roundNumber(getMaxPoolSize(calAmount) / price);
@@ -53,9 +56,6 @@ const CreatePool = (props) => {
 
   const calcCalAmount = () => {
     const maxSize = maxPoolSize * price;
-    console.log(maxPoolSize + "," + price + "," + maxSize);
-
-    console.log(LogisticConst.upperLimit / (maxSize - 1) - 1);
     return roundNumber(getCalAmount(maxPoolSize * price));
   };
 
@@ -161,8 +161,8 @@ const CreatePool = (props) => {
         return;
       }
       const handicap = [
-        hasHandicap ? handicapResult : 0,
-        hasHandicap ? handicapValue : 0,
+        handicapWholeValue * parseInt(handicapSide) * 100,
+        handicapFractionalValue * parseInt(handicapSide) * 100,
       ];
 
       const currencyDetails = [
@@ -180,6 +180,7 @@ const CreatePool = (props) => {
         coin,
         currencyDetails,
         isPrivate ? whitelist : [],
+        hasHandicap,
         handicap
       );
       await tx.wait();
@@ -204,7 +205,10 @@ const CreatePool = (props) => {
           ...selectMatch,
         },
         minBet,
-        handicap: { result: handicap[0], value: handicap[1] },
+        hasHandicap,
+        handicap:
+          (handicapWholeValue + handicapFractionalValue) *
+          parseInt(handicapSide),
         minPoolSize,
       });
       setLoading(false);
@@ -240,21 +244,7 @@ const CreatePool = (props) => {
     );
   });
 
-  const handicapOptions = () => {
-    const selectMatch = filterMatches[Number(match)];
-    return (
-      <>
-        <option key="1" value="1">
-          {selectMatch.team1}
-        </option>
-        <option key="2" value="2">
-          {selectMatch.team2}
-        </option>
-      </>
-    );
-  };
   const canApproveCreate = !isPrivate || (isPrivate && whitelist.length > 0);
-
   return (
     <Main loading={loading} setLoading={setLoading}>
       <div className="container body-section create-pool">
@@ -307,37 +297,157 @@ const CreatePool = (props) => {
                 </>
               )}
               <br />
-              <div className="form-check">
-                <input
-                  disabled={matchOptions.length == 0}
-                  className="form-check-input"
-                  type="checkbox"
-                  value={hasHandicap}
-                  onChange={(e) => setHasHandicap(e.target.checked)}
-                  id="flexCheckDefault"
-                ></input>
-                <label
-                  className="form-check-label black"
-                  htmlFor="flexCheckDefault"
-                >
-                  Enable Handicap
-                </label>
+              <div className="row">
+                <div className="col form-check">
+                  <input
+                    disabled={matchOptions.length == 0}
+                    className="form-check-input"
+                    type="checkbox"
+                    value={hasHandicap}
+                    onChange={(e) => {
+                      setHasHandicap(e.target.checked);
+                    }}
+                  ></input>
+                  <label className="form-check-label black">
+                    Enable Handicap
+                  </label>
+                </div>
+
+                {hasHandicap && (
+                  <div className="col form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={isZeroHandicap}
+                      onChange={(e) => {
+                        setIsZeroHandicap(e.target.checked);
+                        setHandicapWholeValue(0);
+                        setHandicapFractionalValue(0);
+                      }}
+                    ></input>
+                    <label className="form-check-label black">
+                      <span>
+                        Set Handicap to 0{" "}
+                        <TutorialPopup content="Bets are refunded on a draw result.">
+                          <span className="yellow small-text mb-0">(?) </span>
+                        </TutorialPopup>
+                      </span>
+                    </label>
+                  </div>
+                )}
               </div>
               {hasHandicap && (
-                <select
-                  className="select-input"
-                  name="Game"
-                  {...bindHandicapResult}
-                >
-                  {handicapOptions()}
-                </select>
-              )}
-              {hasHandicap && (
-                <input
-                  className="text-input"
-                  type="number"
-                  {...bindHandicapValue}
-                />
+                <>
+                  <div>
+                    <input
+                      className="text-input"
+                      type="text"
+                      disabled
+                      value={filterMatches[Number(match)].team1}
+                    ></input>
+                  </div>
+                  <div>
+                    <select className="select-input" {...bindHandicapType}>
+                      <option key="0" value="0">
+                        Asian Handicap
+                      </option>
+                      <option key="1" value="1">
+                        Point Spread
+                      </option>
+                    </select>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <select
+                        className="select-input"
+                        disabled={isZeroHandicap}
+                        {...bindHandicapSide}
+                      >
+                        <option key="1" value="-1">
+                          -
+                        </option>
+                        <option key="2" value="1">
+                          +
+                        </option>
+                      </select>
+                    </div>
+                    <div className="col">
+                      <select
+                        className="select-input"
+                        disabled={isZeroHandicap}
+                        value={handicapWholeValue}
+                        onChange={(e) => {
+                          setHandicapWholeValue(parseInt(e.target.value));
+                        }}
+                      >
+                        <option key="0" value="0">
+                          0
+                        </option>
+                        <option key="1" value="1">
+                          1
+                        </option>
+                        <option key="2" value="2">
+                          2
+                        </option>
+                        <option key="3" value="3">
+                          3
+                        </option>
+                        <option key="4" value="4">
+                          4
+                        </option>
+                        <option key="5" value="5">
+                          5
+                        </option>
+                        <option key="6" value="6">
+                          6
+                        </option>
+                        <option key="7" value="7">
+                          7
+                        </option>
+                        <option key="8" value="8">
+                          8
+                        </option>
+                        <option key="9" value="9">
+                          9
+                        </option>
+                        <option key="10" value="10">
+                          10
+                        </option>
+                      </select>
+                    </div>
+                    <div className="col">
+                      <select
+                        className="select-input"
+                        disabled={isZeroHandicap}
+                        value={handicapFractionalValue}
+                        onChange={(e) => {
+                          setHandicapFractionalValue(
+                            parseFloat(e.target.value)
+                          );
+                        }}
+                      >
+                        <option key="0" value="0">
+                          0
+                        </option>
+                        {handicapType == "0" && (
+                          <option key="0.25" value="0.25">
+                            0.25
+                          </option>
+                        )}
+
+                        <option key="0.5" value="0.5">
+                          0.5
+                        </option>
+
+                        {handicapType == "0" && (
+                          <option key="0.75" value="0.75">
+                            0.75
+                          </option>
+                        )}
+                      </select>
+                    </div>
+                  </div>
+                </>
               )}
               <br />
               <span>Title</span>

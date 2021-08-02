@@ -131,21 +131,33 @@ const BettingPanel = (props) => {
         });
   };
 
-  const items = Object.values(BetSides).map((item, index) => {
+  const getitems = () => {
     return (
-      <React.Fragment key={index}>
-        {" "}
-        <p style={{ marginRight: 20 }}>
-          <Radio value={item} />{" "}
-          {item === BetSides.team1
-            ? game.team1
-            : item === BetSides.team2
-            ? game.team2
-            : "Draw"}
-        </p>
-      </React.Fragment>
+      <>
+        <React.Fragment key={0}>
+          {" "}
+          <p style={{ marginRight: 20 }}>
+            <Radio value={1} /> {game.team1}
+          </p>
+        </React.Fragment>
+        <React.Fragment key={1}>
+          {" "}
+          <p style={{ marginRight: 20 }}>
+            <Radio value={2} /> {game.team2}
+          </p>
+        </React.Fragment>
+        {!pool.hasHandicap && (
+          <React.Fragment key={2}>
+            {" "}
+            <p style={{ marginRight: 20 }}>
+              <Radio value={3} /> Draw
+            </p>
+          </React.Fragment>
+        )}
+      </>
     );
-  });
+  };
+  const items = getitems();
   const currency = SupportedCoins.find((item) => item.value == pool.currency);
   return (
     <>
