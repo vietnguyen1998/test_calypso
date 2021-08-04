@@ -18,7 +18,7 @@ export const sortPools = (pool1, pool2, sortType) => {
     case SortItems.playerNum:
       return 0;
     case SortItems.size:
-      return pool2.maxCap - pool1.maxCap;
+      return pool2.total - pool1.total;
     default:
       return 0;
   }

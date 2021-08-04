@@ -6,6 +6,7 @@ import {
   roundNumber,
   timestampToLocalDate,
   getOdds,
+  formatTimezone,
 } from "../../../utils/Utils";
 import TutorialPopup from "../../Common/TutorialPopup";
 
@@ -135,7 +136,8 @@ const Pool = (props) => {
               </TutorialPopup>
             </p>
             <p className="bold small-text yellow">
-              {timestampToLocalDate(game.date - 3600, "H:mm Z")}
+              {timestampToLocalDate(game.date - 3600, "H:mm UTC")}{" "}
+              {formatTimezone(game.date)}
             </p>
           </div>
           <div className="col-md-3 col-6">

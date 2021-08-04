@@ -7,7 +7,11 @@ import { getBettingPool, getSigner } from "../../utils/Contracts";
 import BettingPanel from "./BettingPanel";
 import BetList from "./BetList";
 import { BetSides, SupportedCoins } from "../../const/Const";
-import { roundNumber, timestampToLocalDate } from "../../utils/Utils";
+import {
+  roundNumber,
+  timestampToLocalDate,
+  formatTimezone,
+} from "../../utils/Utils";
 import ClaimReward from "./ClaimReward";
 import WithdrawDeposit from "./WithdrawDeposit";
 import MaxCapPanel from "./MaxCapPanel";
@@ -17,7 +21,7 @@ const PoolDetail = (props) => {
   const { getPool } = props;
   const { poolAddress } = useParams();
   const pool = useSelector((state) => state.pool) || {};
-  const isActive = pool.total > pool.minPoolSize || pool.minPoolSize == 0;
+  const isActive = pool.total >= pool.minPoolSize || pool.minPoolSize == 0;
   const address = useSelector((state) => state.address);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -146,9 +150,6 @@ const PoolDetail = (props) => {
       );
     });
 
-  console.log(winBets);
-  console.log(halfBets);
-
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
@@ -263,7 +264,8 @@ const PoolDetail = (props) => {
                     {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
                   </p>
                   <p className="bold">
-                    {timestampToLocalDate(game.date - 3600, "H:mm Z")}
+                    {timestampToLocalDate(game.date - 3600, "H:mm UTC")}{" "}
+                    {formatTimezone(game.date)}
                   </p>
                 </div>
                 <div className="col-md-4 col-4">
