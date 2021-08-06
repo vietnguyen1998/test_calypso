@@ -6,9 +6,10 @@ import { RadioGroup, Radio } from "react-radio-group";
 import { BetSides, SupportedCoins, ZeroAddress } from "../../const/Const";
 import { toast } from "react-toastify";
 import useInput from "../hook/useInput";
-import { roundNumber, getOdds } from "../../utils/Utils";
+import { roundNumber, getOdds, swapBetAmounts } from "../../utils/Utils";
 import { createBetTxId } from "../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
+import TutorialPopup from "../Common/TutorialPopup";
 
 const BettingPanel = (props) => {
   const { pool, poolAddress, onReload, setLoading, game } = props;
@@ -25,7 +26,10 @@ const BettingPanel = (props) => {
     );
     return amount;
   });
-  let odds = getOdds(betAmounts);
+
+  let odds = pool.hasHandicap
+    ? getOdds(swapBetAmounts(betAmounts)).replace(": 0 :", ":")
+    : getOdds(swapBetAmounts(betAmounts));
 
   const betWithEth = () => {
     if (amount <= 0) {
@@ -173,7 +177,12 @@ const BettingPanel = (props) => {
       </div>
       <div style={{ marginTop: 15 }}>
         Split:{" "}
-        <span style={{ fontWeight: "bold", marginLeft: 20 }}>{odds}</span>
+        <span style={{ fontWeight: "bold", marginLeft: 20 }}>
+          {odds}{" "}
+          <TutorialPopup content="Team1 : Draw : Team2">
+            <span className="yellow small-text mb-0">(?) </span>
+          </TutorialPopup>
+        </span>
       </div>
       <form className="grey mt-3">
         <span>

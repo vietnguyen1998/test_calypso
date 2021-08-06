@@ -106,3 +106,10 @@ export const getOdds = (betAmounts) => {
   }
   return odds;
 };
+
+export const swapBetAmounts = (_betAmounts) => {
+  let tmp = _betAmounts[1];
+  _betAmounts[1] = _betAmounts[2];
+  _betAmounts[2] = tmp;
+  return _betAmounts;
+};

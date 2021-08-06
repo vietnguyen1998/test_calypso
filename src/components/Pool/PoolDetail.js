@@ -11,11 +11,15 @@ import {
   roundNumber,
   timestampToLocalDate,
   formatTimezone,
+  swapBetAmounts,
+  getOdds,
 } from "../../utils/Utils";
 import ClaimReward from "./ClaimReward";
 import WithdrawDeposit from "./WithdrawDeposit";
 import MaxCapPanel from "./MaxCapPanel";
 import { etherscan } from "../../config";
+import { TabName } from "../Common/Sidebar";
+import TutorialPopup from "../Common/TutorialPopup";
 
 const PoolDetail = (props) => {
   const { getPool } = props;
@@ -75,6 +79,18 @@ const PoolDetail = (props) => {
         el.bettor.toLowerCase() == address.toLowerCase() &&
         el.side == (result.side == 4 ? 2 : 1)
     );
+
+  const betAmounts = Object.values(BetSides).map((el) => {
+    const amount = bets.reduce(
+      (acc, cur) => (cur.side === el ? acc + cur.amount : acc),
+      0
+    );
+    return amount;
+  });
+
+  let odds = pool.hasHandicap
+    ? getOdds(swapBetAmounts(betAmounts)).replace(": 0 :", ":")
+    : getOdds(swapBetAmounts(betAmounts));
   const expiredTimeWithoutResult = timestamp - pool.endDate > 5 * 60 * 60; // after 5 hours users can withdraw all their funds
   const side = hasResult && result.side;
   const winner =
@@ -178,6 +194,15 @@ const PoolDetail = (props) => {
             >
               <div className="row text-center ">
                 <div className="col">
+                  {game && (
+                    <h5>
+                      {TabName[game.game == "dota 2" ? "dota" : game.game]}
+                    </h5>
+                  )}
+                </div>
+              </div>
+              <div className="row text-center ">
+                <div className="col">
                   <img
                     className="team-img"
                     src={game.logo1}
@@ -247,7 +272,7 @@ const PoolDetail = (props) => {
               <br />
               <br />
               <span className="grey">Title: </span>
-              <span className="black">{pool.title}</span>
+              <span className="black text-wrap">{pool.title}</span>
               <br></br>
               <span className="grey">Address: </span>
               <a href={`${etherscan}${poolAddress}`} target="_blank">
@@ -255,7 +280,7 @@ const PoolDetail = (props) => {
               </a>
               <br></br>
               <span className="grey">Description: </span>
-              <span className="black">{pool.description}</span>
+              <span className="black text-wrap">{pool.description}</span>
               <br></br>
               <br></br>
               <div className="row">
@@ -296,6 +321,10 @@ const PoolDetail = (props) => {
                     {(pool.betUsers && pool.betUsers.length) || 0}
                   </p>
                 </div>
+                <div className="col-md-4 col-4">
+                  <p className="grey mb-1">Minimum bet size</p>
+                  <p className="bold">{pool.minBet}</p>
+                </div>
                 <br />
               </div>
               {pool.hasHandicap && (
@@ -332,7 +361,7 @@ const PoolDetail = (props) => {
           {/* Betting section */}
 
           <div className="col-md-5" /* style={{ minWidth: "500px" }}*/>
-            {!isEnded && validAddress && (
+            {(!isEnded && validAddress && (
               <BettingPanel
                 pool={pool}
                 poolAddress={poolAddress}
@@ -341,6 +370,16 @@ const PoolDetail = (props) => {
                 onReload={() => setReload(!reload)}
                 setLoading={setLoading}
               />
+            )) || (
+              <div style={{ marginTop: 15 }}>
+                Split:{" "}
+                <span style={{ fontWeight: "bold", marginLeft: 20 }}>
+                  {odds}{" "}
+                  <TutorialPopup content="Team1 : Draw : Team2">
+                    <span className="yellow small-text mb-0">(?) </span>
+                  </TutorialPopup>
+                </span>
+              </div>
             )}
             {/* Bet Result */}
             {hasResult && canClaim && (

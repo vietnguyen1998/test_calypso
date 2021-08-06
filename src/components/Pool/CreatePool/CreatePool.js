@@ -452,7 +452,12 @@ const CreatePool = (props) => {
               <br />
               <span>Title</span>
               <br />
-              <input className="text-input" type="text" {...bindTitle}></input>
+              <input
+                className="text-input"
+                maxLength="100"
+                type="text"
+                {...bindTitle}
+              ></input>
               <br />
               <span>Description</span>
               <br />
@@ -462,9 +467,11 @@ const CreatePool = (props) => {
                 id="description"
                 placeholder="Type something..."
                 {...bindDescription}
+                cols="200"
+                maxlength="200"
               ></textarea>
               <div align="right">
-                <p className="small-text mt-2">*150 characters left</p>
+                <p className="small-text mt-2">*200 characters left</p>
               </div>
             </form>
           </div>

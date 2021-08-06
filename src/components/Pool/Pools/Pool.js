@@ -7,14 +7,17 @@ import {
   timestampToLocalDate,
   getOdds,
   formatTimezone,
+  swapBetAmounts,
 } from "../../../utils/Utils";
 import TutorialPopup from "../../Common/TutorialPopup";
+import { TabName } from "../../Common/Sidebar";
 
 const Pool = (props) => {
   const { pool, delay, address } = props;
   const game = pool.game || {};
   const history = useHistory();
   const currency = SupportedCoins.find((el) => el.value == pool.currency) || {};
+  const isActive = pool.total >= pool.minPoolSize || pool.minPoolSize == 0;
 
   const odds = () => {
     let betAmounts = [];
@@ -29,9 +32,16 @@ const Pool = (props) => {
         );
       }
       return (
-        <p className="white small-text text-wrap">{`Split ${getOdds(
-          betAmounts
-        )}`}</p>
+        <p className="white small-text text-wrap">
+          {`Split ${
+            pool.hasHandicap
+              ? getOdds(swapBetAmounts(betAmounts)).replace(": 0 :", ":")
+              : getOdds(swapBetAmounts(betAmounts))
+          }`}{" "}
+          <TutorialPopup content="Team1 : Draw : Team2">
+            <span className="green small-text mb-0">(?) </span>
+          </TutorialPopup>
+        </p>
       );
     }
   };
@@ -43,6 +53,13 @@ const Pool = (props) => {
       data-wow-delay={`${delay || 0.1}s`}
     >
       <div className="col-md-4">
+        <div className="row px-2 text-center">
+          <div className="col">
+            <h5 style={{ color: "white" }}>
+              {TabName[pool.game.game == "dota 2" ? "dota" : pool.game.game]}
+            </h5>
+          </div>
+        </div>
         <div className="row px-2">
           <div className="col-md-5 col-5" align="center">
             <div className="team-circle" align="center">
@@ -124,6 +141,22 @@ const Pool = (props) => {
                   : "Join Pool"}
               </span>
             </button>
+            <TutorialPopup
+              content={
+                isActive
+                  ? "This pool is active!"
+                  : "This pools has not hit minimum pool size"
+              }
+            >
+              <div
+                className="team-circle"
+                style={{
+                  backgroundColor: isActive ? "green" : "orange",
+                  width: "5px",
+                  height: "5px",
+                }}
+              ></div>
+            </TutorialPopup>
           </div>
         </div>
 
@@ -172,6 +205,24 @@ const Pool = (props) => {
             <p className="bold small-text yellow">
               {roundNumber(pool.poolFee)}%
             </p>
+          </div>
+          <div className="col-md-3 col-6">
+            <p className="grey small-text mb-0">Minimum bet size</p>
+            <p className="bold small-text yellow">{pool.minBet}</p>
+          </div>
+          <div className="col-md-3 col-6">
+            <p className="grey small-text mb-0">
+              Handicap{" "}
+              <TutorialPopup content="Press (?) to go toTutorails page">
+                <a
+                  href={window.location.origin + "/tutorials"}
+                  className="green small-text mb-0"
+                >
+                  (?)
+                </a>
+              </TutorialPopup>
+            </p>
+            <p className="bold small-text yellow">{pool.handicap}</p>
           </div>
         </div>
       </div>
