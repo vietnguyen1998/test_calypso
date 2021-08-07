@@ -38,7 +38,11 @@ const Pool = (props) => {
               ? getOdds(swapBetAmounts(betAmounts)).replace(": 0 :", ":")
               : getOdds(swapBetAmounts(betAmounts))
           }`}{" "}
-          <TutorialPopup content="Team1 : Draw : Team2">
+          <TutorialPopup
+            content={
+              pool.hasHandicap ? "Team1 : Team2" : "Team1 : Draw : Team2"
+            }
+          >
             <span className="green small-text mb-0">(?) </span>
           </TutorialPopup>
         </p>
@@ -207,7 +211,7 @@ const Pool = (props) => {
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Minimum bet size</p>
+            <p className="grey small-text mb-0">Min bet size</p>
             <p className="bold small-text yellow">{pool.minBet}</p>
           </div>
           <div className="col-md-3 col-6">

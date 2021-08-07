@@ -5,12 +5,14 @@ export const TabItems = {
   epl: "epl",
   lol: "lol",
   dota: "dota 2",
+  nba: "nba",
 };
 export const TabName = {
   all: "All matches",
   epl: "English Premier League",
-  lol: "LOL",
+  lol: "League of Legends",
   dota: "Dota 2",
+  nba: "NBA",
 };
 
 const Sidebar = (props) => {

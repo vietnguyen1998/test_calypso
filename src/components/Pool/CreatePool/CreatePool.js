@@ -49,6 +49,7 @@ const CreatePool = (props) => {
   const [handicapFractionalValue, setHandicapFractionalValue] = useState(0);
   const [isZeroHandicap, setIsZeroHandicap] = useState(false);
   const [handicapType, bindHandicapType] = useInput("0");
+  const [charsLeft, setCharsLeft] = useState(200);
 
   const calcMaxPoolSize = () => {
     return roundNumber(getMaxPoolSize(calAmount) / price);
@@ -119,6 +120,10 @@ const CreatePool = (props) => {
   useEffect(() => {
     resetMatch();
   }, [gameType]);
+
+  useEffect(() => {
+    setCharsLeft(200 - description.length);
+  }, [description]);
 
   const approveCal = async () => {
     setLoading(true);
@@ -471,7 +476,7 @@ const CreatePool = (props) => {
                 maxlength="200"
               ></textarea>
               <div align="right">
-                <p className="small-text mt-2">*200 characters left</p>
+                <p className="small-text mt-2">*{charsLeft} characters left</p>
               </div>
             </form>
           </div>

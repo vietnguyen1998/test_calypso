@@ -375,7 +375,13 @@ const PoolDetail = (props) => {
                 Split:{" "}
                 <span style={{ fontWeight: "bold", marginLeft: 20 }}>
                   {odds}{" "}
-                  <TutorialPopup content="Team1 : Draw : Team2">
+                  <TutorialPopup
+                    content={
+                      pool.hasHandicap
+                        ? "Team1 : Team2"
+                        : "Team1 : Draw : Team2"
+                    }
+                  >
                     <span className="yellow small-text mb-0">(?) </span>
                   </TutorialPopup>
                 </span>
