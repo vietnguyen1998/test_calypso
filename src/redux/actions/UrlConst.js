@@ -12,4 +12,6 @@ export default {
   createUserName: host + "createUserName",
   getUserName: host + "getUserName",
   getUserAddress: host + "getUserAddress",
+  getLotteries: host + "lotteries",
+  getLottery: host + "lottery",
 };

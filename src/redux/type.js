@@ -14,4 +14,6 @@ export default {
   getAffiliateStatus: "getAffiliateStatus",
   getUserName: "getUserName",
   getUserAddress: "getUserAddress",
+  getLotteries: "getLotteries",
+  getLottery: "getLottery",
 };

@@ -114,46 +114,36 @@ const EndPool = (props) => {
         </a>
         <div className="row">
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}{" "}
-              <TutorialPopup content="Date and time of match in your local time">
-                <span className="green small-text mb-0">(?) </span>
-              </TutorialPopup>
-            </p>
-            <p className="bold small-text grey">
+            <TutorialPopup content="Date and time of match in your local time">
+              <p className="grey small-text mb-0">
+                {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
+              </p>
+            </TutorialPopup>
+            <p className="bold small-text yellow">
               {timestampToLocalDate(game.date - 3600, "H:mm Z")}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Max cap{" "}
-              <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
-                <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>
-            </p>
-            <p className="bold small-text grey">
+            <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
+              <p className="grey small-text mb-0">Max cap</p>
+            </TutorialPopup>
+            <p className="bold small-text yellow">
               {roundNumber(pool.maxCap || 0)} CAL
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Play size{" "}
-              <TutorialPopup content="Play size - the total bets currently placed by all players">
-                <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>
-            </p>
-            <p className="bold small-text grey">
+            <TutorialPopup content="Pool size - the total bets currently placed by all players">
+              <p className="grey small-text mb-0">Pool size</p>
+            </TutorialPopup>
+            <p className="bold small-text yellow">
               {roundNumber(pool.total || 0)} CAL
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Pool fee{" "}
-              <TutorialPopup content="Pool fee - the percentage of winnings which will go to the Pool Creator">
-                <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>
-            </p>
-            <p className="bold small-text grey">{pool.poolFee}%</p>
+            <TutorialPopup content="Pool fee - the percentage of winnings which will go to the Pool Creator">
+              <p className="grey small-text mb-0">Pool fee</p>
+            </TutorialPopup>
+            <p className="bold small-text yellow">{pool.poolFee}%</p>
           </div>
         </div>
       </div>

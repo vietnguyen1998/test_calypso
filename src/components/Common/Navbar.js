@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { shortenAddress } from "../../utils/Utils";
 import { Link } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import {
   updateCalBalance,
   updateAddress,
@@ -29,6 +30,7 @@ const NavBar = (props) => {
   const address = useSelector((state) => state.address);
   const chainId = useSelector((state) => state.chainId);
   const ethereum = window.ethereum;
+  const history = useHistory();
 
   const connectMetamask = () => {
     ethereum &&
@@ -85,7 +87,7 @@ const NavBar = (props) => {
       <div style={{ backgroundColor: "#021025" }}>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-4 logo my-1">
+            <div className="col-md-2 logo my-1">
               <a href="/">
                 <img style={{ width: "190px" }} src="/images/logo.png" />
               </a>
@@ -97,13 +99,21 @@ const NavBar = (props) => {
             </div>
             <div className="col-md-2 my-auto">
               <div className="balance-box">
-                <span>{address ? calBalance.toFixed(8) : "0.00"} CAL</span>
+                <span>{address ? ethBalance.toFixed(8) : "0.00"} ETH</span>
               </div>
             </div>
             <div className="col-md-2 my-auto">
               <div className="balance-box">
-                <span>{address ? ethBalance.toFixed(8) : "0.00"} ETH</span>
+                <span>{address ? calBalance.toFixed(8) : "0.00"} CAL</span>
               </div>
+            </div>
+            <div className="col-md-2 my-auto">
+              <button
+                className="yellow-btn"
+                onClick={() => history.push("/swap")}
+              >
+                Buy Cal
+              </button>
             </div>
             {address ? (
               <div
@@ -173,13 +183,6 @@ const NavBar = (props) => {
                 </li>
                 <li className="nav-item">
                   <div className="nav-link-box">
-                    <Link to="/swap" className="nav-link">
-                      Buy CAL
-                    </Link>
-                  </div>
-                </li>
-                <li className="nav-item">
-                  <div className="nav-link-box">
                     <Link to="/affiliate" className="nav-link">
                       Affiliates
                     </Link>
@@ -203,6 +206,13 @@ const NavBar = (props) => {
                   <div className="nav-link-box">
                     <Link to="/my-page" className="nav-link">
                       My Page
+                    </Link>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link-box">
+                    <Link to="/lottery" className="nav-link">
+                      Lottery
                     </Link>
                   </div>
                 </li>

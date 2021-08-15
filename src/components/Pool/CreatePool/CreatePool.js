@@ -56,8 +56,11 @@ const CreatePool = (props) => {
   };
 
   const calcCalAmount = () => {
-    const maxSize = maxPoolSize * price;
-    return roundNumber(getCalAmount(maxPoolSize * price));
+    let maxPoolSizeLimit = Math.floor(
+      roundNumber((LogisticConst.upperLimit - 1) / price)
+    );
+    let num = maxPoolSize > maxPoolSizeLimit ? maxPoolSizeLimit : maxPoolSize;
+    return roundNumber(getCalAmount(num * price));
   };
 
   const [calAmount, setCalAmount] = useState("50");
@@ -331,12 +334,9 @@ const CreatePool = (props) => {
                       }}
                     ></input>
                     <label className="form-check-label black">
-                      <span>
-                        Set Handicap to 0{" "}
-                        <TutorialPopup content="Bets are refunded on a draw result.">
-                          <span className="yellow small-text mb-0">(?) </span>
-                        </TutorialPopup>
-                      </span>
+                      <TutorialPopup content="Bets are refunded on a draw result.">
+                        <span>Set Handicap to 0</span>
+                      </TutorialPopup>
                     </label>
                   </div>
                 )}
@@ -482,23 +482,17 @@ const CreatePool = (props) => {
           </div>
           <div className="col-md-6 col-12">
             <form className="grey">
-              <span>
-                Please select the currency for the Pool{" "}
-                <TutorialPopup content="This is the cryptocurrency which players can play with.">
-                  <span className="yellow small-text mb-0">(?) </span>
-                </TutorialPopup>
-              </span>
+              <TutorialPopup content="This is the cryptocurrency which players can play with.">
+                <span>Please select the currency for the Pool</span>
+              </TutorialPopup>
               <br />
               <select className="select-input" name="Crypto" {...bindCoin}>
                 {supportedCoinOptions}
               </select>
               <br />
-              <span>
-                Amount of CAL to stake{" "}
-                <TutorialPopup content="The amount of CAL staked will determine the Max Pool Size. You will get back your CAL after the match has ended successfully.">
-                  <span className="yellow small-text mb-0">(?) </span>
-                </TutorialPopup>
-              </span>
+              <TutorialPopup content="The amount of CAL staked will determine the Max Pool Size. You will get back half of your CAL after the match has ended successfully.">
+                <span>Pool Creation Fee</span>
+              </TutorialPopup>
               <br />
               <input
                 className="text-input"
@@ -510,12 +504,9 @@ const CreatePool = (props) => {
                 }}
               />
               <br />
-              <span>
-                Max Pool Size in {selectedCoin.label}{" "}
-                <TutorialPopup content="This is the maximum amount of cryptocurrency from all players which the Pool can accept. You cannot change this value.">
-                  <span className="yellow small-text mb-0">(?) </span>
-                </TutorialPopup>
-              </span>
+              <TutorialPopup content="This is the maximum amount of cryptocurrency from all players which the Pool can accept.">
+                <span>Max Pool Size in {selectedCoin.label} </span>
+              </TutorialPopup>
               <br />
               <div class="form-inline">
                 <input
@@ -533,20 +524,24 @@ const CreatePool = (props) => {
                   type="button"
                   onClick={() =>
                     setMaxPoolSize(
-                      roundNumber(LogisticConst.upperLimit / price)
+                      Math.floor(
+                        roundNumber((LogisticConst.upperLimit - 1) / price)
+                      )
                     )
                   }
                   style={{
                     marginTop: "10px",
-                    minWidth: "70px",
+                    minWidth: "75px",
                     marginLeft: "10px",
                   }}
                 >
-                  Max
+                  <small>NO LIMIT</small>
                 </button>
               </div>
               <br />
-              <span>Min pool size</span>
+              <TutorialPopup content="All bets will be refunded if pool does not reach this size.">
+                <span>Min pool size</span>
+              </TutorialPopup>
               <br />
               <input
                 className="text-input"
@@ -554,13 +549,9 @@ const CreatePool = (props) => {
                 {...bindMinPoolSize}
               />
               <br />
-
-              <span>
-                Pool Fee (%), max: 95%{" "}
-                <TutorialPopup content="This is the percentage of the Winning bets given to you as a reward for starting the pool. Please note that it is NOT based on total bets played in the pool.">
-                  <span className="yellow small-text mb-0">(?) </span>
-                </TutorialPopup>
-              </span>
+              <TutorialPopup content="This is the percentage of the Winning bets given to you as a reward for starting the pool. Please note that it is NOT based on total bets played in the pool.">
+                <span>Pool Fee (%), max: 95%</span>
+              </TutorialPopup>
               <br />
               <input
                 className="text-input"
@@ -569,13 +560,9 @@ const CreatePool = (props) => {
                 max="95"
               />
               <br />
-
-              <span>
-                Minimum Bet Size in {selectedCoin.label} per player{" "}
-                <TutorialPopup content="The minimum amount of cryptocurrencies a player can play with.">
-                  <span className="yellow small-text mb-0">(?) </span>
-                </TutorialPopup>
-              </span>
+              <TutorialPopup content="The minimum amount of cryptocurrencies a player can play with.">
+                <span>Minimum Bet Size in {selectedCoin.label} per player</span>
+              </TutorialPopup>
               <br />
               <input className="text-input" type="number" {...bindMinBet} />
               <br />
@@ -588,15 +575,14 @@ const CreatePool = (props) => {
                   onChange={(e) => setIsPrivate(e.target.checked)}
                   id="flexCheckDefault"
                 ></input>
-                <label
-                  className="form-check-label black"
-                  htmlFor="flexCheckDefault"
-                >
-                  Private Pool{" "}
-                  <TutorialPopup content=" If enabled, this pool can only be played by addresses which you have whitelisted. Only whitelisted addresses can view and join this private pool.">
-                    <span className="yellow small-text mb-0">(?) </span>
-                  </TutorialPopup>
-                </label>
+                <TutorialPopup content=" If enabled, this pool can only be played by addresses which you have whitelisted. Only whitelisted addresses can view and join this private pool.">
+                  <label
+                    className="form-check-label black"
+                    htmlFor="flexCheckDefault"
+                  >
+                    Private Pool
+                  </label>
+                </TutorialPopup>
               </div>
               {isPrivate && (
                 <WhiteListPanel

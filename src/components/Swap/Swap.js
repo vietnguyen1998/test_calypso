@@ -205,9 +205,6 @@ const Swap = () => {
               </a>
             </p>
             <p>Launch Price of CAL: 1 USDT per CAL token</p>
-            <a href="/Whitepaper.txt" download>
-              [Download Whitepaper]
-            </a>
           </div>
         </div>
       </div>

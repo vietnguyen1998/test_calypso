@@ -165,7 +165,6 @@ const PoolDetail = (props) => {
         </>
       );
     });
-
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
@@ -300,7 +299,7 @@ const PoolDetail = (props) => {
                   </p>
                 </div>
                 <div className="col-md-4 col-4">
-                  <p className="grey mb-1">Play size</p>
+                  <p className="grey mb-1">Pool size</p>
                   <p className="bold">
                     {roundNumber(pool.total || 0)} {currencyName}
                   </p>
@@ -360,7 +359,7 @@ const PoolDetail = (props) => {
 
           {/* Betting section */}
 
-          <div className="col-md-5" /* style={{ minWidth: "500px" }}*/>
+          <div className="col-md-5">
             {(!isEnded && validAddress && (
               <BettingPanel
                 pool={pool}
@@ -373,18 +372,15 @@ const PoolDetail = (props) => {
             )) || (
               <div style={{ marginTop: 15 }}>
                 Split:{" "}
-                <span style={{ fontWeight: "bold", marginLeft: 20 }}>
-                  {odds}{" "}
-                  <TutorialPopup
-                    content={
-                      pool.hasHandicap
-                        ? "Team1 : Team2"
-                        : "Team1 : Draw : Team2"
-                    }
-                  >
-                    <span className="yellow small-text mb-0">(?) </span>
-                  </TutorialPopup>
-                </span>
+                <TutorialPopup
+                  content={
+                    pool.hasHandicap ? "Team1 : Team2" : "Team1 : Draw : Team2"
+                  }
+                >
+                  <span style={{ fontWeight: "bold", marginLeft: 20 }}>
+                    {odds}{" "}
+                  </span>
+                </TutorialPopup>
               </div>
             )}
             {/* Bet Result */}

@@ -52,7 +52,7 @@ const FeaturePool = (props) => {
             </p>
           </div>
           <div className="col-md-6 col-6">
-            <p className="grey small-text mb-0">Play size</p>
+            <p className="grey small-text mb-0">Pool size</p>
             <p className="yellow small-text bold">
               {roundNumber(pool.total) || 0} {currency.label}
             </p>

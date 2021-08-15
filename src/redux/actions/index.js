@@ -86,6 +86,16 @@ export const getPools = () => async (dispatch) => {
   });
 };
 
+export const getLotteries = () => async (dispatch) => {
+  network.get(UrlConst.getLotteries).then((res) => {
+    const { lotteries } = res.data;
+    dispatch({
+      type: ActionType.getLotteries,
+      payload: lotteries,
+    });
+  });
+};
+
 export const getPool = (poolAddress, userAddress) => async (dispatch) => {
   dispatch({
     type: ActionType.resetPool,
@@ -97,6 +107,20 @@ export const getPool = (poolAddress, userAddress) => async (dispatch) => {
       dispatch({
         type: ActionType.getPool,
         payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getLottery = (lotteryAddress) => async (dispatch) => {
+  network
+    .get(UrlConst.getLottery, { lotteryAddress })
+    .then((res) => {
+      dispatch({
+        type: ActionType.getLottery,
+        payload: res.data.lottery,
       });
     })
     .catch((err) => {

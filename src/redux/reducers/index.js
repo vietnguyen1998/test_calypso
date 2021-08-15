@@ -15,6 +15,8 @@ const initialState = {
   affiliate: {},
   username: "",
   useraddress: "",
+  lotteries: [],
+  lottery: {},
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -48,6 +50,16 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         pools: payload,
+      };
+    case ActionType.getLotteries:
+      return {
+        ...state,
+        lotteries: payload,
+      };
+    case ActionType.getLottery:
+      return {
+        ...state,
+        lottery: payload,
       };
     case ActionType.getPool:
       return {

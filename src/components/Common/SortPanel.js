@@ -4,11 +4,13 @@ export const SortItems = {
   date: "date",
   playerNum: "playerNum",
   size: "size",
+  earliest: "earliest",
 };
 export const SortLabels = {
   date: "Newest",
   playerNum: "Number of players",
   size: "Biggest size",
+  earliest: "Earliest Match",
 };
 
 export const sortPools = (pool1, pool2, sortType) => {
@@ -18,7 +20,9 @@ export const sortPools = (pool1, pool2, sortType) => {
     case SortItems.playerNum:
       return 0;
     case SortItems.size:
-      return pool2.total - pool1.total;
+      return pool2.maxCap - pool1.maxCap;
+    case SortItems.earliest:
+      return pool2.game.date - pool1.game.date;
     default:
       return 0;
   }

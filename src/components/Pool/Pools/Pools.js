@@ -29,6 +29,11 @@ const Pools = (props) => {
     .filter((el) => {
       return searchPool(el, searchText);
     })
+    .filter((el) => {
+      if (sort == SortItems.earliest)
+        return el.game.date > Math.floor(Date.now() / 1000);
+      else return true;
+    })
     .sort((pool1, pool2) => {
       return sortPools(pool1, pool2, sort);
     });
@@ -40,7 +45,6 @@ const Pools = (props) => {
   const poolItems = filterPools.map((el, id) => {
     return <Pool key={id} pool={el} address={address} />;
   });
-
   return (
     <Main>
       <div style={{ backgroundColor: "#021025" }}>

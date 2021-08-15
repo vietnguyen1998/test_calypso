@@ -99,10 +99,26 @@ export const getOdds = (betAmounts) => {
     odds = betAmounts.join(" : ");
   } else {
     const minAmount = Math.min(...betAmounts);
-    const transformAmount = betAmounts.map((el) =>
-      roundNumber(el / minAmount, 2)
-    );
-    odds = transformAmount.join(" : ");
+    if (betAmounts.some((el) => (el / minAmount) % 1 != 0)) {
+      while (
+        betAmounts.every((el, i) => {
+          if ((el / 10) % 1 == 0) {
+            return true;
+          } else {
+            odds = betAmounts.join(" : ");
+            return false;
+          }
+        })
+      ) {
+        betAmounts = betAmounts.map((el) => el / 10);
+        odds = betAmounts.join(" : ");
+      }
+    } else {
+      const transformAmount = betAmounts.map((el) =>
+        roundNumber(el / minAmount, 2)
+      );
+      odds = transformAmount.join(" : ");
+    }
   }
   return odds;
 };
@@ -112,4 +128,18 @@ export const swapBetAmounts = (_betAmounts) => {
   _betAmounts[1] = _betAmounts[2];
   _betAmounts[2] = tmp;
   return _betAmounts;
+};
+
+export const secondsToHms = (d) => {
+  d = Number(d);
+  var h = Math.floor(d / 3600);
+  var m = Math.floor((d % 3600) / 60);
+  var s = Math.floor((d % 3600) % 60);
+  return (
+    (h >= 10 ? h : "0" + h) +
+    ":" +
+    (m >= 10 ? m : "0" + m) +
+    ":" +
+    (s >= 10 ? s : "0" + s)
+  );
 };

@@ -32,20 +32,17 @@ const Pool = (props) => {
         );
       }
       return (
-        <p className="white small-text text-wrap">
-          {`Split ${
-            pool.hasHandicap
-              ? getOdds(swapBetAmounts(betAmounts)).replace(": 0 :", ":")
-              : getOdds(swapBetAmounts(betAmounts))
-          }`}{" "}
-          <TutorialPopup
-            content={
-              pool.hasHandicap ? "Team1 : Team2" : "Team1 : Draw : Team2"
-            }
-          >
-            <span className="green small-text mb-0">(?) </span>
-          </TutorialPopup>
-        </p>
+        <TutorialPopup
+          content={pool.hasHandicap ? "Team1 : Team2" : "Team1 : Draw : Team2"}
+        >
+          <p className="white small-text text-wrap">
+            {`Split ${
+              pool.hasHandicap
+                ? getOdds(swapBetAmounts(betAmounts)).replace(": 0 :", ":")
+                : getOdds(swapBetAmounts(betAmounts))
+            }`}
+          </p>
+        </TutorialPopup>
       );
     }
   };
@@ -74,6 +71,9 @@ const Pool = (props) => {
               />
             </div>
             <p className="team-name mt-2">{game.team1}</p>
+            {pool.hasHandicap && (
+              <p className="bold small-text yellow">{pool.handicap}</p>
+            )}
           </div>
           <div
             className="col-md-2 col-2 mt-3"
@@ -107,7 +107,7 @@ const Pool = (props) => {
       </div>
       <div className="col-md-8">
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-md-8">
             <p className="white small-text text-wrap">
               {pool.title}{" "}
               <a href={`${etherscan}${pool._id}`} target="_blank">
@@ -133,7 +133,7 @@ const Pool = (props) => {
               )}{" "}
             {odds()}
           </div>
-          <div className="col-md-3">
+          <div className="col-md-4">
             <button
               className="border-btn extra-small-text small-border-btn mb-3"
               onClick={() => history.push("/pools/" + pool._id)}
@@ -152,81 +152,61 @@ const Pool = (props) => {
                   : "This pools has not hit minimum pool size"
               }
             >
-              <div
-                className="team-circle"
+              <button
+                className="team-circle ml-3 btn"
                 style={{
                   backgroundColor: isActive ? "green" : "orange",
-                  width: "5px",
-                  height: "5px",
+                  width: "15px",
+                  height: "15px",
                 }}
-              ></div>
+              ></button>
             </TutorialPopup>
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}{" "}
-              <TutorialPopup content="Date and time of match in your local time">
-                <span className="green small-text mb-0">(?) </span>
-              </TutorialPopup>
-            </p>
+            <TutorialPopup content="Date and time of match in your local time">
+              <small className="grey">
+                {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
+              </small>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {timestampToLocalDate(game.date - 3600, "H:mm UTC")}{" "}
               {formatTimezone(game.date)}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Pool size{" "}
-              <TutorialPopup content="Play size - the total bets currently placed by all players">
-                <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>
-            </p>
+            <TutorialPopup content="Pool size - the total bets currently placed by all players">
+              <small className="grey">Pool size</small>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {roundNumber(pool.total || 0)} {currency.label}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Max pool size{" "}
-              <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
-                <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>
-            </p>
+            <TutorialPopup content="Max cap - the maximum bet size which this pool can accept from all players">
+              <small className="grey">Max pool size</small>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {roundNumber(pool.maxCap)} {currency.label}
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Pool fee{" "}
-              <TutorialPopup content="Pool fee - the percentage of winnings which will go to the Pool Creator">
-                <span className="green small-text mb-0">(?)</span>
-              </TutorialPopup>
-            </p>
+            <TutorialPopup content="Pool fee - the percentage of winnings which will go to the Pool Creator">
+              <small className="grey">Pool fee</small>
+            </TutorialPopup>
             <p className="bold small-text yellow">
               {roundNumber(pool.poolFee)}%
             </p>
           </div>
           <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">Min bet size</p>
-            <p className="bold small-text yellow">{pool.minBet}</p>
-          </div>
-          <div className="col-md-3 col-6">
-            <p className="grey small-text mb-0">
-              Handicap{" "}
-              <TutorialPopup content="Press (?) to go toTutorails page">
-                <a
-                  href={window.location.origin + "/tutorials"}
-                  className="green small-text mb-0"
-                >
-                  (?)
-                </a>
-              </TutorialPopup>
+            <TutorialPopup content="All bets will be refunded if pool does not reach this size">
+              <small className="grey">Min bet size</small>
+            </TutorialPopup>
+            <p className="bold small-text yellow">
+              {pool.minBet} {currency.label}
             </p>
-            <p className="bold small-text yellow">{pool.handicap}</p>
           </div>
         </div>
       </div>

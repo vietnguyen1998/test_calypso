@@ -134,7 +134,6 @@ const BettingPanel = (props) => {
           } else toast.error(err.message);
         });
   };
-
   const getitems = () => {
     return (
       <>
@@ -163,6 +162,7 @@ const BettingPanel = (props) => {
   };
   const items = getitems();
   const currency = SupportedCoins.find((item) => item.value == pool.currency);
+
   return (
     <>
       <h3 className="bold">Betting</h3>
@@ -177,16 +177,11 @@ const BettingPanel = (props) => {
       </div>
       <div style={{ marginTop: 15 }}>
         Split:{" "}
-        <span style={{ fontWeight: "bold", marginLeft: 20 }}>
-          {odds}{" "}
-          <TutorialPopup
-            content={
-              pool.hasHandicap ? "Team1 : Team2" : "Team1 : Draw : Team2"
-            }
-          >
-            <span className="yellow small-text mb-0">(?) </span>
-          </TutorialPopup>
-        </span>
+        <TutorialPopup
+          content={pool.hasHandicap ? "Team1 : Team2" : "Team1 : Draw : Team2"}
+        >
+          <span style={{ fontWeight: "bold", marginLeft: 20 }}>{odds} </span>
+        </TutorialPopup>
       </div>
       <form className="grey mt-3">
         <span>
