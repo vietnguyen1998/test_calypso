@@ -72,7 +72,9 @@ const Pool = (props) => {
             </div>
             <p className="team-name mt-2">{game.team1}</p>
             {pool.hasHandicap && (
-              <p className="bold small-text yellow">{pool.handicap}</p>
+              <TutorialPopup content="Team 1 handicap">
+                <p className="bold small-text yellow">{pool.handicap}</p>
+              </TutorialPopup>
             )}
           </div>
           <div
