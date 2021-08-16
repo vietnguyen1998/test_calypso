@@ -52,9 +52,9 @@ function App() {
             <Route exact path="/staking">
               <Staking />
             </Route>
-            <Route exact path="/affiliate">
+            {/* <Route exact path="/affiliate">
               <Affiliate />
-            </Route>
+            </Route>*/}
             <Route exact path="/about">
               <About />
             </Route>
