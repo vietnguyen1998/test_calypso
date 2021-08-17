@@ -168,6 +168,11 @@ const CreatePool = (props) => {
         toast.error("Min pool size cannot be bigger than max pool size");
         return;
       }
+      if (calAmount <= 0) {
+        setLoading(false);
+        toast.error("Pool creation fee cannot be lesser or equal then 0");
+        return;
+      }
       const handicap = [
         handicapWholeValue * parseInt(handicapSide) * 100,
         handicapFractionalValue * parseInt(handicapSide) * 100,
@@ -179,6 +184,13 @@ const CreatePool = (props) => {
         getWei(minBet),
         getWei(minPoolSize),
       ];
+
+      const isUnlimited =
+        maxPoolSize >=
+        Math.floor(roundNumber((LogisticConst.upperLimit - 1) / price));
+
+      const bools = [hasHandicap, isUnlimited];
+
       const tx = await PoolManagerSigner.createBettingPool(
         title,
         description,
@@ -188,11 +200,10 @@ const CreatePool = (props) => {
         coin,
         currencyDetails,
         isPrivate ? whitelist : [],
-        hasHandicap,
+        bools,
         handicap
       );
       await tx.wait();
-
       const poolAddress = await getPoolManager().getLastOwnPool(0, {
         from: address,
       });
@@ -218,6 +229,7 @@ const CreatePool = (props) => {
           (handicapWholeValue + handicapFractionalValue) *
           parseInt(handicapSide),
         minPoolSize,
+        isUnlimited: isUnlimited,
       });
       setLoading(false);
       toast.success("Pool was created!");
@@ -509,34 +521,57 @@ const CreatePool = (props) => {
               </TutorialPopup>
               <br />
               <div class="form-inline">
+                {(maxPoolSize >=
+                  Math.floor(
+                    roundNumber((LogisticConst.upperLimit - 1) / price)
+                  ) && <p>UNLIMITED</p>) || (
+                  <>
+                    {" "}
+                    <input
+                      className="text-input"
+                      type="number"
+                      value={maxPoolSize}
+                      id="maxPoolSizeInput"
+                      onChange={(e) => {
+                        setMaxPoolSize(e.target.value);
+                      }}
+                      style={{ maxWidth: "300px" }}
+                    />
+                    <button
+                      class="btn btn-warning"
+                      type="button"
+                      onClick={() =>
+                        setMaxPoolSize(
+                          Math.floor(
+                            roundNumber((LogisticConst.upperLimit - 1) / price)
+                          )
+                        )
+                      }
+                      style={{
+                        marginTop: "10px",
+                        minWidth: "75px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      <small>UNLIMITED</small>
+                    </button>
+                  </>
+                )}
+              </div>
+              <br />
+              <div className="row">
                 <input
-                  className="text-input"
-                  type="number"
+                  type="range"
+                  class="form-range ml-5"
+                  style={{ width: "500px" }}
+                  min="0"
+                  max={(LogisticConst.upperLimit - 1) / price}
+                  step="0.005"
                   value={maxPoolSize}
-                  id="maxPoolSizeInput"
                   onChange={(e) => {
                     setMaxPoolSize(e.target.value);
                   }}
-                  style={{ maxWidth: "300px" }}
                 />
-                <button
-                  class="btn btn-warning"
-                  type="button"
-                  onClick={() =>
-                    setMaxPoolSize(
-                      Math.floor(
-                        roundNumber((LogisticConst.upperLimit - 1) / price)
-                      )
-                    )
-                  }
-                  style={{
-                    marginTop: "10px",
-                    minWidth: "75px",
-                    marginLeft: "10px",
-                  }}
-                >
-                  <small>NO LIMIT</small>
-                </button>
               </div>
               <br />
               <TutorialPopup content="All bets will be refunded if pool does not reach this size.">

@@ -102,7 +102,7 @@ const Sidebar = (props) => {
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <span className="tab-list bold">Esprots</span>
+          <span className="tab-list bold">Esports</span>
         </button>
         <div class="dropdown-menu" style={{ backgroundColor: "#021025" }}>
           <button

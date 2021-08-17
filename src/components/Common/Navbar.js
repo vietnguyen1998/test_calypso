@@ -107,19 +107,25 @@ const NavBar = (props) => {
                 <span>{address ? calBalance.toFixed(8) : "0.00"} CAL</span>
               </div>
             </div>
-            <div className="col-md-2 my-auto">
+            <div className="col-md-1 my-auto">
               <button
-                className="yellow-btn"
+                className="btn yellow-btn"
                 onClick={() => history.push("/swap")}
               >
-                Buy Cal
+                <small style={{ margin: "5px" }}>Buy Cal</small>
               </button>
             </div>
+            <div className="col-sm-1  my-auto">
+              <a href=" https://www.reddit.com/r/CalypsoBet/" target="_blank">
+                <img src="/images/reddit.png" style={{ width: "40px" }} />
+              </a>
+              <a href="https://www.twitter.com/CalypsoBet" target="_blank">
+                <img src="/images/twitter.png" style={{ width: "40px" }} />
+              </a>
+            </div>
+
             {address ? (
-              <div
-                className="col-md-2 col-12 metamask-btn my-auto"
-                align="right"
-              >
+              <div className="col-sm-2  metamask-btn my-auto" align="right">
                 <span className="address-head small-text">
                   {shortenAddress(address)}
                 </span>

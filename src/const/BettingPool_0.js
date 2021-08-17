@@ -47,9 +47,9 @@ export default [
         type: "address[]",
       },
       {
-        internalType: "bool",
-        name: "_hasHandicap",
-        type: "bool",
+        internalType: "bool[]",
+        name: "_bools",
+        type: "bool[]",
       },
       {
         internalType: "int256[]",
@@ -444,6 +444,11 @@ export default [
         name: "_hasHandicap",
         type: "bool",
       },
+      {
+        internalType: "bool",
+        name: "_isUnlimited",
+        type: "bool",
+      },
     ],
     stateMutability: "view",
     type: "function",
@@ -580,6 +585,19 @@ export default [
   {
     inputs: [],
     name: "isPrivate",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "isUnlimited",
     outputs: [
       {
         internalType: "bool",
