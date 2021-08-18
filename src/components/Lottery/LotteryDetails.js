@@ -9,9 +9,10 @@ import { toast } from "react-toastify";
 import useInput from "../hook/useInput";
 import { secondsToHms } from "../../utils/Utils";
 import { useHistory } from "react-router";
+import { getTickets } from "../../redux/actions";
 
 const LotteryDetials = (props) => {
-  const { getLottery } = props;
+  const { getLottery, getTickets } = props;
   const lotteryAddress = useParams().lotteryId;
   const lottery = useSelector((state) => state.lottery) || {};
   const address = useSelector((state) => state.address);
@@ -29,6 +30,11 @@ const LotteryDetials = (props) => {
   const [stakeAmount, bindStakeAmount] = useInput("0");
   const [counter, setCounter] = useState(0);
   const history = useHistory();
+  const tickets = useSelector((state) => state.tickets.tickets) || [];
+
+  useEffect(() => {
+    getTickets(lotteryAddress, address);
+  }, [address]);
 
   useEffect(() => {
     let val = endDate - Math.floor(Date.now() / 1000);
@@ -146,6 +152,7 @@ const LotteryDetials = (props) => {
             setLoading(false);
             setApprovedTicketNumber(false);
             toast.success("Succsess!");
+            history.go(0);
           });
         })
         .catch((err) => {
@@ -167,6 +174,7 @@ const LotteryDetials = (props) => {
             setLoading(false);
             setApprovedTicketBatch(false);
             toast.success("Succsess!");
+            history.go(0);
           });
         })
         .catch((err) => {
@@ -313,6 +321,16 @@ const LotteryDetials = (props) => {
       (el) => el.toLowerCase() == address.toLowerCase()
     );
 
+  const ticketItems = tickets.map((el, i) => {
+    return (
+      <div className="row ml-3">
+        <p style={{ color: "white" }}>
+          {i + 1}: {el.substring(1)}
+        </p>
+      </div>
+    );
+  });
+
   return (
     <Main loading={loading} setLoading={setLoading}>
       <div style={{ backgroundColor: "#021025" }}>
@@ -452,6 +470,13 @@ const LotteryDetials = (props) => {
               </>
             )}
           </div>
+
+          {tickets.length > 0 && (
+            <div className="mt-5" style={{ backgroundColor: "#0f1f38" }}>
+              <h3 style={{ color: "white" }}>Your tickets:</h3>
+              {ticketItems}
+            </div>
+          )}
         </div>
         <br />
         <br />
@@ -471,4 +496,4 @@ const LotteryDetials = (props) => {
     </Main>
   );
 };
-export default connect(null, { getLottery })(LotteryDetials);
+export default connect(null, { getLottery, getTickets })(LotteryDetials);

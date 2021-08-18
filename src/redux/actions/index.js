@@ -151,6 +151,21 @@ export const getBets = (poolAddress, userAddress) => async (dispatch) => {
     });
 };
 
+export const getTickets = (lotteryAddress, userAddress) => async (dispatch) => {
+  network
+    .get(UrlConst.getTicketsUrl, {
+      lotteryAddress,
+      userAddress,
+    })
+    .then((res) => {
+      const { tickets } = res.data;
+      dispatch({
+        type: ActionType.getTickets,
+        payload: tickets,
+      });
+    });
+};
+
 export const getMatches = () => (dispatch) => {
   network.get(UrlConst.getMatchesUrl).then((res) => {
     dispatch({

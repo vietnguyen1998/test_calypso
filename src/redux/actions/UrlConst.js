@@ -14,4 +14,5 @@ export default {
   getUserAddress: host + "getUserAddress",
   getLotteries: host + "lotteries",
   getLottery: host + "lottery",
+  getTicketsUrl: host + "tickets",
 };

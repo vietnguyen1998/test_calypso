@@ -16,4 +16,5 @@ export default {
   getUserAddress: "getUserAddress",
   getLotteries: "getLotteries",
   getLottery: "getLottery",
+  getTickets: "getTickets",
 };

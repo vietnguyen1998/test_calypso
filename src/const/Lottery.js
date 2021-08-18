@@ -226,6 +226,19 @@ export default [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getTicketsOfPlayer",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "_tickets",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",

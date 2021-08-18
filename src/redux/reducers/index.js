@@ -17,6 +17,7 @@ const initialState = {
   useraddress: "",
   lotteries: [],
   lottery: {},
+  tickets: [],
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -103,6 +104,11 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         bets: payload,
+      };
+    case ActionType.getTickets:
+      return {
+        ...state,
+        tickets: payload,
       };
     case ActionType.getMatches:
       return {
