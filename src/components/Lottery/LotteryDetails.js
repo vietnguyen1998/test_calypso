@@ -10,6 +10,7 @@ import useInput from "../hook/useInput";
 import { secondsToHms } from "../../utils/Utils";
 import { useHistory } from "react-router";
 import { getTickets } from "../../redux/actions";
+import $ from "jquery";
 
 const LotteryDetials = (props) => {
   const { getLottery, getTickets } = props;
@@ -31,9 +32,10 @@ const LotteryDetials = (props) => {
   const [counter, setCounter] = useState(0);
   const history = useHistory();
   const tickets = useSelector((state) => state.tickets.tickets) || [];
+  const [isRandomBatch, setIsRandomBatch] = useState(true);
 
   useEffect(() => {
-    getTickets(lotteryAddress, address);
+    if (address != "") getTickets(lotteryAddress, address);
   }, [address]);
 
   useEffect(() => {
@@ -143,7 +145,7 @@ const LotteryDetials = (props) => {
     let number = parseInt(ticketNumber);
     if (isNaN(number)) {
       setLoading(false);
-      return toast.error("Ticket number length should contain umbers only.");
+      return toast.error("Ticket number length should contain numbers only.");
     }
     LotterySc &&
       LotterySc.getTicket(number)
@@ -167,8 +169,28 @@ const LotteryDetials = (props) => {
       setLoading(false);
       return toast.error("Tickets amount should be higher than 0.");
     }
+    let ticketNumbers = [];
+    if (!isRandomBatch) {
+      for (let i = 0; i < ticketsAmount; i++) {
+        let numberStr = $("#ticketId-" + i).val();
+        if (numberStr.length != 7) {
+          setLoading(false);
+          return toast.error("All Ticket number length should be equal to 7.");
+        }
+
+        let number = parseInt(numberStr);
+        if (isNaN(number)) {
+          setLoading(false);
+          return toast.error(
+            "All Ticket numbers length should contain numbers only."
+          );
+        }
+        ticketNumbers.push(number);
+      }
+    }
+
     LotterySc &&
-      LotterySc.getTicketBatch(ticketsAmount)
+      LotterySc.getTicketBatch(ticketsAmount, ticketNumbers)
         .then((tx) => {
           tx.wait().then(() => {
             setLoading(false);
@@ -331,6 +353,18 @@ const LotteryDetials = (props) => {
     );
   });
 
+  const getTicketsArray = () => {
+    let array = [];
+    for (let i = 0; i < ticketsAmount; i++) {
+      array.push(i + 1);
+    }
+    return array;
+  };
+
+  const batch = getTicketsArray().map((el, i) => {
+    return <input className="text-input" type="text" id={"ticketId-" + i} />;
+  });
+
   return (
     <Main loading={loading} setLoading={setLoading}>
       <div style={{ backgroundColor: "#021025" }}>
@@ -392,13 +426,27 @@ const LotteryDetials = (props) => {
                 <div className="row">
                   <div className="col">
                     <label style={{ color: "white" }}>I’m feeling lucky:</label>
+                    <div className="row ml-5">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        onChange={(e) => setIsRandomBatch(!isRandomBatch)}
+                        disabled={approvedTicketBatch}
+                      ></input>
+                      <label className="form-check-label white">
+                        Manual input
+                      </label>
+                    </div>
                   </div>
                   <div className="col">
                     <input
                       className="text-input"
                       type="number"
+                      disabled={approvedTicketBatch}
                       {...bindTicketsAmount}
                     />
+
+                    {!isRandomBatch && batch}
                   </div>
                   <div className="col">
                     <button

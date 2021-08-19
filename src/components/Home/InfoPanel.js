@@ -279,7 +279,7 @@ const InfoPanel = () => {
           <br />
           <div className="row">
             <div
-              className="col-md-6 wow fadeInUp"
+              className="col-md-12 wow fadeInUp"
               data-wow-duration="1.5s"
               data-wow-delay="0.2s"
             >
@@ -319,7 +319,8 @@ const InfoPanel = () => {
                 </div>
               </div>
             </div>
-            <div
+            {/* 
+           <div
               className="col-md-6 wow fadeInUp"
               data-wow-duration="1.5s"
               data-wow-delay="0.4s"
@@ -353,6 +354,7 @@ const InfoPanel = () => {
                 </div>
               </div>
             </div>
+          */}{" "}
           </div>
         </div>
       </div>

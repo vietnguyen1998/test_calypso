@@ -213,6 +213,11 @@ export default [
         name: "_amount",
         type: "uint256",
       },
+      {
+        internalType: "uint256[]",
+        name: "_numbers",
+        type: "uint256[]",
+      },
     ],
     name: "getTicketBatch",
     outputs: [

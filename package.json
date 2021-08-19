@@ -9,6 +9,7 @@
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "ethers": "^5.4.0",
+    "jquery": "^3.6.0",
     "moment": "^2.29.1",
     "react": "^16.14.0",
     "react-bootstrap": "^1.6.1",
