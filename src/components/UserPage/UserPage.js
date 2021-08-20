@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Main from "../Common/Main";
 import { createUserName, getUserName, getPools } from "../../redux/actions";
 import useInput from "../hook/useInput";
@@ -12,6 +12,7 @@ const UserPage = (props) => {
   const address = useSelector((state) => state.address);
   const userName = useSelector((state) => state.username);
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const hasName = userName == "";
 
   useEffect(() => {
@@ -22,8 +23,20 @@ const UserPage = (props) => {
     getPools();
   }, []);
 
+  const createName = () => {
+    if (newName.includes(" ") || newName == "") {
+      toast.error("Name cannot contain space");
+    } else {
+      try {
+        setLoading(true);
+        createUserName(newName, address).then(() => history.go(0));
+      } catch (err) {
+        toast.error("This name already exists");
+      }
+    }
+  };
   return (
-    <Main>
+    <Main loading={loading} setLoading={setLoading}>
       <div className="container body-section">
         <div>
           <h2>Create or change your User Name:</h2>
@@ -33,20 +46,7 @@ const UserPage = (props) => {
             {...bindName}
             style={{ maxWidth: "500px" }}
           ></input>
-          <button
-            className={`yellow-btn mt-3 mr-3`}
-            onClick={async () => {
-              if (newName.includes(" ")) {
-                toast.error("Name cannot contain space");
-              } else {
-                createUserName(newName, address)
-                  .then(window.location.reload())
-                  .catch((err) => {
-                    toast.error("This name already exists");
-                  });
-              }
-            }}
-          >
+          <button className={`yellow-btn mt-3 mr-3`} onClick={createName}>
             {hasName ? "Create" : "Change"}
           </button>
         </div>
