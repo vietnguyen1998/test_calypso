@@ -34,6 +34,12 @@ const Pools = (props) => {
         return el.game.date > Math.floor(Date.now() / 1000);
       else return true;
     })
+    .filter((el) => {
+      const isEnded = Math.round(Date.now() / 1000) > el.endDate;
+      const hasResult = el.result.updated == true;
+      if (isEnded && !hasResult) return false;
+      else return true;
+    })
     .sort((pool1, pool2) => {
       return sortPools(pool1, pool2, sort);
     });

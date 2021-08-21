@@ -34,13 +34,25 @@ const MyPool = (props) => {
       return searchPool(el, searchText);
     })
     .sort((p1, p2) => sortPools(p1, p2, sort));
+  const newPools = filterPools.filter(
+    (pool) =>
+      pool.result.updated != true &&
+      Math.round(Date.now() / 1000) < pool.endDate
+  );
   const closePools = filterPools.filter((pool) => pool.result.updated);
-  const openPools = filterPools.filter((pool) => !pool.result.updated);
+  const openPools = filterPools.filter(
+    (pool) =>
+      pool.result.updated != true &&
+      Math.round(Date.now() / 1000) > pool.endDate
+  );
 
   useEffect(() => {
     getPools();
   }, []);
 
+  const newPoolItems = newPools.map((el, id) => {
+    return <Pool key={id} pool={el} address={address} />;
+  });
   const openPoolItems = openPools.map((el, id) => {
     return <Pool key={id} pool={el} address={address} />;
   });
@@ -93,7 +105,14 @@ const MyPool = (props) => {
                 </div>
               </div>
 
-              {/* Pool list */}
+              {/* New pools list */}
+
+              <h3 className="bold white mb-3">New Pools</h3>
+              <div className="col">{newPoolItems}</div>
+              <br />
+              <br />
+
+              {/* Ongoing list */}
 
               <h3 className="bold white mb-3">Ongoing</h3>
               <div className="col">{openPoolItems}</div>
