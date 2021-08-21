@@ -564,7 +564,7 @@ const CreatePool = (props) => {
                   type="range"
                   class="form-range ml-5"
                   style={{ width: "500px" }}
-                  min="0"
+                  min={getMaxPoolSize(1) / price}
                   max={(LogisticConst.upperLimit - 1) / price}
                   step="0.005"
                   value={maxPoolSize}
