@@ -251,7 +251,8 @@ const CreatePool = (props) => {
   const matchOptions = filterMatches.map((el, id) => {
     return (
       <option key={id} value={String(id)}>
-        {el.team1} - {el.team2}
+        {el.team1} - {el.team2}. Starts at{" "}
+        {timestampToLocalDate(el.date - 3600)}
       </option>
     );
   });
