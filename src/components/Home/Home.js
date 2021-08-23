@@ -114,7 +114,7 @@ const Home = (props) => {
                     }}
                     className="white bold ml-2"
                   >
-                    Hotest Pool
+                    Hottest Pool
                   </span>
                 </div>
               </div>

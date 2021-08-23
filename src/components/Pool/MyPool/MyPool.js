@@ -14,6 +14,7 @@ const MyPool = (props) => {
   const [searchText, setSearchText] = useState("");
   const [sort, setSort] = useState(SortItems.date);
   const [created, setCreated] = useState(false);
+  const [isOnlyClaimable, setIsOnlyClaimable] = useState(false);
   const pools = useSelector((state) => state.pools) || [];
   const address = useSelector((state) => state.address) || "";
   const filterPools = pools
@@ -40,6 +41,14 @@ const MyPool = (props) => {
       Math.round(Date.now() / 1000) < pool.endDate
   );
   const closePools = filterPools.filter((pool) => pool.result.updated);
+  const claimablePools = closePools.filter(
+    (pool) =>
+      pool.bets.some(
+        (bet) =>
+          bet.bettor.toLowerCase() === address.toLowerCase() &&
+          bet.side == pool.result.side
+      ) && pool.claimedUsers.every((el) => el.address != address)
+  );
   const openPools = filterPools.filter(
     (pool) =>
       pool.result.updated != true &&
@@ -59,6 +68,10 @@ const MyPool = (props) => {
   const closePoolItems = closePools.map((el, id) => {
     return <EndPool key={id} pool={el} address={address} />;
   });
+  const claimablePoolItems = claimablePools.map((el, id) => {
+    return <EndPool key={id} pool={el} address={address} />;
+  });
+
   return (
     <Main>
       <div style={{ backgroundColor: "#021025" }}>
@@ -115,13 +128,26 @@ const MyPool = (props) => {
               {/* Ongoing list */}
 
               <h3 className="bold white mb-3">Ongoing</h3>
+              <label className="form-check-label black">Enable Handicap</label>
               <div className="col">{openPoolItems}</div>
               <br />
               <br />
               {/* Ended */}
 
               <h3 className="bold white mb-3">Ended</h3>
-              <div className="col">{closePoolItems}</div>
+              <div className="col">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  onChange={(e) => {
+                    setIsOnlyClaimable(e.target.checked);
+                  }}
+                ></input>
+                <label className="form-check-label white">Only Claimable</label>
+              </div>
+              <div className="col">
+                {(!isOnlyClaimable && closePoolItems) || claimablePoolItems}
+              </div>
             </div>
           </div>
         </div>

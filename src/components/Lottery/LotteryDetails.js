@@ -7,6 +7,7 @@ import { getLotterySc, getSigner, getCal } from "../../utils/Contracts";
 import { getWei } from "../../utils/Web3Utils";
 import { toast } from "react-toastify";
 import useInput from "../hook/useInput";
+import TutorialPopup from "../Common/TutorialPopup";
 import { secondsToHms } from "../../utils/Utils";
 import { useHistory } from "react-router";
 import { getTickets } from "../../redux/actions";
@@ -27,7 +28,7 @@ const LotteryDetials = (props) => {
   const [approvedStake, setApprovedStake] = useState(false);
   const [calAmount, setCalAmount] = useState("0");
   const [ticketNumber, bindTicketNumber] = useInput("Enter 7-digit number");
-  const [ticketsAmount, bindTicketsAmount] = useInput("0");
+  const [ticketsAmount, bindTicketsAmount] = useInput("1");
   const [stakeAmount, bindStakeAmount] = useInput("0");
   const [counter, setCounter] = useState(0);
   const history = useHistory();
@@ -67,7 +68,7 @@ const LotteryDetials = (props) => {
     lotteryAddress && getLottery(lotteryAddress);
   };
 
-  const approveGetTicket = () => {
+  /*const approveGetTicket = () => {
     setLoading(true);
     CalSigner &&
       CalSigner.approve(lotteryAddress, getWei(calAmount.toString()))
@@ -88,7 +89,7 @@ const LotteryDetials = (props) => {
           setLoading(false);
           toast.error(err.message);
         });
-  };
+  };*/
 
   const approveGetTicketBatch = () => {
     setLoading(true);
@@ -136,7 +137,7 @@ const LotteryDetials = (props) => {
         });
   };
 
-  const purchaseTicket = () => {
+  /*const purchaseTicket = () => {
     setLoading(true);
     if (ticketNumber.length != 7) {
       setLoading(false);
@@ -161,7 +162,7 @@ const LotteryDetials = (props) => {
           setLoading(false);
           toast.error(err.message);
         });
-  };
+  };*/
 
   const purchaseTicketBatch = () => {
     setLoading(true);
@@ -362,9 +363,16 @@ const LotteryDetials = (props) => {
   };
 
   const batch = getTicketsArray().map((el, i) => {
-    return <input className="text-input" type="text" id={"ticketId-" + i} />;
+    return (
+      <input
+        style={{ backgroundColor: "gold" }}
+        className="text-input"
+        type="text"
+        id={"ticketId-" + i}
+      />
+    );
   });
-
+  const winNumber = lottery && lottery.winNumber;
   return (
     <Main loading={loading} setLoading={setLoading}>
       <div style={{ backgroundColor: "#021025" }}>
@@ -392,13 +400,12 @@ const LotteryDetials = (props) => {
               <p style={{ color: "yellow" }}>2100.84%</p>
             </div>
           </div>
-
           <div className="mt-5" style={{ backgroundColor: "#0f1f38" }}>
-            <h1 style={{ color: "white" }}>LUCKY DAY</h1>
-            <p style={{ color: "yellow" }}>7 Digit Lottery</p>
+            <h2 style={{ color: "white" }}>LUCKY DAY</h2>
             {(!lottery.hasDrawn && (
               <>
-                <div className="row">
+                <p style={{ color: "yellow" }}>7 Digit Lottery</p>
+                {/*<div className="row">
                   <div className="col">
                     {" "}
                     <label style={{ color: "white" }}>
@@ -423,9 +430,14 @@ const LotteryDetials = (props) => {
                     </button>
                   </div>
                 </div>
+              */}{" "}
                 <div className="row">
                   <div className="col">
-                    <label style={{ color: "white" }}>I’m feeling lucky:</label>
+                    <TutorialPopup content="Purchasing an amount of tickets. Numbets of tickets shall be randomized by default">
+                      <label style={{ color: "white" }}>
+                        Purchase tickets:
+                      </label>
+                    </TutorialPopup>
                     <div className="row ml-5">
                       <input
                         className="form-check-input"
@@ -433,9 +445,11 @@ const LotteryDetials = (props) => {
                         onChange={(e) => setIsRandomBatch(!isRandomBatch)}
                         disabled={approvedTicketBatch}
                       ></input>
-                      <label className="form-check-label white">
-                        Manual input
-                      </label>
+                      <TutorialPopup content="Select this option to enter ticket numbers manually">
+                        <label className="form-check-label white">
+                          Enter numbers manually
+                        </label>
+                      </TutorialPopup>
                     </div>
                   </div>
                   <div className="col">
@@ -462,28 +476,47 @@ const LotteryDetials = (props) => {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col">
-                    <label style={{ color: "white" }}>I want to stake:</label>
-                  </div>
-                  <div className="col">
-                    <input
-                      className="text-input"
-                      type="number"
-                      {...bindStakeAmount}
-                    />
-                  </div>
-                  <div className="col">
-                    <button
-                      className="yellow-btn mt-3 mr-3"
-                      onClick={approvedStake ? stake : approveStake}
-                    >
-                      {approvedStake ? "Stake" : "Approve CAL"}
-                    </button>
-                  </div>
+                  {(Date.now() / 1000 < lottery.endDate - 3600 * 4 && (
+                    <>
+                      <div className="col">
+                        <label style={{ color: "white" }}>
+                          I want to stake:
+                        </label>
+                      </div>
+                      <div className="col">
+                        <input
+                          className="text-input"
+                          type="number"
+                          {...bindStakeAmount}
+                        />
+                      </div>
+                      <div className="col">
+                        <button
+                          className="yellow-btn mt-3 mr-3"
+                          onClick={approvedStake ? stake : approveStake}
+                        >
+                          {approvedStake ? "Stake" : "Approve CAL"}
+                        </button>
+                      </div>
+                    </>
+                  )) || (
+                    <div className="col">
+                      <label style={{ color: "white" }}>
+                        Cannot stake 4 hours before a lottery ends
+                      </label>
+                    </div>
+                  )}
                 </div>
               </>
             )) || (
               <>
+                <h3
+                  className="yellow wow fadeInUp"
+                  data-wow-duration="1s"
+                  data-wow-delay="0.2s"
+                >
+                  Winning number is: {winNumber}
+                </h3>
                 {getUserPrize() > 0 && (
                   <div className="row ml-5">
                     <div className="col">

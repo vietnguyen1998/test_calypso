@@ -111,8 +111,9 @@ const NavBar = (props) => {
               <button
                 className="btn yellow-btn"
                 onClick={() => history.push("/swap")}
+                style={{ minWidth: "100px" }}
               >
-                <small style={{ margin: "5px" }}>Buy Cal</small>
+                <small style={{ margin: "5px" }}>BUY CAL</small>
               </button>
             </div>
             <div className="col-sm-1  my-auto">
