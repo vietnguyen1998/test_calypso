@@ -99,14 +99,24 @@ const PoolDetail = (props) => {
       : side === BetSides.team2
       ? { image: game.logo2, name: game.team2 }
       : {
-          image: "",
+          image:
+            result.side > 3 ? (result.side == 4 ? game.logo1 : game.logo2) : "",
           name:
             result.side > 3
               ? result.side == 4
-                ? "Half Win"
-                : "Half Loose"
+                ? `${game.team1} (${pool.handicap > 0 ? "+" : ""} ${
+                    pool.handicap
+                  })`
+                : `${game.team2} (${pool.handicap > 0 ? "+" : ""} ${
+                    pool.handicap
+                  })`
               : "Draw",
         };
+
+  /*
+        {pool.handicap > 0 ? "+" : ""}
+                  {pool.handicap}
+        */
   useEffect(() => {
     updatePool();
   }, [address, reload]);
@@ -329,7 +339,8 @@ const PoolDetail = (props) => {
               {pool.hasHandicap && (
                 <div classname="row">
                   <span className="bold">Handicap: </span>
-                  {game.team1}: {pool.handicap}
+                  {game.team1}: {pool.handicap > 0 ? "+" : ""}
+                  {pool.handicap}
                 </div>
               )}
             </div>
