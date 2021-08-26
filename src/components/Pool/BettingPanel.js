@@ -140,7 +140,10 @@ const BettingPanel = (props) => {
         <React.Fragment key={0}>
           {" "}
           <p style={{ marginRight: 20 }}>
-            <Radio value={1} /> {game.team1}
+            <Radio value={1} /> {game.team1}{" "}
+            {pool.hasHandicap && pool.handicap != 0
+              ? `${pool.handicap > 0 ? "+" : ""} ${pool.handicap}`
+              : ""}
           </p>
         </React.Fragment>
         {!pool.hasHandicap && (
@@ -154,7 +157,10 @@ const BettingPanel = (props) => {
         <React.Fragment key={1}>
           {" "}
           <p style={{ marginRight: 20 }}>
-            <Radio value={2} /> {game.team2}
+            <Radio value={2} /> {game.team2}{" "}
+            {pool.hasHandicap && pool.handicap != 0
+              ? `${pool.handicap > 0 ? "-" : ""} ${pool.handicap}`
+              : ""}
           </p>
         </React.Fragment>
       </>

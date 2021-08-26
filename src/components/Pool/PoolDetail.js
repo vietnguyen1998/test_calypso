@@ -113,10 +113,6 @@ const PoolDetail = (props) => {
               : "Draw",
         };
 
-  /*
-        {pool.handicap > 0 ? "+" : ""}
-                  {pool.handicap}
-        */
   useEffect(() => {
     updatePool();
   }, [address, reload]);
