@@ -10,6 +10,7 @@ import {
   roundNumber,
   timestampToLocalDate,
   getCalAmount,
+  formatTimezone,
 } from "../../../utils/Utils";
 import WhiteListPanel from "./WhiteListPanel/WhiteListPanel";
 import { SupportedCoins, ZeroAddress } from "../../../const/Const";
@@ -252,7 +253,8 @@ const CreatePool = (props) => {
     return (
       <option key={id} value={String(id)}>
         {el.team1} - {el.team2}. Starts at{" "}
-        {timestampToLocalDate(el.date - 3600)}
+        {timestampToLocalDate(el.date - 3600, "D MMM YYYY")}{" "}
+        {formatTimezone(el.date)}
       </option>
     );
   });

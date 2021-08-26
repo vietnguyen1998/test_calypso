@@ -26,7 +26,7 @@ const LotteryDetials = (props) => {
   const [approvedTicketNumber, setApprovedTicketNumber] = useState(false);
   const [approvedTicketBatch, setApprovedTicketBatch] = useState(false);
   const [approvedStake, setApprovedStake] = useState(false);
-  const [calAmount, setCalAmount] = useState("0");
+  const [calAmount, setCalAmount] = useState("1");
   const [ticketNumber, bindTicketNumber] = useInput("Enter 7-digit number");
   const [ticketsAmount, bindTicketsAmount] = useInput("1");
   const [stakeAmount, bindStakeAmount] = useInput("0");
@@ -94,7 +94,7 @@ const LotteryDetials = (props) => {
   const approveGetTicketBatch = () => {
     setLoading(true);
     CalSigner &&
-      CalSigner.approve(lotteryAddress, getWei(calAmount.toString()))
+      CalSigner.approve(lotteryAddress, getWei(ticketsAmount.toString()))
         .then((tx) => {
           tx.wait().then(() => {
             setLoading(false);
