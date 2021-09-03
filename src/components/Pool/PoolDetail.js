@@ -94,23 +94,30 @@ const PoolDetail = (props) => {
   const expiredTimeWithoutResult = timestamp - pool.endDate > 5 * 60 * 60; // after 5 hours users can withdraw all their funds
   const side = hasResult && result.side;
   const winner =
-    side == BetSides.team1
-      ? { image: game.logo1, name: game.team1 }
-      : side === BetSides.team2
-      ? { image: game.logo2, name: game.team2 }
+    side == BetSides.team1 || side === 4
+      ? {
+          image: game.logo1,
+          name: `${game.team1} ${
+            pool.hasHandicap && pool.handicap != 0
+              ? pool.handicap > 0
+                ? `+${pool.handicap}`
+                : pool.handicap
+              : ""
+          }`,
+        }
+      : side === BetSides.team2 || side === 5
+      ? {
+          image: game.logo2,
+          name: `${game.team2} ${
+            pool.hasHandicap && pool.handicap != 0
+              ? pool.handicap > 0
+                ? pool.handicap * -1
+                : `+${pool.handicap * -1}`
+              : ""
+          }`,
+        }
       : {
-          image:
-            result.side > 3 ? (result.side == 4 ? game.logo1 : game.logo2) : "",
-          name:
-            result.side > 3
-              ? result.side == 4
-                ? `${game.team1} (${pool.handicap > 0 ? "+" : ""} ${
-                    pool.handicap
-                  })`
-                : `${game.team2} (${pool.handicap > 0 ? "+" : ""} ${
-                    pool.handicap
-                  })`
-              : "Draw",
+          name: "Draw",
         };
 
   useEffect(() => {
