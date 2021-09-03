@@ -33,10 +33,10 @@ const WithdrawDeposit = (props) => {
         <span className="grey mr-2 mb-1">Total deposited amount: </span>{" "}
         {depositedCal} CAL
       </p>
-      <p className="mb-1">
+      {/*<p className="mb-1">
         <span className="grey mr-2 mb-1">Amount to withdraw: </span>{" "}
         {depositedCal / 2} CAL
-      </p>
+      </p> */}
       <p className="mb-1">
         <span className="grey mr-2 mb-1">Pool Fee: </span>{" "}
         {poolFeeAmount.toFixed(8)} {coin}
