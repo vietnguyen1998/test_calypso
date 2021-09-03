@@ -252,8 +252,8 @@ const CreatePool = (props) => {
   const matchOptions = filterMatches.map((el, id) => {
     return (
       <option key={id} value={String(id)}>
-        {el.team1} - {el.team2}. Starts at{" "}
-        {timestampToLocalDate(el.date - 3600, "D MMM YYYY")}{" "}
+        {el.team1} - {el.team2}. {" "}
+        {timestampToLocalDate(el.date - 3600, "D MMM YYYY H:mm UTC")}{" "}
         {formatTimezone(el.date)}
       </option>
     );

@@ -138,7 +138,6 @@ const PoolDetail = (props) => {
     });
     return total;
   };
-
   const userRefund = () => {
     let total = 0;
     if (!hasRefund) {
@@ -171,6 +170,7 @@ const PoolDetail = (props) => {
         </>
       );
     });
+
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
       <div className="container body-section">
@@ -426,14 +426,17 @@ const PoolDetail = (props) => {
                 />
               )}
 
-            {/*If we do not get the result of the match and 5 hours passed or the pool is inactive*/}
+            {/*If we do not get the result of the match and 5 hours passed 
+            or the pool is inactive
+            or any other case a user can claim back*/}
             {((!hasResult &&
               expiredTimeWithoutResult &&
               validAddress &&
               canClaimNoResult &&
               bets.length > 0 &&
               !claimUser) ||
-              (!isActive && hasResult)) && (
+              (!isActive && hasResult) ||
+              (pool.hasHandicap && pool.result.side == 3)) && (
               <ClaimReward
                 PoolSc={poolSigner}
                 onReload={() => setReload(!reload)}
@@ -446,6 +449,7 @@ const PoolDetail = (props) => {
                 hasResult={hasResult}
                 userAddress={address}
                 isActive={isActive}
+                isHandicapRefund={pool.hasHandicap && pool.result.side == 3}
               />
             )}
 

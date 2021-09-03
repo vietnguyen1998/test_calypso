@@ -16,6 +16,7 @@ const ClaimReward = (props) => {
     userAddress,
     isActive,
     userRefund,
+    isHandicapRefund,
   } = props;
   const betAmount = winBets.reduce(
     (acc, cur) =>
@@ -24,11 +25,12 @@ const ClaimReward = (props) => {
         : acc,
     0
   );
-  const winAmount = hasResult
-    ? winTotal == 0
-      ? 0
-      : (betAmount * winOutcome) / winTotal + userRefund
-    : winOutcome;
+  const winAmount =
+    hasResult && !isHandicapRefund
+      ? winTotal == 0
+        ? 0
+        : (betAmount * winOutcome) / winTotal + userRefund
+      : winOutcome;
   const claimReward = () => {
     setLoading(true);
     PoolSc &&
@@ -53,6 +55,7 @@ const ClaimReward = (props) => {
       return "Claim back: ";
     }
   };
+
   return (
     <>
       <div>
