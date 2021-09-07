@@ -11,6 +11,7 @@ import {
 } from "../../../utils/Utils";
 import TutorialPopup from "../../Common/TutorialPopup";
 import { TabName } from "../../Common/Sidebar";
+import { BetSides } from "../../../const/Const";
 
 const Pool = (props) => {
   const { pool, delay, address } = props;
@@ -18,6 +19,8 @@ const Pool = (props) => {
   const history = useHistory();
   const currency = SupportedCoins.find((el) => el.value == pool.currency) || {};
   const isActive = pool.total >= pool.minPoolSize || pool.minPoolSize == 0;
+  const hasResult = (pool.result && pool.result.updated) || false;
+  const side = hasResult && pool.result.side;
 
   const odds = () => {
     let betAmounts = [];
@@ -106,6 +109,32 @@ const Pool = (props) => {
               <h3 className="white text">
                 {pool.result.g1} - {pool.result.g2}
               </h3>
+            </div>
+          </div>
+        )}
+        {hasResult && (
+          <div className="row px-2 text-center">
+            <div className="col">
+              <p style={{ color: "yellow" }}>
+                Winner:{" "}
+                {side == BetSides.team1 || side === 4
+                  ? `${game.team1} ${
+                      pool.hasHandicap && pool.handicap != 0
+                        ? pool.handicap > 0
+                          ? `+${pool.handicap}`
+                          : pool.handicap
+                        : ""
+                    }`
+                  : side === BetSides.team2 || side === 5
+                  ? `${game.team2} ${
+                      pool.hasHandicap && pool.handicap != 0
+                        ? pool.handicap > 0
+                          ? pool.handicap * -1
+                          : `+${pool.handicap * -1}`
+                        : ""
+                    }`
+                  : "Draw"}
+              </p>
             </div>
           </div>
         )}

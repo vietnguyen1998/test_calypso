@@ -23,6 +23,8 @@ const EndPool = (props) => {
     pool &&
     pool.owner.toLowerCase() == address.toLowerCase() &&
     pool.result.claimedDepositAndFee;
+  const side = pool.result.side;
+
   return (
     <div
       className="row pool-list parent wow fadeInUp"
@@ -64,6 +66,30 @@ const EndPool = (props) => {
               />
             </div>
             <p className="team-name mt-2">{game.team2}</p>
+          </div>
+        </div>
+        <div className="row px-2 text-center">
+          <div className="col">
+            <p style={{ color: "yellow" }}>
+              Winner:{" "}
+              {side == BetSides.team1 || side === 4
+                ? `${game.team1} ${
+                    pool.hasHandicap && pool.handicap != 0
+                      ? pool.handicap > 0
+                        ? `+${pool.handicap}`
+                        : pool.handicap
+                      : ""
+                  }`
+                : side === BetSides.team2 || side === 5
+                ? `${game.team2} ${
+                    pool.hasHandicap && pool.handicap != 0
+                      ? pool.handicap > 0
+                        ? pool.handicap * -1
+                        : `+${pool.handicap * -1}`
+                      : ""
+                  }`
+                : "Draw"}
+            </p>
           </div>
         </div>
       </div>
