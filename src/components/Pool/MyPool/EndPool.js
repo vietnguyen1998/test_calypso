@@ -19,7 +19,10 @@ const EndPool = (props) => {
   );
   const claimUser =
     pool.claimedUsers && pool.claimedUsers.some((el) => el.address == address);
-  const claimedDepositAndFee = pool && pool.owner.toLowerCase()==address.toLowerCase() &&pool.result.claimedDepositAndFee;
+  const claimedDepositAndFee =
+    pool &&
+    pool.owner.toLowerCase() == address.toLowerCase() &&
+    pool.result.claimedDepositAndFee;
   return (
     <div
       className="row pool-list parent wow fadeInUp"
@@ -99,7 +102,7 @@ const EndPool = (props) => {
               {claimUser
                 ? claimedDepositAndFee
                   ? "Claimed"
-                  : "Unstake CAL"
+                  : "Claim Pool Fee"
                 : containWin
                 ? "Claim"
                 : "View"}

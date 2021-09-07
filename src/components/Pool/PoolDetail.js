@@ -460,15 +460,17 @@ const PoolDetail = (props) => {
               />
             )}
 
-            {(hasResult || expiredTimeWithoutResult) && isOwner && (
-              <WithdrawDeposit
-                pool={pool}
-                coin={currencyName}
-                PoolSc={poolSigner}
-                onReload={() => setReload(!reload)}
-                setLoading={setLoading}
-              />
-            )}
+            {(hasResult || expiredTimeWithoutResult) &&
+              isOwner &&
+              pool.poolFeeAmount > 0 && (
+                <WithdrawDeposit
+                  pool={pool}
+                  coin={currencyName}
+                  PoolSc={poolSigner}
+                  onReload={() => setReload(!reload)}
+                  setLoading={setLoading}
+                />
+              )}
             {/* My bets */}
             {validAddress && (
               <BetList

@@ -109,7 +109,7 @@ const CreatePool = (props) => {
 
   useEffect(() => {
     if (document.activeElement.id != "calAmountInput") {
-      setCalAmount(calcCalAmount());
+      setCalAmount(calcCalAmount() < 1 ? 1 : calcCalAmount());
     }
   }, [maxPoolSize]);
 
@@ -130,6 +130,11 @@ const CreatePool = (props) => {
   }, [description]);
 
   const approveCal = async () => {
+    if (calAmount < 1) {
+      setLoading(false);
+      toast.error("Pool creation fee cannot be lesser or equal then 1");
+      return;
+    }
     setLoading(true);
     CalSigner &&
       CalSigner.approve(Addresses.poolManager, getWei(calAmount.toString()))
@@ -169,9 +174,9 @@ const CreatePool = (props) => {
         toast.error("Min pool size cannot be bigger than max pool size");
         return;
       }
-      if (calAmount <= 0) {
+      if (calAmount < 1) {
         setLoading(false);
-        toast.error("Pool creation fee cannot be lesser or equal then 0");
+        toast.error("Pool creation fee cannot be lesser or equal then 1");
         return;
       }
       const handicap = [
@@ -252,7 +257,7 @@ const CreatePool = (props) => {
   const matchOptions = filterMatches.map((el, id) => {
     return (
       <option key={id} value={String(id)}>
-        {el.team1} - {el.team2}. {" "}
+        {el.team1} - {el.team2}.{" "}
         {timestampToLocalDate(el.date - 3600, "D MMM YYYY H:mm UTC")}{" "}
         {formatTimezone(el.date)}
       </option>
