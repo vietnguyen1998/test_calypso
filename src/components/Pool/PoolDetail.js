@@ -462,7 +462,7 @@ const PoolDetail = (props) => {
 
             {(hasResult || expiredTimeWithoutResult) &&
               isOwner &&
-              pool.poolFeeAmount > 0 && (
+              pool.result.poolFeeAmount > 0 && (
                 <WithdrawDeposit
                   pool={pool}
                   coin={currencyName}
