@@ -46,7 +46,10 @@ const MyPool = (props) => {
       pool.bets.some(
         (bet) =>
           bet.bettor.toLowerCase() === address.toLowerCase() &&
-          bet.side == pool.result.side
+          (pool.result.side > 3
+            ? bet.side + 3
+            : bet.side == pool.result.side ||
+              (pool.hasHandicap && pool.handicap == 0 && pool.result.side == 3))
       ) && pool.claimedUsers.every((el) => el.address != address)
   );
   const openPools = filterPools.filter(

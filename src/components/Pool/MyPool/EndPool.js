@@ -15,15 +15,20 @@ const EndPool = (props) => {
   const containWin = pool.bets.some(
     (bet) =>
       bet.bettor.toLowerCase() === address.toLowerCase() &&
-      bet.side == pool.result.side
+      bet.side ==
+        (pool.result.side > 3 ? pool.result.side - 3 : pool.result.side)
+  );
+  const canReturnBet = pool.bets.some(
+    (bet) =>
+      bet.bettor.toLowerCase() === address.toLowerCase() &&
+      ((pool.hasHandicap && pool.handicap == 0) || pool.result.refund > 0)
   );
   const claimUser =
     pool.claimedUsers && pool.claimedUsers.some((el) => el.address == address);
-  const claimedDepositAndFee =
-    pool &&
-    pool.owner.toLowerCase() == address.toLowerCase() &&
-    pool.result.claimedDepositAndFee;
+  const isOwner = pool && pool.owner.toLowerCase() == address.toLowerCase();
+  const claimedDepositAndFee = pool && pool.result.claimedDepositAndFee;
   const side = pool.result.side;
+  const hasFeesToClaim = pool && pool.result.platformFeeAmount > 0;
 
   return (
     <div
@@ -68,30 +73,6 @@ const EndPool = (props) => {
             <p className="team-name mt-2">{game.team2}</p>
           </div>
         </div>
-        <div className="row px-2 text-center">
-          <div className="col">
-            <p style={{ color: "yellow" }}>
-              Winner:{" "}
-              {side == BetSides.team1 || side === 4
-                ? `${game.team1} ${
-                    pool.hasHandicap && pool.handicap != 0
-                      ? pool.handicap > 0
-                        ? `+${pool.handicap}`
-                        : pool.handicap
-                      : ""
-                  }`
-                : side === BetSides.team2 || side === 5
-                ? `${game.team2} ${
-                    pool.hasHandicap && pool.handicap != 0
-                      ? pool.handicap > 0
-                        ? pool.handicap * -1
-                        : `+${pool.handicap * -1}`
-                      : ""
-                  }`
-                : "Draw"}
-            </p>
-          </div>
-        </div>
       </div>
       <div className="col-md-8">
         <p className="white small-text text-wrap">
@@ -102,10 +83,22 @@ const EndPool = (props) => {
         </p>
         <small className="mr-2 yellow bold">Result:</small>
         <small className=" mr-4 yellow bold">
-          {gameResult == BetSides.team1
-            ? game.team1
-            : gameResult == BetSides.team2
-            ? game.team2
+          {side == BetSides.team1 || side === 4
+            ? `${game.team1} ${
+                pool.hasHandicap && pool.handicap != 0
+                  ? pool.handicap > 0
+                    ? `+${pool.handicap}`
+                    : pool.handicap
+                  : ""
+              }`
+            : side === BetSides.team2 || side === 5
+            ? `${game.team2} ${
+                pool.hasHandicap && pool.handicap != 0
+                  ? pool.handicap > 0
+                    ? pool.handicap * -1
+                    : `+${pool.handicap * -1}`
+                  : ""
+              }`
             : "Draw"}
         </small>
         {pool.bets.length > 0 &&
@@ -116,21 +109,28 @@ const EndPool = (props) => {
               You have made a bet in this Pool!
             </p>
           )}
-        {claimedDepositAndFee && (
-          <p className="green small-text text-wrap">
-            You have claimed Pool Fee.
+        {isOwner && hasFeesToClaim && (
+          <p
+            className={
+              claimedDepositAndFee
+                ? "green small-text text-wrap"
+                : "yellow small-text text-wrap"
+            }
+          >
+            {claimedDepositAndFee
+              ? "You have claimed Pool Fee."
+              : "You can claim Pool Fee"}
           </p>
         )}
         <Link to={`/pools/${pool._id}`}>
           <button className="border-btn extra-small-text small-border-btn">
             <span className={claimUser && claimedDepositAndFee ? "green" : ""}>
-              {" "}
-              {claimUser
-                ? claimedDepositAndFee
-                  ? "Claimed"
-                  : "Claim Pool Fee"
-                : containWin
-                ? "Claim"
+              {containWin
+                ? claimUser
+                  ? "View"
+                  : "Claim"
+                : canReturnBet && !claimUser
+                ? "Claim Back"
                 : "View"}
             </span>
           </button>

@@ -443,7 +443,9 @@ const PoolDetail = (props) => {
               bets.length > 0 &&
               !claimUser) ||
               (!isActive && hasResult) ||
-              (pool.hasHandicap && pool.result.side == 3)) && (
+              (pool.hasHandicap &&
+                pool.result.side == 3 &&
+                canClaimNoResult)) && (
               <ClaimReward
                 PoolSc={poolSigner}
                 onReload={() => setReload(!reload)}
@@ -462,7 +464,7 @@ const PoolDetail = (props) => {
 
             {(hasResult || expiredTimeWithoutResult) &&
               isOwner &&
-              pool.result.poolFeeAmount > 0 && (
+              pool.result.platformFeeAmount > 0 && (
                 <WithdrawDeposit
                   pool={pool}
                   coin={currencyName}

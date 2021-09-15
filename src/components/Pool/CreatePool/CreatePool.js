@@ -257,8 +257,9 @@ const CreatePool = (props) => {
   const matchOptions = filterMatches.map((el, id) => {
     return (
       <option key={id} value={String(id)}>
-        {el.team1} - {el.team2}.{" "}
-        {timestampToLocalDate(el.date - 3600, "D MMM YYYY H:mm UTC")}{" "}
+        {el.team1} - {el.team2}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        {timestampToLocalDate(el.date - 3600, "D MMM YYYY")}{" "}
+        {timestampToLocalDate(el.date - 3600, "H:mm UTC").padStart(9, "0")}{" "}
         {formatTimezone(el.date)}
       </option>
     );
@@ -511,7 +512,7 @@ const CreatePool = (props) => {
               </select>
               <br />
               <TutorialPopup content="The amount of CAL staked will determine the Max Pool Size. You will get back half of your CAL after the match has ended successfully.">
-                <span>Pool Creation Fee</span>
+                <span>Pool Creation Fee in CAL</span>
               </TutorialPopup>
               <br />
               <input

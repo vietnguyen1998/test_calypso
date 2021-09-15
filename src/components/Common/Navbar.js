@@ -160,7 +160,7 @@ const NavBar = (props) => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav navbar-right mx-auto">
-                <li className="nav-item">
+                {/*<li className="nav-item">
                   <div className="nav-link-box">
                     <Link to="/pools" className="nav-link">
                       Join Pool
@@ -171,6 +171,47 @@ const NavBar = (props) => {
                   <div className="nav-link-box">
                     <Link to="/create-pool" className="nav-link">
                       Start Pool
+                    </Link>
+                  </div>
+                </li> */}
+                <li className="nav-item">
+                  <div
+                    className="nav-link-box dropdown-toggle tablinks"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <span className="tab-list bold">Sports</span>
+                  </div>
+
+                  <div
+                    class="dropdown-menu"
+                    style={{
+                      backgroundColor: "#2a3e5c",
+                      marginLeft: "20%",
+                    }}
+                  >
+                    <Link
+                      to="/pools"
+                      className="nav-link mt-1"
+                      style={{ backgroundColor: "yellow" }}
+                    >
+                      Join Pool
+                    </Link>
+                    <Link
+                      to="/create-pool"
+                      className="nav-link mt-1"
+                      style={{ backgroundColor: "yellow" }}
+                    >
+                      Start Pool
+                    </Link>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link-box">
+                    <Link to="/lottery" className="nav-link">
+                      Lottery
                     </Link>
                   </div>
                 </li>
@@ -214,13 +255,6 @@ const NavBar = (props) => {
                   <div className="nav-link-box">
                     <Link to="/my-page" className="nav-link">
                       My Page
-                    </Link>
-                  </div>
-                </li>
-                <li className="nav-item">
-                  <div className="nav-link-box">
-                    <Link to="/lottery" className="nav-link">
-                      Lottery
                     </Link>
                   </div>
                 </li>
