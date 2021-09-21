@@ -160,23 +160,9 @@ const NavBar = (props) => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav navbar-right mx-auto">
-                {/*<li className="nav-item">
-                  <div className="nav-link-box">
-                    <Link to="/pools" className="nav-link">
-                      Join Pool
-                    </Link>
-                  </div>
-                </li>
-                <li className="nav-item">
-                  <div className="nav-link-box">
-                    <Link to="/create-pool" className="nav-link">
-                      Start Pool
-                    </Link>
-                  </div>
-                </li> */}
                 <li className="nav-item">
                   <div
-                    className="nav-link-box dropdown-toggle tablinks"
+                    className="nav-link-box dropdown-toggle "
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -188,24 +174,30 @@ const NavBar = (props) => {
                   <div
                     class="dropdown-menu"
                     style={{
-                      backgroundColor: "#2a3e5c",
+                      backgroundColor: "#0f1f38",
                       marginLeft: "20%",
                     }}
                   >
-                    <Link
-                      to="/pools"
-                      className="nav-link mt-1"
-                      style={{ backgroundColor: "yellow" }}
-                    >
-                      Join Pool
-                    </Link>
-                    <Link
-                      to="/create-pool"
-                      className="nav-link mt-1"
-                      style={{ backgroundColor: "yellow" }}
-                    >
-                      Start Pool
-                    </Link>
+                    <div className="col ">
+                      <div className="row justify-content-center">
+                        <button
+                          className="border-btn"
+                          onClick={() => history.push("/pools")}
+                          style={{ width: "90%" }}
+                        >
+                          Join Pool
+                        </button>
+                      </div>
+                      <div className="row  justify-content-center">
+                        <button
+                          className="border-btn mt-2"
+                          onClick={() => history.push("/create-pool")}
+                          style={{ width: "90%" }}
+                        >
+                          Start Pool
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </li>
                 <li className="nav-item">

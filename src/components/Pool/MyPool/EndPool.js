@@ -21,6 +21,7 @@ const EndPool = (props) => {
   const canReturnBet = pool.bets.some(
     (bet) =>
       bet.bettor.toLowerCase() === address.toLowerCase() &&
+      pool.result.side > 3 &&
       ((pool.hasHandicap && pool.handicap == 0) || pool.result.refund > 0)
   );
   const claimUser =
@@ -145,11 +146,11 @@ const EndPool = (props) => {
           <div className="col-md-3 col-6">
             <TutorialPopup content="Date and time of match in your local time">
               <p className="grey small-text mb-0">
-                {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
+                {timestampToLocalDate(game.date, "D MMM YYYY")}
               </p>
             </TutorialPopup>
             <p className="bold small-text yellow">
-              {timestampToLocalDate(game.date - 3600, "H:mm Z")}
+              {timestampToLocalDate(game.date, "H:mm Z")}
             </p>
           </div>
           <div className="col-md-3 col-6">

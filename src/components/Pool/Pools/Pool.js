@@ -202,11 +202,11 @@ const Pool = (props) => {
           <div className="col-md-3 col-6">
             <TutorialPopup content="Date and time of match in your local time">
               <small className="grey">
-                {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
+                {timestampToLocalDate(game.date, "D MMM YYYY")}
               </small>
             </TutorialPopup>
             <p className="bold small-text yellow">
-              {timestampToLocalDate(game.date - 3600, "H:mm UTC")}{" "}
+              {timestampToLocalDate(game.date, "H:mm UTC")}{" "}
               {formatTimezone(game.date)}
             </p>
           </div>
