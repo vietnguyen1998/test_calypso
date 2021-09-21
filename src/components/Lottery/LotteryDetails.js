@@ -12,6 +12,8 @@ import { secondsToHms } from "../../utils/Utils";
 import { useHistory } from "react-router";
 import { getTickets } from "../../redux/actions";
 import $ from "jquery";
+import "./LotteryDetails.css";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 const LotteryDetials = (props) => {
   const { getLottery, getTickets } = props;
@@ -28,7 +30,7 @@ const LotteryDetials = (props) => {
   const [approvedStake, setApprovedStake] = useState(false);
   const [calAmount, setCalAmount] = useState("1");
   const [ticketNumber, bindTicketNumber] = useInput("Enter 7-digit number");
-  const [ticketsAmount, bindTicketsAmount] = useInput("1");
+  const [ticketsAmount, setTicketsAmount] = useState("1");
   const [stakeAmount, bindStakeAmount] = useInput("0");
   const [counter, setCounter] = useState(0);
   const history = useHistory();
@@ -347,9 +349,21 @@ const LotteryDetials = (props) => {
   const ticketItems = tickets.map((el, i) => {
     return (
       <div className="row ml-3">
-        <p style={{ color: "white" }}>
-          {i + 1}: {el.substring(1)}
-        </p>
+        <div className="col-1">
+          <span className="white">{i + 1}</span>
+        </div>
+        <div className="col-2">
+          <p
+            class="text-center"
+            style={{
+              backgroundColor: "#747272",
+              color: "white",
+              borderRadius: "5px",
+            }}
+          >
+            {el.substring(1)}
+          </p>
+        </div>
       </div>
     );
   });
@@ -365,8 +379,15 @@ const LotteryDetials = (props) => {
   const batch = getTicketsArray().map((el, i) => {
     return (
       <input
-        style={{ backgroundColor: "gold" }}
-        className="text-input"
+        style={{
+          backgroundColor: "#747272",
+          color: "white",
+          letterSpacing: "25px",
+          border: "0",
+          color: "yellow",
+          maxWidth: "260px",
+        }}
+        className="form-control input-sm mt-1"
         type="text"
         id={"ticketId-" + i}
       />
@@ -377,34 +398,202 @@ const LotteryDetials = (props) => {
     <Main loading={loading} setLoading={setLoading}>
       <div style={{ backgroundColor: "#021025" }}>
         <div className="container body-section">
-          <div className="row ">
-            <div className="col" style={{ backgroundColor: "#0f1f38" }}>
-              <p style={{ color: "white" }}>Time Remaining</p>
-              <p style={{ color: "yellow" }}>{secondsToHms(counter)}</p>
+          <div
+            className="mt-5 px-3 py-3"
+            style={{ backgroundColor: "#0f1f38", borderRadius: "15px" }}
+          >
+            <div className="row ">
+              <div className="col-12 text-center">
+                <h1 style={{ color: "white" }}>LUCKY DAY</h1>
+              </div>
             </div>
-            <div className="col"></div>
-            <div className="col" style={{ backgroundColor: "#0f1f38" }}>
-              <p style={{ color: "white" }}>Prize Pool</p>
-              <p style={{ color: "yellow" }}>{lottery.totalPrize} CAL</p>
+            <div className="row mt-4">
+              <div className="col"></div>
+              <div className="col text-center">
+                <p className="white">Time Remaining</p>
+                <p className="yellow">{secondsToHms(counter)}</p>
+              </div>
+              <div className="col text-center">
+                <p className="white">Prize Pool</p>
+                <p className="yellow">{lottery.totalPrize} CAL</p>
+              </div>
+              <div className="col text-center">
+                <p className="white">Pool Size</p>
+                <p className="yellow">{lottery.originalTotalStaked} CAL</p>
+              </div>
+              <div className="col text-center">
+                <p className="white">Est. APY</p>
+                <p className="yellow">2100.84%</p>
+              </div>
+              <div className="col"></div>
             </div>
-            <div className="col"></div>
-            <div className="col" style={{ backgroundColor: "#0f1f38" }}>
-              <p style={{ color: "white" }}>Pool Size</p>
-              <p style={{ color: "yellow" }}>
-                {lottery.originalTotalStaked} CAL
-              </p>
+            <div className="row mt-2">
+              <div className="col">
+                <h4 className="white">
+                  Do you have what it takes to be a winner?
+                </h4>
+                <p className="grey">
+                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+                  amet sint. Velit officia consequat duis enim velit mollit.
+                  Exercitation veniam consequat sunt nostrud amet.
+                </p>
+              </div>
             </div>
-            <div className="col"></div>
-            <div className="col" style={{ backgroundColor: "#0f1f38" }}>
-              <p style={{ color: "white" }}>Est. APY</p>
-              <p style={{ color: "yellow" }}>2100.84%</p>
+            <div className="row mt-2">
+              <div className="col">
+                <Tabs>
+                  <TabList>
+                    <Tab>Purchase tickets</Tab>
+                    <Tab>View My Tickets</Tab>
+                    <Tab>Stake and Withdraw</Tab>
+                    <Tab disabled>Claim Winnings</Tab>
+                    <Tab disabled>Past Results</Tab>
+                  </TabList>
+
+                  <TabPanel>
+                    <div className="row mx-2">
+                      <div className="col-4">
+                        <div className="ml-4">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            onChange={(e) => setIsRandomBatch(!isRandomBatch)}
+                            disabled={approvedTicketBatch}
+                          ></input>
+                          <TutorialPopup content="Select this option to enter ticket numbers manually">
+                            <label className="form-check-label white">
+                              Enter numbers manually
+                            </label>
+                          </TutorialPopup>
+                        </div>
+                        <TutorialPopup content="Purchasing an amount of tickets. Numbets of tickets shall be randomized by default">
+                          <label style={{ color: "white" }}>
+                            Purchase tickets:
+                          </label>
+                        </TutorialPopup>
+                        <div className="row  align-items-center">
+                          <button
+                            className="btn-sub-add mr-1"
+                            onClick={() =>
+                              setTicketsAmount(parseInt(ticketsAmount) - 1)
+                            }
+                          >
+                            -
+                          </button>
+                          <input
+                            className="text-input noarrows mt-3"
+                            type="number"
+                            disabled={approvedTicketBatch}
+                            style={{ WebkitAppearance: "none", margin: "0" }}
+                            onChange={(e) => setTicketsAmount(e.target.value)}
+                            style={{ width: "30%", textAlign: "center" }}
+                            value={ticketsAmount}
+                          />
+                          <button
+                            className="btn-sub-add ml-1"
+                            onClick={() =>
+                              setTicketsAmount(parseInt(ticketsAmount) + 1)
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        {!isRandomBatch && batch}
+
+                        <button
+                          className="yellow-btn mt-3 mr-3"
+                          onClick={
+                            approvedTicketBatch
+                              ? purchaseTicketBatch
+                              : approveGetTicketBatch
+                          }
+                        >
+                          {approvedTicketBatch
+                            ? "Purchase batch"
+                            : "Approve CAL"}
+                        </button>
+                      </div>
+                      <div className="col-8"></div>
+                    </div>
+                  </TabPanel>
+                  <TabPanel>
+                    {(tickets.length > 0 && (
+                      <div className="row">
+                        <div className="col">
+                          <span className="white">
+                            Total tickets purchased:{" "}
+                          </span>
+                          <span className="yellow">{ticketItems.length}</span>
+                          <h3 style={{ color: "white" }}>Your tickets:</h3>
+                          {ticketItems}
+                        </div>
+                      </div>
+                    )) || (
+                      <>
+                        <h4 className="white">
+                          You have not purchased any ticket yet
+                        </h4>
+                        <br />
+                        <br />
+                      </>
+                    )}
+                  </TabPanel>
+                  <TabPanel>
+                    {(Date.now() / 1000 < lottery.endDate - 3600 * 4 && (
+                      <>
+                        <div className="row">
+                          <div className="col">
+                            <label style={{ color: "white" }}>
+                              I want to stake:
+                            </label>
+                          </div>
+                          <div className="col">
+                            <label style={{ color: "white" }}>
+                              I want to withdraw:
+                            </label>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-3">
+                            <input type="number" {...bindStakeAmount} />
+                          </div>
+                          <div className="col-3">
+                            <button
+                              className="stake-btn"
+                              onClick={approvedStake ? stake : approveStake}
+                            >
+                              {approvedStake ? "Stake" : "Approve CAL"}
+                            </button>
+                          </div>
+                          {/*Допилить частичный виздро или спросить сюда ли его пихать */}
+                          <div className="col-3">
+                            <input type="number" />
+                          </div>
+                          <div className="col-3">
+                            <button className="stake-btn">Withdraw</button>
+                          </div>
+                        </div>
+                      </>
+                    )) || (
+                      <div className="col">
+                        <label style={{ color: "white" }}>
+                          Cannot stake 4 hours before a lottery ends
+                        </label>
+                      </div>
+                    )}
+                  </TabPanel>
+                  <TabPanel>
+                    <h2>Any content 1</h2>
+                  </TabPanel>
+                  <TabPanel>
+                    <h2>Any content 2</h2>
+                  </TabPanel>
+                </Tabs>
+              </div>
             </div>
-          </div>
-          <div className="mt-5" style={{ backgroundColor: "#0f1f38" }}>
-            <h2 style={{ color: "white" }}>LUCKY DAY</h2>
             {(!lottery.hasDrawn && (
               <>
-                <p style={{ color: "yellow" }}>7 Digit Lottery</p>
                 {/*<div className="row">
                   <div className="col">
                     {" "}
@@ -430,83 +619,7 @@ const LotteryDetials = (props) => {
                     </button>
                   </div>
                 </div>
-              */}{" "}
-                <div className="row">
-                  <div className="col">
-                    <TutorialPopup content="Purchasing an amount of tickets. Numbets of tickets shall be randomized by default">
-                      <label style={{ color: "white" }}>
-                        Purchase tickets:
-                      </label>
-                    </TutorialPopup>
-                    <div className="row ml-5">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        onChange={(e) => setIsRandomBatch(!isRandomBatch)}
-                        disabled={approvedTicketBatch}
-                      ></input>
-                      <TutorialPopup content="Select this option to enter ticket numbers manually">
-                        <label className="form-check-label white">
-                          Enter numbers manually
-                        </label>
-                      </TutorialPopup>
-                    </div>
-                  </div>
-                  <div className="col">
-                    <input
-                      className="text-input"
-                      type="number"
-                      disabled={approvedTicketBatch}
-                      {...bindTicketsAmount}
-                    />
-
-                    {!isRandomBatch && batch}
-                  </div>
-                  <div className="col">
-                    <button
-                      className="yellow-btn mt-3 mr-3"
-                      onClick={
-                        approvedTicketBatch
-                          ? purchaseTicketBatch
-                          : approveGetTicketBatch
-                      }
-                    >
-                      {approvedTicketBatch ? "Purchase batch" : "Approve CAL"}
-                    </button>
-                  </div>
-                </div>
-                <div className="row">
-                  {(Date.now() / 1000 < lottery.endDate - 3600 * 4 && (
-                    <>
-                      <div className="col">
-                        <label style={{ color: "white" }}>
-                          I want to stake:
-                        </label>
-                      </div>
-                      <div className="col">
-                        <input
-                          className="text-input"
-                          type="number"
-                          {...bindStakeAmount}
-                        />
-                      </div>
-                      <div className="col">
-                        <button
-                          className="yellow-btn mt-3 mr-3"
-                          onClick={approvedStake ? stake : approveStake}
-                        >
-                          {approvedStake ? "Stake" : "Approve CAL"}
-                        </button>
-                      </div>
-                    </>
-                  )) || (
-                    <div className="col">
-                      <label style={{ color: "white" }}>
-                        Cannot stake 4 hours before a lottery ends
-                      </label>
-                    </div>
-                  )}
-                </div>
+              */}
               </>
             )) || (
               <>
@@ -551,13 +664,6 @@ const LotteryDetials = (props) => {
               </>
             )}
           </div>
-
-          {tickets.length > 0 && (
-            <div className="mt-5" style={{ backgroundColor: "#0f1f38" }}>
-              <h3 style={{ color: "white" }}>Your tickets:</h3>
-              {ticketItems}
-            </div>
-          )}
         </div>
         <br />
         <br />

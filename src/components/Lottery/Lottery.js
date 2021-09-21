@@ -9,7 +9,6 @@ const Lottery = (props) => {
   const { getLotteries } = props;
   const history = useHistory();
   const lotteries = useSelector((state) => state.lotteries) || [];
-
   const sortedLotteries = lotteries.sort(
     (lot1, lot2) => lot2.createdDate - lot1.createdDate
   );
@@ -20,7 +19,10 @@ const Lottery = (props) => {
 
   const items = sortedLotteries.map((el, id) => {
     return (
-      <div className="row mt-3" style={{ backgroundColor: "#0f1f38" }}>
+      <div
+        className="row mt-3"
+        style={{ backgroundColor: "#0f1f38", borderRadius: "15px" }}
+      >
         <div className="col-md-4">
           <div className="row px-2 mt-3">
             <div className="col">
@@ -37,19 +39,13 @@ const Lottery = (props) => {
             </div>
           </div>
         </div>
-        <div className="col-md-8">
+        <div className="col-md-7">
           <div className="row">
             <div className="col-md-9 mt-3">
               <p className="white text-wrap">
                 Do you have what it takes to be a winner?
               </p>
               <p className="white text-wrap">{el._id}</p>
-              <button
-                className="border-btn extra-small-text small-border-btn mb-3"
-                onClick={() => history.push("/lottery/" + el._id)}
-              >
-                <span>View</span>
-              </button>
             </div>
           </div>
           <br />
@@ -75,6 +71,14 @@ const Lottery = (props) => {
               <p style={{ color: "yellow" }}>00:11:42:31</p>
             </div>
           </div>
+        </div>
+        <div className="col-md-1">
+          <button
+            className="border-btn extra-small-text small-border-btn mt-3 mr-3"
+            onClick={() => history.push("/lottery/" + el._id)}
+          >
+            <span>View</span>
+          </button>
         </div>
       </div>
     );
