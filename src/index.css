@@ -55,6 +55,10 @@ span {
   color: greenyellow !important;
 }
 
+.red {
+  color: red !important;
+}
+
 .header {
   position: fixed;
   width: 100%;
