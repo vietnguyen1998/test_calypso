@@ -15,7 +15,7 @@ const FeaturePool = (props) => {
         data-wow-delay={`${delay || 0.2}s`}
       >
         <h3 className="white">
-          {timestampToLocalDate(game.date - 3600, "D MMM YYYY - H:mm")}
+          {timestampToLocalDate(game.date, "D MMM YYYY - H:mm")}
         </h3>
         <div className="row mt-3">
           <div className="col-md-5 col-5" align="center">

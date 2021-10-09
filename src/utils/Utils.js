@@ -32,7 +32,7 @@ export const timestampToLocalDate = (time, format = "D MMM YYYY H:mm Z") => {
 };
 
 export const formatTimezone = (time) => {
-  let tz = timestampToLocalDate(time - 3600, "Z").slice(0, -3);
+  let tz = timestampToLocalDate(time, "Z").slice(0, -3);
   if (tz.charAt(1) == 0) {
     return tz.replace("0", "");
   } else {

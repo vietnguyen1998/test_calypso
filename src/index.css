@@ -51,12 +51,16 @@ span {
   color: #707e95 !important;
 }
 
+.bright-grey {
+  color: rgba(255, 255, 255, 0.75);
+}
+
 .green {
   color: greenyellow !important;
 }
 
 .red {
-  color: red !important;
+  color: #eb5757 !important;
 }
 
 .header {

@@ -3,6 +3,7 @@ import ActionType from "../type";
 import network from "./network";
 import UrlConst from "./UrlConst";
 import * as Contracts from "../../utils/Contracts";
+import LotteryType from "../../components/Lottery/LotteryType";
 
 export const updateCalBalance = (address) => (dispatch) => {
   const Cal = Contracts.getCal();
@@ -151,20 +152,26 @@ export const getBets = (poolAddress, userAddress) => async (dispatch) => {
     });
 };
 
-export const getTickets = (lotteryAddress, userAddress) => async (dispatch) => {
-  network
-    .get(UrlConst.getTicketsUrl, {
-      lotteryAddress,
-      userAddress,
-    })
-    .then((res) => {
-      const { tickets } = res.data;
-      dispatch({
-        type: ActionType.getTickets,
-        payload: tickets,
-      });
+export const getTickets =
+  (lotteryAddress, userAddress, lotteryType) => async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      network
+        .get(UrlConst.getTicketsUrl, {
+          lotteryAddress,
+          userAddress,
+          lotteryType,
+        })
+        .then((res) => {
+          dispatch({
+            type: ActionType.getTickets,
+            payload: res.data,
+          });
+        })
+        .catch((err) => {
+          reject(String(err));
+        });
     });
-};
+  };
 
 export const getMatches = () => (dispatch) => {
   network.get(UrlConst.getMatchesUrl).then((res) => {

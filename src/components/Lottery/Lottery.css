@@ -81,11 +81,18 @@
   background-color: #747272;
 }
 
-.stake-btn {
+.lotteryyellow-btn {
   background-color: transparent;
   color: gold;
   border-radius: 5px;
   border-color: gold;
+}
+
+.lotterygrey-btn {
+  background-color: rgba(255, 255, 255, 0.16);
+  color: white;
+  border-radius: 5px;
+  border-color: gray;
 }
 
 .winning-ticket {
@@ -104,4 +111,26 @@
   font-size: 25px;
   width: 50px;
   text-align: center;
+}
+
+.step {
+  border: 3px solid goldenrod;
+  border-radius: 10px;
+}
+
+.step-circle {
+  background-color: goldenrod;
+  width: 30px;
+  height: 30px;
+  margin-left: 40%;
+  border-radius: 90px;
+}
+
+.transparent-modal .modal-content {
+  background-color: transparent;
+}
+
+.details-table {
+  background-color: #677082;
+  border: transparent;
 }

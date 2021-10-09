@@ -298,10 +298,10 @@ const PoolDetail = (props) => {
               <div className="row">
                 <div className="col-md-4 col-4">
                   <p className="grey mb-1">
-                    {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}
+                    {timestampToLocalDate(game.date, "D MMM YYYY")}
                   </p>
                   <p className="bold">
-                    {timestampToLocalDate(game.date - 3600, "H:mm UTC")}{" "}
+                    {timestampToLocalDate(game.date, "H:mm UTC")}{" "}
                     {formatTimezone(game.date)}
                   </p>
                 </div>

@@ -105,11 +105,6 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         bets: payload,
       };
-    case ActionType.getTickets:
-      return {
-        ...state,
-        tickets: payload,
-      };
     case ActionType.getMatches:
       return {
         ...state,
@@ -119,6 +114,11 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         affiliate: payload,
+      };
+    case ActionType.getTickets:
+      return {
+        ...state,
+        tickets: payload,
       };
     default:
       return state;

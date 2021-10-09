@@ -258,8 +258,8 @@ const CreatePool = (props) => {
     return (
       <option key={id} value={String(id)}>
         {el.team1} - {el.team2}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        {timestampToLocalDate(el.date - 3600, "D MMM YYYY")}{" "}
-        {timestampToLocalDate(el.date - 3600, "H:mm UTC").padStart(9, "0")}{" "}
+        {timestampToLocalDate(el.date, "D MMM YYYY")}{" "}
+        {timestampToLocalDate(el.date, "H:mm UTC").padStart(9, "0")}{" "}
         {formatTimezone(el.date)}
       </option>
     );
@@ -287,11 +287,8 @@ const CreatePool = (props) => {
             </div>
 
             <div style={{ paddingLeft: 85 }}>
-              {timestampToLocalDate(game.date - 3600, "D MMM YYYY")}{" "}
-              {timestampToLocalDate(game.date - 3600, "H:mm UTC").padStart(
-                9,
-                "0"
-              )}{" "}
+              {timestampToLocalDate(game.date, "D MMM YYYY")}{" "}
+              {timestampToLocalDate(game.date, "H:mm UTC").padStart(9, "0")}{" "}
               {formatTimezone(game.date)}
             </div>
           </>
