@@ -19,7 +19,6 @@ import MyPool from "./components/Pool/MyPool/MyPool";
 import UserPage from "./components/UserPage/UserPage";
 import UserPools from "./components/UserPage/UserPools";
 import Lottery from "./components/Lottery/Lottery";
-import LotteryDetails from "./components/Lottery/LotteryDetails";
 
 function App() {
   return (
@@ -69,9 +68,6 @@ function App() {
             </Route>
             <Route exact path="/lottery">
               <Lottery />
-            </Route>
-            <Route exact path="/lottery/:lotteryId">
-              <LotteryDetails />
             </Route>
           </>
         </Switch>

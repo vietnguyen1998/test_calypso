@@ -10,6 +10,7 @@ import OracleAbi from "../const/Oracle";
 import StakingAbi from "../const/Staking";
 import AffiliateAbi from "../const/Affiliate";
 import LotteryAbi from "../const/Lottery";
+import LotteryManagerAbi from "../const/LotteryManager";
 import { ethers } from "ethers";
 
 const BettingPoolAbi = [BettingPoolAbi_0];
@@ -82,6 +83,13 @@ export const getTestFaucet = () => {
 export const getBettingPool = (address, version = 0) => {
   const web3 = getWeb3();
   if (web3) return new ethers.Contract(address, BettingPoolAbi[0], web3);
+  return null;
+};
+
+export const getLotteryManagerSc = () => {
+  const web3 = getWeb3();
+  if (web3)
+    return new ethers.Contract(Address.lotteryManager, LotteryManagerAbi, web3);
   return null;
 };
 

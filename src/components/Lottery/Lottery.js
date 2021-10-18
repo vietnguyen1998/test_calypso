@@ -4,7 +4,11 @@ import { getLotteries, getTickets } from "../../redux/actions";
 import { connect, useSelector } from "react-redux";
 import "./Lottery.css";
 import LotteryType from "./LotteryType";
-import { secondsToHms, timestampToLocalDate } from "../../utils/Utils";
+import {
+  secondsToHms,
+  timestampToLocalDate,
+  formatTimezone,
+} from "../../utils/Utils";
 import CurrentLottery from "./CurrentLottery";
 import { getLotteryWinners } from "./LotteryUtils";
 
@@ -135,7 +139,7 @@ const Lottery = (props) => {
       : 0;
 
   return (
-    <Main>
+    <Main loading={loading} setLoading={setLoading}>
       <div style={{ backgroundColor: "#021025" }}>
         <br />
         <br />
@@ -169,6 +173,7 @@ const Lottery = (props) => {
                 currentLottery={currentLottery}
                 sortedLotteries={sortedLotteries}
                 address={address}
+                setLoading={setLoading}
               />
             </>
           )}
@@ -195,11 +200,21 @@ const Lottery = (props) => {
               <div class="d-flex">
                 <div class="mr-auto white">LAST DRAW</div>
                 <div class="bright-grey">
-                  #{lotteries.length} | Draw: Sep 5, 2021, 1:00 AM
+                  #{lotteries.length} | Draw:{" "}
+                  {prevLottery && (
+                    <>
+                      {timestampToLocalDate(prevLottery.endDate, "D MMM YYYY")}{" "}
+                      {timestampToLocalDate(
+                        prevLottery.endDate,
+                        "H:mm UTC"
+                      ).padStart(9, "0")}{" "}
+                      {formatTimezone(prevLottery.endDate)}
+                    </>
+                  )}
                 </div>
               </div>
               <div className="row d-flex justify-content-center">
-                {prevLotteryAddress}
+                <p className="white"> {prevLotteryAddress}</p>
               </div>
               <hr style={{ border: "1px dashed  grey" }} />
               <div className="row d-flex justify-content-center">

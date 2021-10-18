@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import { getWinningTickets, stringifyNumber } from "./LotteryUtils";
 
-const LotteryDetails = (props) => {
+const WinningDetails = (props) => {
   const { showDetails, handleCloseDetails, tickets, lottery } = props;
 
   const resultsTable = getWinningTickets(tickets, lottery).map((el, i) => {
@@ -51,4 +51,4 @@ const LotteryDetails = (props) => {
   );
 };
 
-export default LotteryDetails;
+export default WinningDetails;

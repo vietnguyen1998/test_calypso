@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
+import Address from "../../const/Address";
 import { Modal } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
-import { getLotterySc, getSigner, getCal } from "../../utils/Contracts";
-import { getWei } from "../../utils/Web3Utils";
+import {
+  getLotterySc,
+  getSigner,
+  getCal,
+  getLotteryManagerSc,
+} from "../../utils/Contracts";
+import { getWei, getEther } from "../../utils/Web3Utils";
 import { toast } from "react-toastify";
 import useInput from "../hook/useInput";
 import TutorialPopup from "../Common/TutorialPopup";
-import { secondsToHms, timestampToLocalDate } from "../../utils/Utils";
+import { timestampToLocalDate } from "../../utils/Utils";
 import { useHistory } from "react-router";
 import { getTickets } from "../../redux/actions";
 import $ from "jquery";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import LotteryDetails from "./LotteryDetails";
+import WinningDetails from "./WinningDetails";
 import LotteryType from "./LotteryType";
 import { getPrizesArray } from "./LotteryUtils";
+import PastDetails from "./PastDetails";
 
 const CurrentLottery = (props) => {
   const {
@@ -23,14 +30,13 @@ const CurrentLottery = (props) => {
     sortedLotteries,
     getTickets,
     address,
+    setLoading,
   } = props;
 
   const currentTickets =
     useSelector((state) => state.tickets.currentLottery) || [];
   const specificTickets =
     useSelector((state) => state.tickets.specificLottery) || [];
-
-  const history = useHistory();
 
   const signer = getSigner();
   const CalSigner = getCal() && getCal().connect(getSigner());
@@ -39,11 +45,11 @@ const CurrentLottery = (props) => {
   const [ticketsAmount, setTicketsAmount] = useState("1");
   const [approvedTicketBatch, setApprovedTicketBatch] = useState(false);
   const [stakeAmount, bindStakeAmount] = useInput("0");
+  const [unstakeAmount, bindUntakeAmount] = useInput("0");
   const [ticketNumber, bindTicketNumber] = useInput("Enter 7-digit number");
   const [approvedStake, setApprovedStake] = useState(false);
   const [calAmount, setCalAmount] = useState("1");
-
-  const [loading, setLoading] = useState(false);
+  const [userStake, setUserStake] = useState("0");
 
   const [specificLottery, setSpecificLottery] = useState({});
 
@@ -54,6 +60,13 @@ const CurrentLottery = (props) => {
     getTickets(lottery._id, address, LotteryType.specificLottery);
     setSpecificLottery(lottery);
     setShowDetails(true);
+  };
+
+  const [showPastDetails, setShowPastDetails] = useState(false);
+  const handleClosePastDetails = () => setShowPastDetails(false);
+  const handleShowPastDetails = (lottery) => {
+    setSpecificLottery(lottery);
+    setShowPastDetails(true);
   };
 
   useEffect(() => {
@@ -68,6 +81,10 @@ const CurrentLottery = (props) => {
     setCalAmount(ticketsAmount);
   }, [ticketsAmount]);
 
+  useEffect(() => {
+    getUserStake();
+  }, [address]);
+
   const getTicketsArray = () => {
     let array = [];
     for (let i = 0; i < ticketsAmount; i++) {
@@ -76,6 +93,7 @@ const CurrentLottery = (props) => {
     return array;
   };
 
+  // Purchasing tickets
   const approveGetTicketBatch = () => {
     setLoading(true);
     CalSigner &&
@@ -129,11 +147,15 @@ const CurrentLottery = (props) => {
       .connect(signer)
       .getTicketBatch(ticketsAmount, ticketNumbers)
       .then((tx) => {
-        tx.wait().then(() => {
+        tx.wait().then(async () => {
           setLoading(false);
           setApprovedTicketBatch(false);
+          await getTickets(
+            currentLottery._id,
+            address,
+            LotteryType.currentLottery
+          );
           toast.success("Succsess!");
-          history.go(0);
         });
       })
       .catch((err) => {
@@ -142,10 +164,12 @@ const CurrentLottery = (props) => {
       });
   };
 
+  //Stake/unstake
   const approveStake = () => {
+    getUserStake();
     setLoading(true);
     CalSigner &&
-      CalSigner.approve(currentLottery._id, getWei(calAmount.toString()))
+      CalSigner.approve(Address.lotteryManager, getWei(calAmount.toString()))
         .then((tx) => {
           tx.wait().then(() => {
             setLoading(false);
@@ -171,15 +195,15 @@ const CurrentLottery = (props) => {
       setLoading(false);
       return toast.error("Stake amount should be higher than 0.");
     }
-    getLotterySc(currentLottery._id)
+    getLotteryManagerSc()
       .connect(signer)
-      .stake(stakeAmount)
+      .stake(getWei(stakeAmount))
       .then((tx) => {
         tx.wait().then(() => {
           setLoading(false);
           setApprovedStake(false);
+          getUserStake();
           toast.success("Succsess!");
-          history.go(0);
         });
       })
       .catch((err) => {
@@ -188,7 +212,42 @@ const CurrentLottery = (props) => {
       });
   };
 
-  const claimReward = (lotteryAdrress) => {
+  const unstake = () => {
+    setLoading(true);
+    /*if (stakeAmount == 0) {
+      setLoading(false);
+      return toast.error("Stake amount should be higher than 0.");
+    }*/
+    console.log(getWei(unstakeAmount));
+    getLotteryManagerSc()
+      .connect(signer)
+      .unstake(getWei(unstakeAmount))
+      .then((tx) => {
+        tx.wait().then(() => {
+          setLoading(false);
+          getUserStake();
+          toast.success("Succsess!");
+        });
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err.message);
+      });
+  };
+
+  const getUserStake = () => {
+    getLotteryManagerSc()
+      .connect(signer)
+      .getUserStake()
+      .then((res) => {
+        setUserStake(getEther(res));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const claimReward = (lotteryAdrress, rowId) => {
     setLoading(true);
     getLotterySc(lotteryAdrress)
       .connect(signer)
@@ -196,8 +255,8 @@ const CurrentLottery = (props) => {
       .then((tx) => {
         tx.wait().then(() => {
           setLoading(false);
+          $(`#claimRow-${rowId}`).remove();
           toast.success("Succsess!");
-          history.go(0);
         });
       })
       .catch((err) => {
@@ -266,27 +325,55 @@ const CurrentLottery = (props) => {
   };
 
   const claimResultsTable = sortedLotteries.slice(1).map((el, i) => {
+    const winningAmount = getWinningAmount(el);
+    const hasClaimed = el.usersClaimedPrize.some((el) => {
+      return el.toLowerCase() == address;
+    });
+    if (winningAmount != 0 && !hasClaimed) {
+      return (
+        <>
+          <tr id={`claimRow-${i}`}>
+            <td>{i + 1}</td>
+            <td>{timestampToLocalDate(el.createdDate, "DD/MM/YYYY")}</td>
+            <td>{winningAmount}</td>
+            <td>
+              <button
+                id={"details" + i}
+                className="lotterygrey-btn"
+                onClick={(e) => handleShowDetails(el)}
+              >
+                Details
+              </button>{" "}
+            </td>
+            <td>
+              <button
+                className="lotteryyellow-btn"
+                onClick={(e) => claimReward(el._id, i)}
+              >
+                Claim
+              </button>
+            </td>
+          </tr>
+        </>
+      );
+    }
+  });
+
+  const pastResultsTable = sortedLotteries.slice(1).map((el, i) => {
     return (
       <>
         <tr>
-          <th scope="row">{i + 1}</th>
+          <td>{i + 1}</td>
           <td>{timestampToLocalDate(el.createdDate, "DD/MM/YYYY")}</td>
-          <td>{getWinningAmount(el)}</td>
+          <td>{el.totalTickets / 1e18}</td>
+          <td>{el.totalPrize}</td>
+          <td>5%</td>
           <td>
             <button
-              id={"details" + i}
               className="lotterygrey-btn"
-              onClick={(e) => handleShowDetails(el)}
+              onClick={(e) => handleShowPastDetails(el)}
             >
               Details
-            </button>{" "}
-          </td>
-          <td>
-            <button
-              className="lotteryyellow-btn"
-              onClick={(e) => claimReward(el._id)}
-            >
-              Claim
             </button>
           </td>
         </tr>
@@ -457,7 +544,7 @@ const CurrentLottery = (props) => {
                   <tbody>{claimResultsTable}</tbody>
                 </table>
 
-                <LotteryDetails
+                <WinningDetails
                   showDetails={showDetails}
                   handleCloseDetails={handleCloseDetails}
                   tickets={specificTickets}
@@ -465,6 +552,9 @@ const CurrentLottery = (props) => {
                 />
               </TabPanel>
               <TabPanel>
+                <div className="row">
+                  <p className="white ml-3">Current stake: {userStake}</p>
+                </div>
                 <div className="row">
                   <div className="col">
                     <label style={{ color: "white" }}>I want to stake:</label>
@@ -487,17 +577,36 @@ const CurrentLottery = (props) => {
                       {approvedStake ? "Stake" : "Approve CAL"}
                     </button>
                   </div>
-                  {/*Допилить частичный виздро или спросить сюда ли его пихать */}
                   <div className="col-3">
-                    <input type="number" />
+                    <input type="number" {...bindUntakeAmount} />
                   </div>
                   <div className="col-3">
-                    <button className="lotteryyellow-btn">Withdraw</button>
+                    <button className="lotteryyellow-btn" onClick={unstake}>
+                      Withdraw
+                    </button>
                   </div>
                 </div>
               </TabPanel>
               <TabPanel>
-                <h4>------------------------------------s</h4>
+                <table className="table" style={{ color: "white" }}>
+                  <thead className="details-table">
+                    <tr>
+                      <th scope="col">Draw#</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Ticket sales</th>
+                      <th scope="col">Pool Size</th>
+                      <th scope="col">Staker Earnings</th>
+                      <th scope="col">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>{pastResultsTable}</tbody>
+                </table>
+
+                <PastDetails
+                  showPastDetails={showPastDetails}
+                  handleClosePastDetails={handleClosePastDetails}
+                  lottery={specificLottery}
+                />
               </TabPanel>
             </Tabs>
           </div>
