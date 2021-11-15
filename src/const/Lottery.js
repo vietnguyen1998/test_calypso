@@ -178,6 +178,11 @@ export default [
         name: "_totalPrize",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_poolSize",
+        type: "uint256",
+      },
     ],
     stateMutability: "view",
     type: "function",
@@ -512,7 +517,13 @@ export default [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_poolSize",
+        type: "uint256",
+      },
+    ],
     name: "startDraw",
     outputs: [
       {

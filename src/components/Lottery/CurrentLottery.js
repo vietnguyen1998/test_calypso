@@ -19,7 +19,7 @@ import $ from "jquery";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import WinningDetails from "./WinningDetails";
 import LotteryType from "./LotteryType";
-import { getPrizesArray } from "./LotteryUtils";
+import { getPrizesArray, reverseIndex } from "./LotteryUtils";
 import PastDetails from "./PastDetails";
 
 const CurrentLottery = (props) => {
@@ -39,7 +39,7 @@ const CurrentLottery = (props) => {
     useSelector((state) => state.tickets.specificLottery) || [];
 
   const signer = getSigner();
-  const CalSigner = getCal() && getCal().connect(getSigner());
+  const CalSigner = getCal() && getCal().connect(signer);
 
   const [isRandomBatch, setIsRandomBatch] = useState(true);
   const [ticketsAmount, setTicketsAmount] = useState("1");
@@ -50,6 +50,7 @@ const CurrentLottery = (props) => {
   const [approvedStake, setApprovedStake] = useState(false);
   const [calAmount, setCalAmount] = useState("1");
   const [userStake, setUserStake] = useState("0");
+  const [totalPoolSize, setTotalPoolSize] = useState("0");
 
   const [specificLottery, setSpecificLottery] = useState({});
 
@@ -218,7 +219,6 @@ const CurrentLottery = (props) => {
       setLoading(false);
       return toast.error("Stake amount should be higher than 0.");
     }*/
-    console.log(getWei(unstakeAmount));
     getLotteryManagerSc()
       .connect(signer)
       .unstake(getWei(unstakeAmount))
@@ -245,6 +245,14 @@ const CurrentLottery = (props) => {
       .catch((err) => {
         console.log(err);
       });
+
+    getLotteryManagerSc()
+      .connect(signer)
+      .totalStaked.call()
+      .then((res) => setTotalPoolSize(getEther(res)))
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const claimReward = (lotteryAdrress, rowId) => {
@@ -255,8 +263,8 @@ const CurrentLottery = (props) => {
       .then((tx) => {
         tx.wait().then(() => {
           setLoading(false);
-          $(`#claimRow-${rowId}`).remove();
           toast.success("Succsess!");
+          $(`#claimRow-${rowId}`).remove();
         });
       })
       .catch((err) => {
@@ -360,18 +368,22 @@ const CurrentLottery = (props) => {
   });
 
   const pastResultsTable = sortedLotteries.slice(1).map((el, i) => {
+    const indexes = reverseIndex(sortedLotteries.slice(1));
+
     return (
       <>
         <tr>
-          <td>{i + 1}</td>
+          <td>{indexes[i]}</td>
           <td>{timestampToLocalDate(el.createdDate, "DD/MM/YYYY")}</td>
-          <td>{el.totalTickets / 1e18}</td>
-          <td>{el.totalPrize}</td>
+          <td>{el.totalTickets}</td>
+          <td>{el.poolSize / 1e18}</td>
           <td>5%</td>
           <td>
             <button
               className="lotterygrey-btn"
-              onClick={(e) => handleShowPastDetails(el)}
+              onClick={(e) => {
+                handleShowPastDetails(el);
+              }}
             >
               Details
             </button>
@@ -416,7 +428,7 @@ const CurrentLottery = (props) => {
           </div>
           <div className="col text-center">
             <p className="white">Pool Size</p>
-            <p className="yellow">{currentLottery.originalTotalStaked} CAL</p>
+            <p className="yellow">{totalPoolSize} CAL</p>
           </div>
           <div className="col text-center">
             <p className="white">Est. APY</p>

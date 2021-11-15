@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import { timestampToLocalDate, formatTimezone } from "../../utils/Utils";
+import { getLotteryWinners } from "./LotteryUtils";
 
 const PastDetails = (props) => {
   const { showPastDetails, lottery, handleClosePastDetails } = props;
@@ -45,9 +46,7 @@ const PastDetails = (props) => {
         <div className="row d-flex justify-content-center">
           {getWinNumberLogo(lottery.winNumber)}
         </div>
-        <div class="collapse my-3" id="collapseDetails">
-          {/*lottery && getLotteryWinners(lottery)*/}
-        </div>
+        <div class="my-3">{getLotteryWinners(lottery)}</div>
 
         <hr style={{ border: "1px dashed  grey" }} />
       </Modal.Body>

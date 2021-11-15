@@ -560,7 +560,7 @@ const CreatePool = (props) => {
                       }
                       style={{
                         marginTop: "10px",
-                        minWidth: "75px",
+                        minWidth: "90px",
                         marginLeft: "10px",
                       }}
                     >

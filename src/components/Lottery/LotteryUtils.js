@@ -108,10 +108,11 @@ export const getPrizesArray = (lottery) => {
   ];
 };
 
-//ОСТАВЛЯЕМ КАК ЕСТЬ, ИСПОЛЬЗУЕТСЯ В НЕСКОЛЬКИХ МЕСТАХ
 export const getLotteryWinners = (lottery) => {
+  if (lottery._id == undefined) {
+    return;
+  }
   const prizes = getPrizesArray(lottery);
-
   let hasWinners = false;
 
   prizes.forEach((el) => {
@@ -146,4 +147,12 @@ export const getLotteryWinners = (lottery) => {
       );
     }
   });
+};
+
+export const reverseIndex = (array) => {
+  const indexes = [];
+  array.forEach((el, i) => {
+    indexes.push(i + 1);
+  });
+  return indexes.reverse();
 };
