@@ -236,23 +236,25 @@ const CurrentLottery = (props) => {
   };
 
   const getUserStake = () => {
-    getLotteryManagerSc()
-      .connect(signer)
-      .getUserStake()
-      .then((res) => {
-        setUserStake(getEther(res));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (signer) {
+      getLotteryManagerSc()
+        .connect(signer)
+        .getUserStake()
+        .then((res) => {
+          setUserStake(getEther(res));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-    getLotteryManagerSc()
-      .connect(signer)
-      .totalStaked.call()
-      .then((res) => setTotalPoolSize(getEther(res)))
-      .catch((err) => {
-        console.log(err);
-      });
+      getLotteryManagerSc()
+        .connect(signer)
+        .totalStaked.call()
+        .then((res) => setTotalPoolSize(getEther(res)))
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const claimReward = (lotteryAdrress, rowId) => {
