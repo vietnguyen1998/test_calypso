@@ -17,7 +17,12 @@ const BettingPanel = (props) => {
   const [amount, bindAmount, resetAmount] = useInput("0");
   const [approved, setApproved] = useState(false);
   const signer = getSigner();
-  const Pool = getBettingPool(poolAddress, pool.version).connect(signer);
+  var Pool = {};
+  if (signer) {
+    Pool = getBettingPool(poolAddress, pool.version).connect(signer);
+  } else {
+    toast.error("Please install Metamask extension");
+  }
   const bets = pool.bets || [];
   const betAmounts = Object.values(BetSides).map((el) => {
     const amount = bets.reduce(

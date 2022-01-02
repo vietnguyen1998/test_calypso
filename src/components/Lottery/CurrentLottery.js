@@ -254,6 +254,8 @@ const CurrentLottery = (props) => {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      toast.error("Please install Metamask extension");
     }
   };
 
