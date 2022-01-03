@@ -156,7 +156,7 @@ const CurrentLottery = (props) => {
             address,
             LotteryType.currentLottery
           );
-          toast.success("Succsess!");
+          toast.success("Success!");
         });
       })
       .catch((err) => {
@@ -204,7 +204,7 @@ const CurrentLottery = (props) => {
           setLoading(false);
           setApprovedStake(false);
           getUserStake();
-          toast.success("Succsess!");
+          toast.success("Success!");
         });
       })
       .catch((err) => {
@@ -226,7 +226,7 @@ const CurrentLottery = (props) => {
         tx.wait().then(() => {
           setLoading(false);
           getUserStake();
-          toast.success("Succsess!");
+          toast.success("Success!");
         });
       })
       .catch((err) => {
@@ -267,7 +267,7 @@ const CurrentLottery = (props) => {
       .then((tx) => {
         tx.wait().then(() => {
           setLoading(false);
-          toast.success("Succsess!");
+          toast.success("Success!");
           $(`#claimRow-${rowId}`).remove();
         });
       })
