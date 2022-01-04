@@ -336,6 +336,20 @@ const CurrentLottery = (props) => {
     return amount;
   };
 
+  const getStakerEarnings = (lottery) => {
+    let amount = 0;
+    const prizes = getPrizesArray(lottery);
+    prizes.forEach((el) => {
+      if (el[0].length > 0) {
+        const winningPart = (lottery.totalPrize * el[1]) / 100;
+        amount += (winningPart * el[0].length) / el[0].length;
+      }
+    });
+
+    amount = (lottery.totalTickets - amount) * 0.95;
+    return amount;
+  };
+
   const claimResultsTable = sortedLotteries.slice(1).map((el, i) => {
     const winningAmount = getWinningAmount(el);
     const hasClaimed = el.usersClaimedPrize.some((el) => {
@@ -381,7 +395,7 @@ const CurrentLottery = (props) => {
           <td>{timestampToLocalDate(el.createdDate, "DD/MM/YYYY")}</td>
           <td>{el.totalTickets}</td>
           <td>{el.poolSize / 1e18}</td>
-          <td>5%</td>
+          <td>{getStakerEarnings(el)}</td>
           <td>
             <button
               className="lotterygrey-btn"
@@ -569,7 +583,7 @@ const CurrentLottery = (props) => {
               </TabPanel>
               <TabPanel>
                 <div className="row">
-                  <p className="white ml-3">Current stake: {userStake}</p>
+                  <p className="white ml-3">Current stake: {userStake} CAL</p>
                 </div>
                 <div className="row">
                   <div className="col">
