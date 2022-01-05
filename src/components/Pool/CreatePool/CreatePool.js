@@ -522,6 +522,7 @@ const CreatePool = (props) => {
                 type="number"
                 value={calAmount}
                 id="calAmountInput"
+                min="0"
                 onChange={(e) => {
                   setCalAmount(e.target.value);
                 }}
@@ -543,6 +544,7 @@ const CreatePool = (props) => {
                       type="number"
                       value={maxPoolSize}
                       id="maxPoolSizeInput"
+                      min="0"
                       onChange={(e) => {
                         setMaxPoolSize(e.target.value);
                       }}
@@ -592,6 +594,7 @@ const CreatePool = (props) => {
               <input
                 className="text-input"
                 type="number"
+                min="0"
                 {...bindMinPoolSize}
               />
               <br />
@@ -602,6 +605,7 @@ const CreatePool = (props) => {
               <input
                 className="text-input"
                 type="number"
+                min="0"
                 {...bindFee}
                 max="95"
               />
@@ -610,7 +614,12 @@ const CreatePool = (props) => {
                 <span>Minimum Bet Size in {selectedCoin.label} per player</span>
               </TutorialPopup>
               <br />
-              <input className="text-input" type="number" {...bindMinBet} />
+              <input
+                className="text-input"
+                type="number"
+                {...bindMinBet}
+                min="0"
+              />
               <br />
 
               <div className="form-check">

@@ -127,6 +127,7 @@ const Staking = () => {
                 type="number"
                 placeholder="Enter number"
                 {...bindAmount}
+                min="0"
               ></input>
               <span className="black">CAL</span>
               <br />

@@ -370,7 +370,11 @@ const CurrentLottery = (props) => {
       }
     });
 
-    amount = (lottery.totalTickets - amount) * 0.95;
+    if (lottery.totalTickets - amount <= 0) {
+      amount = lottery.totalTickets - amount;
+    } else {
+      amount = (lottery.totalTickets - amount) * 0.95;
+    }
     return amount;
   };
 
@@ -523,9 +527,13 @@ const CurrentLottery = (props) => {
                     <div className="row  align-items-center">
                       <button
                         className="btn-sub-add mr-1"
-                        onClick={() =>
-                          setTicketsAmount(parseInt(ticketsAmount) - 1)
-                        }
+                        onClick={() => {
+                          if (parseInt(ticketsAmount) - 1 <= 0) {
+                            setTicketsAmount(1);
+                          } else {
+                            setTicketsAmount(parseInt(ticketsAmount) - 1);
+                          }
+                        }}
                       >
                         -
                       </button>
@@ -621,7 +629,7 @@ const CurrentLottery = (props) => {
                 </div>
                 <div className="row">
                   <div className="col-3">
-                    <input type="number" {...bindStakeAmount} />
+                    <input type="number" {...bindStakeAmount} min="0" />
                   </div>
                   <div className="col-3">
                     <button
@@ -632,7 +640,7 @@ const CurrentLottery = (props) => {
                     </button>
                   </div>
                   <div className="col-3">
-                    <input type="number" {...bindUntakeAmount} />
+                    <input type="number" {...bindUntakeAmount} min="0" />
                   </div>
                   <div className="col-3">
                     <button className="lotteryyellow-btn" onClick={unstake}>

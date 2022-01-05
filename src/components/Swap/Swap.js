@@ -140,6 +140,7 @@ const Swap = () => {
                     placeholder="Enter number"
                     type="number"
                     value={coinAmount}
+                    min="0"
                     onChange={(e) => setCoinAmount(e.target.value)}
                   ></input>
                   <select
@@ -163,6 +164,7 @@ const Swap = () => {
                     placeholder="Enter number"
                     type="number"
                     value={calAmount}
+                    min="0"
                     onChange={(e) => setCalAmount(e.target.value)}
                   ></input>
                   <span className="black">CAL</span>
