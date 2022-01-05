@@ -226,6 +226,30 @@ const CurrentLottery = (props) => {
         tx.wait().then(() => {
           setLoading(false);
           getUserStake();
+          setUserStake(userStake - unstakeAmount);
+          toast.success("Success!");
+        });
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err.message);
+      });
+  };
+
+  const unstakeAll = () => {
+    setLoading(true);
+    /*if (stakeAmount == 0) {
+      setLoading(false);
+      return toast.error("Stake amount should be higher than 0.");
+    }*/
+    getLotteryManagerSc()
+      .connect(signer)
+      .unstake(getWei(userStake))
+      .then((tx) => {
+        tx.wait().then(() => {
+          setLoading(false);
+          getUserStake(userStake);
+          setUserStake("0");
           toast.success("Success!");
         });
       })
@@ -612,7 +636,10 @@ const CurrentLottery = (props) => {
                   </div>
                   <div className="col-3">
                     <button className="lotteryyellow-btn" onClick={unstake}>
-                      Withdraw
+                      &nbsp;&nbsp;&nbsp;Withdraw&nbsp;&nbsp;
+                    </button>
+                    <button className="lotteryyellow-btn" onClick={unstakeAll}>
+                      Withdraw All
                     </button>
                   </div>
                 </div>
