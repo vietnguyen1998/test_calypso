@@ -10,7 +10,9 @@ import {
   formatTimezone,
 } from "../../utils/Utils";
 import CurrentLottery from "./CurrentLottery";
-import { getLotteryWinners } from "./LotteryUtils";
+import { FaRegQuestionCircle } from "react-icons/fa";
+import { getLotteryWinners, getStakerEarnings } from "./LotteryUtils";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const Lottery = (props) => {
   const { getLotteries, getTickets } = props;
@@ -44,9 +46,22 @@ const Lottery = (props) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
+    setTabIndex(0);
     getTickets(currentLottery._id, address, LotteryType.currentLottery);
     setShow(true);
   };
+  const handleClaimWinningShow = () => {
+    setTabIndex(2);
+    getTickets(currentLottery._id, address, LotteryType.currentLottery);
+    setShow(true);
+  };
+  const handleStakingShow = () => {
+    setTabIndex(3);
+    getTickets(currentLottery._id, address, LotteryType.currentLottery);
+    setShow(true);
+  };
+
+  const [tabIndex, setTabIndex] = useState(0);
 
   useEffect(() => {
     getLotteries();
@@ -56,6 +71,11 @@ const Lottery = (props) => {
     if (address != "" && prevLotteryAddress != "")
       getTickets(prevLotteryAddress, address, LotteryType.previousLottery);
   }, [address, prevLotteryAddress]);
+
+  const entering = (e) => {
+    e.children[0].style.borderTopColor = "purple";
+    e.children[1].style.backgroundColor = "#C6C8CC";
+  };
 
   /*useEffect(() => {
     let val = endDate - Math.floor(Date.now() / 1000);
@@ -120,6 +140,18 @@ const Lottery = (props) => {
     return winAmount;
   };*/
 
+  const calculateAverageDailyReturn = () => {
+    let dailyReturn = 0;
+    sortedLotteries.slice(1, 11).map((el, i) => {
+      let stakerEarning = getStakerEarnings(el);
+      if (stakerEarning !== 0 && el.poolSize !== 0) {
+        dailyReturn += (stakerEarning / (el.poolSize / 1e18)) * 100;
+      }
+    });
+    dailyReturn = dailyReturn / 10;
+    return dailyReturn.toFixed(2);
+  };
+
   const getTicketsArray = () => {
     let array = [];
     for (let i = 0; i < ticketsAmount; i++) {
@@ -149,23 +181,48 @@ const Lottery = (props) => {
         <br />
         <div
           className="container py-4"
-          style={{ backgroundColor: "#0f1f38", width: "60%" }}
+          style={{
+            backgroundColor: "#0f1f38",
+            width: "60%",
+            backgroundImage: "url(./images/lotteryBackground.png)",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+          }}
         >
+          <br />
           <div className=" d-flex justify-content-center">
             <h1 className="yellow">Calypso Lucky Seven Lottery</h1>
           </div>
           <div className=" d-flex justify-content-center">
             <h1 className="red bold">2,000,000 CAL </h1>
           </div>
+          <br />
           <div className=" d-flex justify-content-center">
-            <p className="white">In Prizes</p>
+            <h3 className="white">In Prizes</h3>
           </div>
+          <br />
+          <br />
           {currentLottery && (
             <>
-              <div className=" d-flex justify-content-center">
-                <button className="yellow-btn" onClick={handleShow}>
-                  Buy Tickets
-                </button>
+              <div
+                className=" d-flex justify-content-center"
+                style={{ marginTop: "10px" }}
+              >
+                <div className="lotteryBuyTicket">
+                  <button
+                    className="yellow-btn"
+                    onClick={handleShow}
+                    style={{
+                      borderRadius: "4px",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <span className="white" style={{ fontWeight: "600" }}>
+                      Buy Tickets
+                    </span>
+                  </button>
+                </div>
               </div>
               <CurrentLottery
                 show={show}
@@ -174,6 +231,7 @@ const Lottery = (props) => {
                 sortedLotteries={sortedLotteries}
                 address={address}
                 setLoading={setLoading}
+                tabIndex={tabIndex}
               />
             </>
           )}
@@ -227,15 +285,13 @@ const Lottery = (props) => {
               <hr style={{ border: "1px dashed  grey" }} />
               <div className="d-flex justify-content-center">
                 <p
-                  class="white"
+                  class="whiteToggle whiteToggle-success collapsed"
                   data-toggle="collapse"
                   data-target="#collapseDetails"
                   aria-expanded="false"
                   aria-controls="collapseDetails"
                   style={{ cursor: "pointer" }}
-                >
-                  Details ^
-                </p>
+                ></p>
               </div>
             </div>
           </div>
@@ -288,8 +344,14 @@ const Lottery = (props) => {
                 Check for Prizes
               </h4>
               <p className="white" align="center">
-                Once the draw is over, click on <u>Claim Winnings</u> to check
-                if you’ve won!
+                Once the draw is over, click on{" "}
+                <u
+                  onClick={currentLottery && handleClaimWinningShow}
+                  style={{ cursor: "pointer" }}
+                >
+                  Claim Winnings
+                </u>{" "}
+                to check if you’ve won!
               </p>
             </div>
           </div>
@@ -306,36 +368,41 @@ const Lottery = (props) => {
             </h4>
             <hr style={{ border: "1px solid grey" }} />
             <div class="collapse" id="collapseHowToPlay">
-              <div class="col-8">
-                <p className="white">
-                  The digits on your ticket must match in the correct order to
-                  win.
-                </p>
-                <p className="bright-grey" align="justify">
-                  There are a total of seven winning lottery numbers , from 0 to
-                  9, on each ticket. To win, your numbers need to match the
-                  drawn numbers in the same order as the 7 winning numbers,
-                  starting from the left of the ticket.
-                </p>
-                <p className="bright-grey" align="justify">
-                  Ticket A : The first 4 digits match but the last 3 digits do
-                  not match so this ticket is entitled to the Match 4 Prize
-                  Category
-                </p>
-                <p className="bright-grey" align="justify">
-                  Ticket B : The first digit does not match but the last 6
-                  digits match so this ticket is entitled to the Match 2 Prize
-                  Category since the last 2 digits match the winning ticket
-                  number
-                </p>
-                <p className="bright-grey" align="justify">
-                  Prize Brackets do not stack
-                </p>
-                <p className="bright-grey" align="justify">
-                  If you win 2nd Prize , you are not entitled to prizes in the
-                  lower prize category . The highest prize category will be the
-                  only category that qualify for payout
-                </p>
+              <div className="row">
+                <div class="col-8">
+                  <p className="white">
+                    The digits on your ticket must match in the correct order to
+                    win.
+                  </p>
+                  <p className="bright-grey" align="justify">
+                    There are a total of seven winning lottery numbers , from 0
+                    to 9, on each ticket. To win, your numbers need to match the
+                    drawn numbers in the same order as the 7 winning numbers,
+                    starting from the left of the ticket.
+                  </p>
+                  <p className="bright-grey" align="justify">
+                    Ticket A : The first 4 digits match but the last 3 digits do
+                    not match so this ticket is entitled to the Match 4 Prize
+                    Category
+                  </p>
+                  <p className="bright-grey" align="justify">
+                    Ticket B : The first digit does not match but the last 6
+                    digits match so this ticket is entitled to the Match 2 Prize
+                    Category since the last 2 digits match the winning ticket
+                    number
+                  </p>
+                  <p className="bright-grey" align="justify">
+                    Prize Brackets do not stack
+                  </p>
+                  <p className="bright-grey" align="justify">
+                    If you win 2nd Prize , you are not entitled to prizes in the
+                    lower prize category . The highest prize category will be
+                    the only category that qualify for payout
+                  </p>
+                </div>
+                <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+                  <img width="250px" src="/images/lotterySample.png" />
+                </div>
               </div>
             </div>
           </div>
@@ -350,12 +417,48 @@ const Lottery = (props) => {
                 whole or partial stake at any time.
               </p>
             </div>
-            <div className="col-4  d-flex justify-content-center">
-              <p className="yellow" align="justify">
-                Average daily Return
+            <div
+              className="col-3 step"
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              <p className="yellow" align="center">
+                <label style={{ fontSize: 14 }}>
+                  AVERAGE DAILY RETURN &nbsp;&nbsp;
+                  <OverlayTrigger
+                    placement="right"
+                    onEntering={entering}
+                    // style={{ backgroundColor: "white" }}
+                    overlay={
+                      <Tooltip>
+                        <span style={{ color: "black" }}>
+                          Average return of last 10 draws
+                        </span>
+                      </Tooltip>
+                    }
+                  >
+                    <FaRegQuestionCircle color="white" />
+                  </OverlayTrigger>
+                </label>
               </p>
+              <h4 className="white" align="center">
+                {calculateAverageDailyReturn()}%
+              </h4>
             </div>
           </div>
+          {currentLottery && (
+            <div className=" d-flex justify-content-center">
+              <button
+                className="yellow-btn"
+                style={{ marginTop: 30, marginBottom: 20, borderRadius: "4px" }}
+                onClick={handleStakingShow}
+              >
+                <span style={{ fontWeight: 500 }}>Stake Now &gt;</span>
+              </button>
+            </div>
+          )}
           <div>
             <h4
               class="white"

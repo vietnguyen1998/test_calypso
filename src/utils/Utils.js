@@ -143,3 +143,7 @@ export const secondsToHms = (d) => {
     (s >= 10 ? s : "0" + s)
   );
 };
+
+export const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};

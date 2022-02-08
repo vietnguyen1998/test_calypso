@@ -134,3 +134,37 @@
   background-color: #677082;
   border: transparent;
 }
+
+p.whiteToggle.collapsed::before {
+  content: "Details ^";
+  color: white;
+}
+p.whiteToggle::before {
+  content: "Hide ^";
+  color: white;
+}
+
+.lotteryBuyTicket button:after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  position: absolute;
+  left: -9px;
+  background: #0f1f38;
+  top: 52%;
+  transform: translateY(-50%);
+}
+.lotteryBuyTicket button:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  position: absolute;
+  right: -9px;
+  background: #0f1f38;
+  top: 52%;
+  transform: translateY(-50%);
+}

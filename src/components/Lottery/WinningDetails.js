@@ -1,9 +1,11 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import { getWinningTickets, stringifyNumber } from "./LotteryUtils";
+import "./WinningDetails.css";
 
 const WinningDetails = (props) => {
-  const { showDetails, handleCloseDetails, tickets, lottery } = props;
+  const { showDetails, handleCloseDetails, tickets, lottery, winningIndex } =
+    props;
 
   const resultsTable = getWinningTickets(tickets, lottery).map((el, i) => {
     return (
@@ -11,8 +13,8 @@ const WinningDetails = (props) => {
         <tr>
           <td>{el.number}</td>
           <td>{stringifyNumber(el.place)} Prize</td>
-          <td>{el.amountOfWinners}</td>
-          <td>{el.prize}</td>
+          <td style={{ textAlign: "center" }}>{el.amountOfWinners}</td>
+          <td style={{ textAlign: "center" }}>{el.prize}</td>
         </tr>
       </>
     );
@@ -22,20 +24,42 @@ const WinningDetails = (props) => {
     <Modal
       show={showDetails}
       onHide={handleCloseDetails}
+      winningIndex={winningIndex}
       keyboard={false}
       centered
+      dialogClassName="winning-details"
+      className="transparent-modal"
     >
       {" "}
-      <Modal.Header closeButton>
+      {/* <Modal.Header closeButton>
         <Modal.Title>{lottery._id}</Modal.Title>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body
         style={{
           backgroundColor: "#4A556A",
           borderRadius: "15px",
         }}
       >
-        <table className="table" style={{ color: "white" }}>
+        <table
+          className="table"
+          style={{ color: "white", alignItems: "center" }}
+        >
+          <caption
+            style={{
+              captionSide: "top",
+              color: "white",
+              textAlign: "center",
+            }}
+          >
+            <div>
+              <strong>DRAW #{winningIndex}</strong>
+            </div>
+            <div>
+              {/* <strong style={{ color: "grey" }}> */}
+              {lottery._id}
+              {/* </strong> */}
+            </div>
+          </caption>
           <thead className="details-table">
             <tr>
               <th scope="col">Winning Tickets</th>

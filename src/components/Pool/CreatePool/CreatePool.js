@@ -254,10 +254,43 @@ const CreatePool = (props) => {
     );
   });
 
+  const fillSpace = (el) => {
+    let longest = 0;
+    for (let n = 0; n < filterMatches.length; n++) {
+      if (
+        filterMatches[n].team1.length + filterMatches[n].team2.length >
+        longest
+      ) {
+        longest = filterMatches[n].team1.length + filterMatches[n].team2.length;
+      }
+    }
+    let space = ``;
+    if (longest - el.team1.length - el.team2.length > 2) {
+      space = `\xa0\xa0`.repeat(longest - el.team1.length - el.team2.length);
+    }
+    // if (longest - el.team1.length - el.team2.length > 10) {
+    //   let strSpace =
+    //     el.team1.split(" ").length -
+    //     1 +
+    //     (el.team2.split(" ").length - 1) +
+    //     (el.team1.split("-").length - 1) +
+    //     (el.team2.split("-").length - 1);
+    //   space += "\xa0".repeat(parseInt(strSpace));
+    // }
+    return space;
+  };
+
   const matchOptions = filterMatches.map((el, id) => {
+    const s = `\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0`;
     return (
-      <option key={id} value={String(id)}>
-        {el.team1} - {el.team2}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      <option
+        key={id}
+        value={String(id)}
+        // style={{ direction: "rtl", textAlign: "right" }}
+      >
+        {el.team1} - {el.team2}
+        {s}
+        {fillSpace(el)}
         {timestampToLocalDate(el.date, "D MMM YYYY")}{" "}
         {timestampToLocalDate(el.date, "H:mm UTC").padStart(9, "0")}{" "}
         {formatTimezone(el.date)}
@@ -316,7 +349,12 @@ const CreatePool = (props) => {
               <br />
               <span>Please select which game to create Pool for</span>
               {(matchOptions.length > 0 && (
-                <select className="select-input" name="Game" {...bindMatch}>
+                <select
+                  className="select-input"
+                  name="Game"
+                  {...bindMatch}
+                  style={{ textAlignLast: "left" }}
+                >
                   {matchOptions}
                 </select>
               )) || (

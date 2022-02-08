@@ -156,3 +156,29 @@ export const reverseIndex = (array) => {
   });
   return indexes.reverse();
 };
+
+export const getStakerEarnings = (lottery) => {
+  let amount = getTotalPrizesWon(lottery);
+
+  if (lottery.totalTickets - amount <= 0) {
+    amount = lottery.totalTickets - amount;
+  } else {
+    amount = (lottery.totalTickets - amount) * 0.95;
+  }
+  return amount;
+};
+
+export const getTotalPrizesWon = (lottery) => {
+  let amount = 0;
+  if (Object.keys(lottery).length) {
+    const prizes = getPrizesArray(lottery);
+    prizes.forEach((el) => {
+      if (el[0].length > 0) {
+        const winningPart = (lottery.totalPrize * el[1]) / 100;
+        amount += (winningPart * el[0].length) / el[0].length;
+      }
+    });
+  }
+
+  return amount;
+};
