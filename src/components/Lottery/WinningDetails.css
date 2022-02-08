@@ -1,0 +1,43 @@
+.winning-details {
+  width: 40vw !important;
+  max-width: 40vw !important;
+  /* top: 15% !important; */
+  /* margin-bottom: 10% !important; */
+  table-layout: fixed;
+}
+
+.winning-details tbody {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: fit-content;
+  max-height: 30vw;
+}
+
+.winning-details thead tr {
+  display: block;
+}
+
+.winning-details th,
+.winning-details td {
+  /* padding: 5px 10px; */
+  width: 160px;
+}
+
+.winning-details .table tbody::-webkit-scrollbar {
+  background: transparent;
+  width: 8px;
+  height: 8px;
+}
+.winning-details .table tbody::-webkit-scrollbar-thumb {
+  border: solid 30px transparent;
+  background-color: #a6a6a6;
+  border-radius: 10px;
+}
+.winning-details .table tbody::-webkit-scrollbar-track {
+  border: solid 30px transparent;
+  border-radius: 10px;
+}
+.winning-details .table tbody::-webkit-scrollbar-thumb:hover {
+  background: #858585;
+}
