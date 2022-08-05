@@ -145,7 +145,7 @@ const Swap = () => {
                   ></input>
                   <select
                     style={{ width: "20%", minWidth: "87px" }}
-                    class="select-input"
+                    class=""
                     name="Game"
                     {...bindCoin}
                   >

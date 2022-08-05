@@ -168,7 +168,7 @@ const Pool = (props) => {
             {odds()}
           </div>
           <div className="col-md-4">
-            <button
+            {/* <button
               className="border-btn extra-small-text small-border-btn mb-3"
               onClick={() => history.push("/pools/" + pool._id)}
             >
@@ -178,7 +178,26 @@ const Pool = (props) => {
                   ? "View"
                   : "Join Pool"}
               </span>
+            </button> */}
+            {" "}
+            {Math.floor(Date.now() / 1000) - pool.endDate > 0
+            ?
+             <button
+              className="border-btn extra-small-text small-border-btn mb-3"
+              style={{ marginLeft: "18%" }}
+              onClick={() => history.push("/pools/" + pool._id)}
+            >
+              <span>View</span>    
             </button>
+            :
+            <button
+            className="border-btn extra-small-text small-border-btn mb-3"
+            onClick={() => history.push("/pools/" + pool._id)}
+          >
+            <span>Join Pool</span>
+          </button>
+
+            }
             <TutorialPopup
               content={
                 isActive
@@ -194,7 +213,7 @@ const Pool = (props) => {
                   height: "15px",
                 }}
               ></button>
-            </TutorialPopup>
+            </TutorialPopup>          
           </div>
         </div>
 

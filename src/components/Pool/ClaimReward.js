@@ -68,7 +68,8 @@ const ClaimReward = (props) => {
         >
           <span className="mb-1 bold">
             <span className="black mr-2">{claimLabel()}</span>{" "}
-            {isActive ? roundNumber(winAmount) : winOutcome} {currencyName}
+            {/* {isActive ? roundNumber(winAmount) : winOutcome} {currencyName} */}
+            {isActive ? winAmount.toFixed(6) : winOutcome} {currencyName}
           </span>
           <br />
         </div>

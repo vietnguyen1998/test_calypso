@@ -39,7 +39,7 @@ const FeaturePool = (props) => {
             <div className="team-circle" align="center">
               <img className="team-img" src={game.logo2} />
             </div>
-            <p style={{ height: "40px" }} className="team-name mt-2">
+            <p style={{ height: "40px", wordWrap: "break-word" }} className="team-name mt-2">
               {game.team2}
             </p>
           </div>

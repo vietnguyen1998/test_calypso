@@ -17,7 +17,7 @@
     "react-dom": "^16.14.0",
     "react-download-link": "^2.3.0",
     "react-icons": "^4.3.1",
-    "react-multi-select-component": "^3.0.5",
+    "react-multi-select-component": "^4.3.0",
     "react-paginate": "^8.1.0",
     "react-radio-group": "^3.0.3",
     "react-redux": "^7.2.2",

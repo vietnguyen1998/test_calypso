@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Alert } from "react-bootstrap";
 import useInput from "../../../hook/useInput";
 import "./WhiteListPanel.css";
+import { updateWhitelistAddr } from "../../../../redux/actions";
+import { connect, useDispatch } from "react-redux";
 
 const WhiteListPanel = (props) => {
-  const { whitelist, updateWhitelist } = props;
   const [addr, bindAddr, resetAddr] = useInput("");
+  const [whitelist, updateWhitelist] = useState([]);
 
   const addrItems = whitelist.map((el, id) => {
     return (
@@ -23,10 +25,12 @@ const WhiteListPanel = (props) => {
   const addAddr = () => {
     if (addr === "") return;
     const addrIndex = whitelist.findIndex((el) => el === addr);
+    console.log(addrIndex);
     if (addrIndex >= 0) return;
     updateWhitelist([...whitelist, addr]);
     resetAddr();
   };
+
   return (
     <>
       <div>

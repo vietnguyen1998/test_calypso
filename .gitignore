@@ -5,7 +5,6 @@ build
 src/config.js
 src/redux/store.js
 instruction.txt
-package-lock.json
 README.md
 yarn.lock
 deploy

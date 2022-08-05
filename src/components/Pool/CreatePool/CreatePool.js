@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef, useLayoutEffect } from "react";
 import Main from "../../Common/Main";
 import "./CreatePool.css";
 import { connect, useSelector } from "react-redux";
@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import Addresses from "../../../const/Address";
 import TutorialPopup from "../../Common/TutorialPopup";
 import { LogisticConst } from "../../../const/Const";
+import { toHaveFormValues } from "@testing-library/jest-dom";
 
 const CreatePool = (props) => {
   const { getMatches, createPool } = props;
@@ -75,6 +76,13 @@ const CreatePool = (props) => {
   const matches = useSelector((state) => state.matches) || [];
   const gameTypes = useSelector((state) => state.gameTypes) || [];
   const address = useSelector((state) => state.address) || "";
+
+  const getAccounts = async () => {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const account = accounts[0];
+    setWhitelist([account])
+  }
+ 
 
   const filterMatches = useMemo(
     () => matches.filter((el) => el.game === gameType),
@@ -128,6 +136,10 @@ const CreatePool = (props) => {
   useEffect(() => {
     setCharsLeft(200 - description.length);
   }, [description]);
+
+  useEffect(() => {
+    getAccounts();
+  }, [])
 
   const approveCal = async () => {
     if (calAmount < 1) {
@@ -256,6 +268,7 @@ const CreatePool = (props) => {
 
   const fillSpace = (el) => {
     let longest = 0;
+
     for (let n = 0; n < filterMatches.length; n++) {
       if (
         filterMatches[n].team1.length + filterMatches[n].team2.length >
@@ -263,11 +276,13 @@ const CreatePool = (props) => {
       ) {
         longest = filterMatches[n].team1.length + filterMatches[n].team2.length;
       }
+     
     }
     let space = ``;
-    if (longest - el.team1.length - el.team2.length > 2) {
-      space = `\xa0\xa0`.repeat(longest - el.team1.length - el.team2.length);
+    if (longest - el.team1.length - el.team2.length > 0) {
+      space = `\xa0`.repeat(longest - el.team1.length - el.team2.length);
     }
+
     // if (longest - el.team1.length - el.team2.length > 10) {
     //   let strSpace =
     //     el.team1.split(" ").length -
@@ -282,19 +297,20 @@ const CreatePool = (props) => {
 
   const matchOptions = filterMatches.map((el, id) => {
     const s = `\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0`;
-    return (
-      <option
-        key={id}
-        value={String(id)}
-        // style={{ direction: "rtl", textAlign: "right" }}
-      >
-        {el.team1} - {el.team2}
-        {s}
-        {fillSpace(el)}
-        {timestampToLocalDate(el.date, "D MMM YYYY")}{" "}
-        {timestampToLocalDate(el.date, "H:mm UTC").padStart(9, "0")}{" "}
-        {formatTimezone(el.date)}
-      </option>
+    return ( 
+          <option
+          key={id}
+          value={String(id)}
+          //style={{ direction: "rtl", textAlign: "right" }}
+          style={{ fontFamily: "Roboto Mono", fontSize: "15px" }}
+        >
+            {el.team1} - {el.team2}
+            {s}
+            {fillSpace(el)}
+            {timestampToLocalDate(el.date, "DD MMM YYYY")}{" "}
+            {timestampToLocalDate(el.date, "H:mm UTC").padStart(9, "0")}{" "}
+            {formatTimezone(el.date)} 
+        </option> 
     );
   });
 
@@ -349,14 +365,14 @@ const CreatePool = (props) => {
               <br />
               <span>Please select which game to create Pool for</span>
               {(matchOptions.length > 0 && (
-                <select
-                  className="select-input"
-                  name="Game"
-                  {...bindMatch}
-                  style={{ textAlignLast: "left" }}
-                >
-                  {matchOptions}
-                </select>
+                  <select
+                    className="select-input"
+                    name="Game"
+                    {...bindMatch}
+                    style={{ textAlignLast: "left" }}
+                  >
+                    {matchOptions}  
+                  </select>
               )) || (
                 <>
                   <br />
@@ -551,7 +567,7 @@ const CreatePool = (props) => {
                 {supportedCoinOptions}
               </select>
               <br />
-              <TutorialPopup content="The amount of CAL staked will determine the Max Pool Size. You will get back half of your CAL after the match has ended successfully.">
+              <TutorialPopup content="The amount of CAL staked will determine the Max Pool Size. 50% of your CAL will be burnt and another 50% will be sent to stakers after the match has ended successfully.">
                 <span>Pool Creation Fee in CAL</span>
               </TutorialPopup>
               <br />

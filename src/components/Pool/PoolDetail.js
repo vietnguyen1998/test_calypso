@@ -20,6 +20,8 @@ import MaxCapPanel from "./MaxCapPanel";
 import { etherscan } from "../../config";
 import { TabName } from "../Common/Sidebar";
 import TutorialPopup from "../Common/TutorialPopup";
+import WhiteListPanel from "../Pool/CreatePool/WhiteListPanel/WhiteListPanel";
+import { updateWhitelistAddr } from "../../redux/actions";
 
 const PoolDetail = (props) => {
   const { getPool } = props;
@@ -56,6 +58,7 @@ const PoolDetail = (props) => {
   const currencyName = currency && currency.label;
   const isPrivate = pool && pool.isPrivate;
   const _whitelist = pool && pool.whitelist;
+  const [whitelist, setWhitelist] = useState([]);
   const validAddress = isPrivate
     ? _whitelist
         .map((el) => el.toLowerCase())
@@ -176,7 +179,7 @@ const PoolDetail = (props) => {
           </div>
         </>
       );
-    });
+  });
 
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
@@ -473,6 +476,7 @@ const PoolDetail = (props) => {
                   setLoading={setLoading}
                 />
               )}
+
             {/* My bets */}
             {validAddress && (
               <BetList
@@ -481,6 +485,7 @@ const PoolDetail = (props) => {
                 pool={pool}
               />
             )}
+
           </div>
         </div>
         <br />
