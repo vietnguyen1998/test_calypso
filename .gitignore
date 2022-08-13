@@ -2,7 +2,6 @@
 node_modules
 build
 .DS_Store
-src/config.js
 src/redux/store.js
 instruction.txt
 README.md
