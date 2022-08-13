@@ -1,0 +1,75 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          run:
+            name: Load docker image
+            command:  |
+              set +o pipefail
+              docker load -i /caches/app.tar | true
+      - run:
+          name: Build app
+          command:  |
+            docker build --cache-from=$PROJECT_NAME -t $PROJECT_NAME .
+      - run:
+          name: Save docker image
+          command:  |
+            mkdir -p /caches
+            docker save -o /caches/app.tar $PROJECT_NAME
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app.tar
+      - persist_to_workspace:
+          root: /caches
+          paths:
+            - app.tar
+  publish_gcp:
+    working_directory: /app
+    docker:
+      - image: google/cloud-sdk:latest
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: /caches
+      - run:
+          name: Load image
+          command: docker load -i /caches/app.tar
+      - run:
+          name: Authenticate GCP
+          command: |
+            echo $GCLOUD_KEY | base64 -d > gcloud_key.json
+            gcloud auth activate-service-account --key-file=gcloud_key.json
+            gcloud config set project $PROJECT --quiet
+            gcloud config set compute/region $REGION --quiet
+            gcloud auth configure-docker --quiet
+      - run:
+          name: Deploy
+          command: |
+            GCR_URI=asia.gcr.io/$PROJECT/$PROJECT_NAME:$CIRCLE_BUILD_NUM
+            docker tag $PROJECT_NAME $GCR_URI
+            docker push $GCR_URI
+            gcloud run deploy $PROJECT_NAME --image=$GCR_URI --port=$PORT --region=$REGION
+workflows:
+  deploy-app:
+    jobs:
+      - build:
+          filters: &master-filter
+            branches:
+              only:
+                - master
+      - publish_gcp:
+          filters: *master-filter
+          requires:
+            - build
+      
