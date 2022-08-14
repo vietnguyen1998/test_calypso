@@ -15,7 +15,7 @@ export const etherscan = "https://rinkeby.etherscan.io/address/";
 // };
 // export const CHAIN_ID = 1337;
 //== Prod
-export const host = "https://api.calypso.bet/";
+export const host = "https://calypso.bet/api/";
 // local api host: "http://localhost:4000/api/"
 
 //All contracts are using proxies now. NEVER change the addresses here.
