@@ -12,25 +12,25 @@ export const etherscan = "https://rinkeby.etherscan.io/address/";
 //   oracle: "0xC30587fcA21B472F2c330C96102F15Ff3335888B",
 //   staking: "0x35a15Eea058800049B94CfeEAd5E1970F190afa3",
 //   affiliate: "0x377bBb7f924cB389fA64DD23739e5947B0650447",
+//   lotteryManager: "0x934e865ba62f900FEbc2e42c6B229b5f13898C3a",
 // };
 // export const CHAIN_ID = 1337;
 //== Prod
 export const host = "https://calypso.bet/api/";
-// local api host: "http://localhost:4000/api/"
 
-//All contracts are using proxies now. NEVER change the addresses here.
-//To upgrade any SC we should use upgradeProxy in Truffle.
+// //All contracts are using proxies now. NEVER change the addresses here.
+// //To upgrade any SC we should use upgradeProxy in Truffle.
 export const addresses = {
-  cal: "0x36DF4070E048A752C5abD7eFD22178ce8ef92535",
-  usdt: "0x896C84068fa31Af023f7A12170e78c42A07C6dD6",
-  usdc: "0x4a47cAeC2f0Ae39584A706B42424a911Ec730fc1",
-  wbtc: "0x66A8b5B5ec306b09f830efba14E2B1AA150b4976",
-  calSwap: "0x702AD4Cf93Dd3a6FBD8dF64679e280F7F4eEFE95",
-  poolManager: "0x6c3D4978cF4b37A250271183d0121d1f60dA4c92",
-  testFaucet: "0x6a63Cf2AEB160429bd75c625C9a33b43068dB85f",
-  oracle: "0xfFB0E212B568133fEf49d60f8d52b4aE4A2fdB72",
-  staking: "0x266235aA627CB076c7607D2bE0672854f114503d",
-  affiliate: "0x2752Fbff6C1289b90fbbCD8db9E8aDFb7c459Ed0",
-  lotteryManager: "0xF22BD3583c22845aBbeD4ce537fdDf5126fF6159",
+  usdc: "0x5a83b20AC0a6A1f27EAD8a7e034c894Ed1b925A9",
+  usdt: "0xF8cD0431c53B0daFD8ff5ed6A90119Ffb1379218",
+  wbtc: "0x16aE375E3915340293ca72B1d376F6FC2a51Bb1a",
+  cal: "0x61C821D7BF2Bb2700704BA7637D015c11A63b2d6",
+  calSwap: "0xc17FC122AdDCAB2EC229982C6f6b2bb95115BA9A",
+  poolManager: "0xd879D22D743e6844a5bA6b2e7F0165744D314029",
+  testFaucet: "0xad19B6cE82D48156B2af82E5B09527E73623D322",
+  oracle: "0xc3C9E3650a1Bbb8e3Fcea132Df74EC901a9E85eA",
+  staking: "0x783484945bfA9046DC6B776C2f21a36Cb2124131",
+  affiliate: "0xAc1aFfBb721E85Db477112F0E0BBB88213cDCfF9",
+  lotteryManager: "0xD5cc1f5eA241593f4cC51c0803300f7e46D78e37",
 };
 export const CHAIN_ID = 4;
