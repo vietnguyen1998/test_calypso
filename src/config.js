@@ -1,26 +1,26 @@
-export const etherscan = "https://rinkeby.etherscan.io/address/";
+export const etherscan = "https://rinkeby.etherscan.io";
 //== Dev
-// export const host = "http://localhost:4000/api/";
-// export const addresses = {
-//   usdc: "0x7A2bbbAe421Cd178a906dF372C33D37510851EE5",
-//   usdt: "0xa7da1d0237FF435d15e2880fdCb80D950Ac029E1",
-//   wbtc: "0x7610b6F11223C1a098E63A050F2fBfaeE52a44B2",
-//   cal: "0xF2C78487826604D6C67Cf047EDbafF086AD514c8",
-//   calSwap: "0x60D5789666dcad8C039FAe53727DED93ede8Cf51",
-//   poolManager: "0xA9731FAD0eA3f17A682B96e4CE4bBfc86c92330C",
-//   testFaucet: "0x313d962D5F385A81C562CC0eB3445aE92ddEa4c2",
-//   oracle: "0xC30587fcA21B472F2c330C96102F15Ff3335888B",
-//   staking: "0x35a15Eea058800049B94CfeEAd5E1970F190afa3",
-//   affiliate: "0x377bBb7f924cB389fA64DD23739e5947B0650447",
-//   lotteryManager: "0x934e865ba62f900FEbc2e42c6B229b5f13898C3a",
-// };
-// export const CHAIN_ID = 1337;
+const hostDev = "http://localhost:4000/api/";
+const addressesDev = {
+  usdc: "0x7A2bbbAe421Cd178a906dF372C33D37510851EE5",
+  usdt: "0xa7da1d0237FF435d15e2880fdCb80D950Ac029E1",
+  wbtc: "0x7610b6F11223C1a098E63A050F2fBfaeE52a44B2",
+  cal: "0xF2C78487826604D6C67Cf047EDbafF086AD514c8",
+  calSwap: "0x60D5789666dcad8C039FAe53727DED93ede8Cf51",
+  poolManager: "0xA9731FAD0eA3f17A682B96e4CE4bBfc86c92330C",
+  testFaucet: "0x313d962D5F385A81C562CC0eB3445aE92ddEa4c2",
+  oracle: "0xC30587fcA21B472F2c330C96102F15Ff3335888B",
+  staking: "0x35a15Eea058800049B94CfeEAd5E1970F190afa3",
+  affiliate: "0x377bBb7f924cB389fA64DD23739e5947B0650447",
+  lotteryManager: "0x934e865ba62f900FEbc2e42c6B229b5f13898C3a",
+};
+const CHAIN_ID_DEV = 1337;
 //== Prod
-export const host = "https://calypso.bet/api/";
+const hostProd = "https://calypso.bet/api/";
 
 // //All contracts are using proxies now. NEVER change the addresses here.
 // //To upgrade any SC we should use upgradeProxy in Truffle.
-export const addresses = {
+const addressesProd = {
   usdc: "0x5a83b20AC0a6A1f27EAD8a7e034c894Ed1b925A9",
   usdt: "0xF8cD0431c53B0daFD8ff5ed6A90119Ffb1379218",
   wbtc: "0x16aE375E3915340293ca72B1d376F6FC2a51Bb1a",
@@ -33,4 +33,13 @@ export const addresses = {
   affiliate: "0xAc1aFfBb721E85Db477112F0E0BBB88213cDCfF9",
   lotteryManager: "0xD5cc1f5eA241593f4cC51c0803300f7e46D78e37",
 };
-export const CHAIN_ID = 4;
+const CHAIN_ID_PROD = 4;
+const isDev = process.env.NODE_ENV === "development";
+const testContractProd = true;
+const testApiProd = false;
+
+export const host = isDev && !testApiProd ? hostDev : hostProd;
+export const addresses =
+  isDev && !testContractProd ? addressesDev : addressesProd;
+export const CHAIN_ID =
+  isDev && !testContractProd ? CHAIN_ID_DEV : CHAIN_ID_PROD;

@@ -2,6 +2,7 @@ import React from "react";
 import { connect, useSelector } from "react-redux";
 import { timestampToLocalDate } from "../../utils/Utils";
 import { BetSides } from "../../const/Const";
+import { etherscan } from "../../config";
 
 const BetList = (props) => {
   const { address, coin, pool } = props;
@@ -39,10 +40,7 @@ const BetList = (props) => {
             </div>
             <div className="col-md-2 col-2">
               {item.txId != undefined && (
-                <a
-                  href={"https://kovan.etherscan.io/tx/" + item.txId}
-                  target="_blank"
-                >
+                <a href={`${etherscan}/tx/` + item.txId} target="_blank">
                   <img src="/images/link.png" style={{ width: "15px" }} />
                 </a>
               )}

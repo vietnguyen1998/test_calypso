@@ -179,7 +179,7 @@ const PoolDetail = (props) => {
           </div>
         </>
       );
-  });
+    });
 
   return (
     <Main reload={reload} loading={loading} setLoading={setLoading}>
@@ -290,7 +290,7 @@ const PoolDetail = (props) => {
               <span className="black text-wrap">{pool.title}</span>
               <br></br>
               <span className="grey">Address: </span>
-              <a href={`${etherscan}${poolAddress}`} target="_blank">
+              <a href={`${etherscan}/address/${poolAddress}`} target="_blank">
                 <span className="black">{poolAddress}</span>
               </a>
               <br></br>
@@ -485,7 +485,6 @@ const PoolDetail = (props) => {
                 pool={pool}
               />
             )}
-
           </div>
         </div>
         <br />
