@@ -78,7 +78,7 @@ const EndPool = (props) => {
       <div className="col-md-8">
         <p className="white small-text text-wrap">
           {pool.title}{" "}
-          <a href={`${etherscan}${pool._id}`} target="_blank">
+          <a href={`${etherscan}/address/${pool._id}`} target="_blank">
             <img src="/images/link.png" style={{ width: "15px" }} />
           </a>
         </p>
@@ -137,7 +137,7 @@ const EndPool = (props) => {
           </button>
         </Link>
 
-        <a href={`${etherscan}${pool._id}`} target="_blank">
+        <a href={`${etherscan}/address/${pool._id}`} target="_blank">
           <p className="grey small-text text-wrap mt-1 mb-3">
             Address: {pool._id}
           </p>

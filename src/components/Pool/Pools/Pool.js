@@ -144,7 +144,7 @@ const Pool = (props) => {
           <div className="col-md-8">
             <p className="white small-text text-wrap">
               {pool.title}{" "}
-              <a href={`${etherscan}${pool._id}`} target="_blank">
+              <a href={`${etherscan}/address/${pool._id}`} target="_blank">
                 <img src="/images/link.png" style={{ width: "15px" }} />
               </a>
             </p>
@@ -178,26 +178,23 @@ const Pool = (props) => {
                   ? "View"
                   : "Join Pool"}
               </span>
-            </button> */}
-            {" "}
-            {Math.floor(Date.now() / 1000) - pool.endDate > 0
-            ?
-             <button
-              className="border-btn extra-small-text small-border-btn mb-3"
-              style={{ marginLeft: "18%" }}
-              onClick={() => history.push("/pools/" + pool._id)}
-            >
-              <span>View</span>    
-            </button>
-            :
-            <button
-            className="border-btn extra-small-text small-border-btn mb-3"
-            onClick={() => history.push("/pools/" + pool._id)}
-          >
-            <span>Join Pool</span>
-          </button>
-
-            }
+            </button> */}{" "}
+            {Math.floor(Date.now() / 1000) - pool.endDate > 0 ? (
+              <button
+                className="border-btn extra-small-text small-border-btn mb-3"
+                style={{ marginLeft: "18%" }}
+                onClick={() => history.push("/pools/" + pool._id)}
+              >
+                <span>View</span>
+              </button>
+            ) : (
+              <button
+                className="border-btn extra-small-text small-border-btn mb-3"
+                onClick={() => history.push("/pools/" + pool._id)}
+              >
+                <span>Join Pool</span>
+              </button>
+            )}
             <TutorialPopup
               content={
                 isActive
@@ -213,7 +210,7 @@ const Pool = (props) => {
                   height: "15px",
                 }}
               ></button>
-            </TutorialPopup>          
+            </TutorialPopup>
           </div>
         </div>
 

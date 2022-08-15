@@ -36,7 +36,7 @@ const addressesProd = {
 const CHAIN_ID_PROD = 4;
 const isDev = process.env.NODE_ENV === "development";
 const testContractProd = true;
-const testApiProd = false;
+const testApiProd = true;
 
 export const host = isDev && !testApiProd ? hostDev : hostProd;
 export const addresses =

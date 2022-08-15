@@ -173,7 +173,7 @@ const PoolDetail = (props) => {
             className="px-3 py-3 mt-3"
             style={{ backgroundColor: "#F7F7F8", maxWidth: "445px" }}
           >
-            <a href={`${etherscan}${el}`} target="_blank" key={id}>
+            <a href={`${etherscan}/address/${el}`} target="_blank" key={id}>
               <span className="black">{el}</span>
             </a>
           </div>

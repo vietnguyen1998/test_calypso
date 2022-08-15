@@ -12,6 +12,7 @@ import { connect, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getWei } from "../../utils/Web3Utils";
 import useInput from "../hook/useInput";
+import { addresses, etherscan } from "../../config";
 
 const Swap = () => {
   const [coin, bindCoin] = useInput("ETH");
@@ -202,7 +203,7 @@ const Swap = () => {
             <p>Maximum Total Supply: 1 Billion CAL tokens</p>
             <p>
               CAL Token Contract:{" "}
-              <a href="https://rinkeby.etherscan.io/token/0xc1ea3959b49b903fb47ebbd30b236c09a7e02ade?a=0xf448ff5248bf9c10602ff5ac30052c7a7011966a">
+              <a href={`${etherscan}/token/${addresses.cal}`} target="_blank">
                 Link
               </a>
             </p>
