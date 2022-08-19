@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import Main from "../../Common/Main";
 import "./CreatePool.css";
 import { connect, useSelector } from "react-redux";
@@ -78,11 +84,12 @@ const CreatePool = (props) => {
   const address = useSelector((state) => state.address) || "";
 
   const getAccounts = async () => {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
     const account = accounts[0];
-    setWhitelist([account])
-  }
- 
+    setWhitelist([account]);
+  };
 
   const filterMatches = useMemo(
     () => matches.filter((el) => el.game === gameType),
@@ -139,7 +146,7 @@ const CreatePool = (props) => {
 
   useEffect(() => {
     getAccounts();
-  }, [])
+  }, []);
 
   const approveCal = async () => {
     if (calAmount < 1) {
@@ -201,6 +208,7 @@ const CreatePool = (props) => {
         getWei(calAmount.toString()),
         getWei(minBet),
         getWei(minPoolSize),
+        getWei(maxPoolSize),
       ];
 
       const isUnlimited =
@@ -276,7 +284,6 @@ const CreatePool = (props) => {
       ) {
         longest = filterMatches[n].team1.length + filterMatches[n].team2.length;
       }
-     
     }
     let space = ``;
     if (longest - el.team1.length - el.team2.length > 0) {
@@ -297,20 +304,20 @@ const CreatePool = (props) => {
 
   const matchOptions = filterMatches.map((el, id) => {
     const s = `\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0`;
-    return ( 
-          <option
-          key={id}
-          value={String(id)}
-          //style={{ direction: "rtl", textAlign: "right" }}
-          style={{ fontFamily: "Roboto Mono", fontSize: "15px" }}
-        >
-            {el.team1} - {el.team2}
-            {s}
-            {fillSpace(el)}
-            {timestampToLocalDate(el.date, "DD MMM YYYY")}{" "}
-            {timestampToLocalDate(el.date, "H:mm UTC").padStart(9, "0")}{" "}
-            {formatTimezone(el.date)} 
-        </option> 
+    return (
+      <option
+        key={id}
+        value={String(id)}
+        //style={{ direction: "rtl", textAlign: "right" }}
+        style={{ fontFamily: "Roboto Mono", fontSize: "15px" }}
+      >
+        {el.team1} - {el.team2}
+        {s}
+        {fillSpace(el)}
+        {timestampToLocalDate(el.date, "DD MMM YYYY")}{" "}
+        {timestampToLocalDate(el.date, "H:mm UTC").padStart(9, "0")}{" "}
+        {formatTimezone(el.date)}
+      </option>
     );
   });
 
@@ -365,14 +372,14 @@ const CreatePool = (props) => {
               <br />
               <span>Please select which game to create Pool for</span>
               {(matchOptions.length > 0 && (
-                  <select
-                    className="select-input"
-                    name="Game"
-                    {...bindMatch}
-                    style={{ textAlignLast: "left" }}
-                  >
-                    {matchOptions}  
-                  </select>
+                <select
+                  className="select-input"
+                  name="Game"
+                  {...bindMatch}
+                  style={{ textAlignLast: "left" }}
+                >
+                  {matchOptions}
+                </select>
               )) || (
                 <>
                   <br />
