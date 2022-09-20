@@ -16,7 +16,7 @@ const addressesDev = {
 };
 const CHAIN_ID_DEV = 1337;
 //== Prod
-const hostProd = "https://calypso.bet/api/";
+const hostProd = "https://kvq.ai/api/";
 
 // //All contracts are using proxies now. NEVER change the addresses here.
 // //To upgrade any SC we should use upgradeProxy in Truffle.
