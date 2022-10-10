@@ -715,7 +715,7 @@ const CreatePool = (props) => {
           <button
             disabled={canApproveCreate ? false : true}
             className={`${canApproveCreate ? "yellow" : "grey"}-btn mt-3 mr-3`}
-            onClick={clickCreatePool}
+            onClick={approved ? clickCreatePool : approveCal}
           >
             {approved ? "Create Pool" : "Approve CAL"}
           </button>
