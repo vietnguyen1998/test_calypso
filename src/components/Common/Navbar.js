@@ -41,7 +41,7 @@ const NavBar = (props) => {
 
   useEffect(() => {
     if (chainId && Number(chainId) != CHAIN_ID) {
-      toast.error("We currently only support Rinkeby Network");
+      toast.error("We currently only support Goerli Network");
     } else if (ethereum) {
       updateCalBalance(address);
       updateUsdtBalance(address);

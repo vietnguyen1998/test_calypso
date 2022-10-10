@@ -1,4 +1,4 @@
-export const etherscan = "https://rinkeby.etherscan.io";
+export const etherscan = "https://goerli.etherscan.io";
 //== Dev
 const hostDev = "http://localhost:4000/api/";
 const addressesDev = {
@@ -16,24 +16,24 @@ const addressesDev = {
 };
 const CHAIN_ID_DEV = 1337;
 //== Prod
-const hostProd = "/api/";
+const hostProd = process.env.REACT_APP_HOST || "/api/";
 
 // //All contracts are using proxies now. NEVER change the addresses here.
 // //To upgrade any SC we should use upgradeProxy in Truffle.
 const addressesProd = {
-  usdc: "0x5a83b20AC0a6A1f27EAD8a7e034c894Ed1b925A9",
-  usdt: "0xF8cD0431c53B0daFD8ff5ed6A90119Ffb1379218",
-  wbtc: "0x16aE375E3915340293ca72B1d376F6FC2a51Bb1a",
-  cal: "0x61C821D7BF2Bb2700704BA7637D015c11A63b2d6",
-  calSwap: "0xc17FC122AdDCAB2EC229982C6f6b2bb95115BA9A",
-  poolManager: "0xd879D22D743e6844a5bA6b2e7F0165744D314029",
-  testFaucet: "0xad19B6cE82D48156B2af82E5B09527E73623D322",
-  oracle: "0xc3C9E3650a1Bbb8e3Fcea132Df74EC901a9E85eA",
-  staking: "0x783484945bfA9046DC6B776C2f21a36Cb2124131",
-  affiliate: "0xAc1aFfBb721E85Db477112F0E0BBB88213cDCfF9",
-  lotteryManager: "0xD5cc1f5eA241593f4cC51c0803300f7e46D78e37",
+  usdc: "0x61C821D7BF2Bb2700704BA7637D015c11A63b2d6",
+  usdt: "0x8B2FE2987A873669785578DDAC1762e9A30B9207",
+  wbtc: "0xc3C9E3650a1Bbb8e3Fcea132Df74EC901a9E85eA",
+  cal: "0xc17FC122AdDCAB2EC229982C6f6b2bb95115BA9A",
+  calSwap: "0x783484945bfA9046DC6B776C2f21a36Cb2124131",
+  poolManager: "0xAc1aFfBb721E85Db477112F0E0BBB88213cDCfF9",
+  testFaucet: "0xDE017C4Cf1E2b05b227e9138477C80eD66475738",
+  oracle: "0xd879D22D743e6844a5bA6b2e7F0165744D314029",
+  staking: "0xad19B6cE82D48156B2af82E5B09527E73623D322",
+  affiliate: "0xD5cc1f5eA241593f4cC51c0803300f7e46D78e37",
+  lotteryManager: "0x9B7277b9582651e6E4199caE85C8a4a66a160df1",
 };
-const CHAIN_ID_PROD = 4;
+const CHAIN_ID_PROD = 5;
 const isDev = process.env.NODE_ENV === "development";
 const testContractProd = true;
 const testApiProd = true;
