@@ -60,7 +60,7 @@ const CreatePool = (props) => {
   const [charsLeft, setCharsLeft] = useState(200);
 
   const calcMaxPoolSize = () => {
-    return roundNumber(getMaxPoolSize(calAmount) / price);
+    return String(roundNumber(getMaxPoolSize(calAmount) / price));
   };
 
   const calcCalAmount = () => {
@@ -180,6 +180,7 @@ const CreatePool = (props) => {
   const clickCreatePool = async () => {
     try {
       setLoading(true);
+      console.log("clickCreatePool");
       const selectMatch = filterMatches[Number(match)];
       const endDate = selectMatch.date - 60 * 60;
       const poolFee = Math.round(fee * 100);
@@ -210,6 +211,7 @@ const CreatePool = (props) => {
         getWei(minPoolSize),
         getWei(maxPoolSize),
       ];
+      console.log("currencyDetails", currencyDetails);
 
       const isUnlimited =
         maxPoolSize >=
@@ -713,7 +715,7 @@ const CreatePool = (props) => {
           <button
             disabled={canApproveCreate ? false : true}
             className={`${canApproveCreate ? "yellow" : "grey"}-btn mt-3 mr-3`}
-            onClick={approved ? clickCreatePool : approveCal}
+            onClick={clickCreatePool}
           >
             {approved ? "Create Pool" : "Approve CAL"}
           </button>
